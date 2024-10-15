@@ -61,7 +61,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        boolean authenticated = passwordEncoder.matches(request.getPass(), user.getPass());
+        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPass());
         if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
@@ -145,4 +145,5 @@ public class AuthenticationService {
         }
         return stringJoiner.toString();
     }
+
 }

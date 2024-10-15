@@ -59,16 +59,20 @@ public class AccountService {
         return accounts.stream().map(accountMapper::toUserResponse).toList();
     }
 
+    //Tạo account (admin)
     public AccountResponse createAccount(AccountCreationRequest request){
         if (accountRepository.existsByCode(request.getCode())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         Account account = accountMapper.toUser(request);
+        //Mã hóa pass
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         account.setPass(passwordEncoder.encode(request.getPass()));
+        //lấy ngày hiện tại
         LocalDate now = LocalDate.now();
         account.setCreateAt(now);
 
+        //Lấy role theo id
         var roles = roleRepository.findAllById(request.getRole());
 
         account.setRole(new HashSet<>(roles));

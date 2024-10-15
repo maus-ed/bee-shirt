@@ -27,12 +27,13 @@ public class SecurityConfig {
     private CustomJwtDecoder customJwtDecoder;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         //Dùng để vô hiệu hóa tính năng CSRF (Cross-Site Request Forgery) bảo mật trong Spring Security
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 //                        .requestMatchers(HttpMethod.GET,ADMIN_ENDPOINTS).hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated());
 
