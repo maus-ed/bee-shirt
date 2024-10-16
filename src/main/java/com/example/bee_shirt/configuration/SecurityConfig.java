@@ -1,5 +1,6 @@
 package com.example.bee_shirt.configuration;
 
+import com.example.bee_shirt.constant.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +19,11 @@ import org.springframework.security.web.SecurityFilterChain;
 //phân quyền bằng method -> AccountService
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {"/auth/token", "/admin/create"};
+    private final String[] PUBLIC_ENDPOINTS = {"/auth/login", "/user/register"};
 
+    private final String[] ADMIN_GET_ENDPOINTS = {"/admin/accounts", "/admin/roles"};
 
-    private final String[] ADMIN_ENDPOINTS = {"/admin/accounts"};
+    private final String[] ADMIN_POST_ENDPOINTS = {"/admin/create"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
@@ -33,8 +35,10 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, ADMIN_GET_ENDPOINTS).hasAuthority(Constant.ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.POST, ADMIN_POST_ENDPOINTS).hasAuthority(Constant.ROLE_ADMIN)
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET,ADMIN_ENDPOINTS).hasAuthority("ROLE_ADMIN")
+
                         .anyRequest().authenticated());
 
         //Xét quyền của user qua token
@@ -66,6 +70,8 @@ public class SecurityConfig {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
         //Chuyển từ SCOPE_ADMIN -> ROLE_ADMIN
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
 
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);

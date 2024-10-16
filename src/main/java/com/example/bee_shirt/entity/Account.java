@@ -12,6 +12,7 @@ import java.util.Set;
 @Table(name = "account")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 //Access ModiFier
@@ -20,10 +21,16 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(name = "createat")
+    @Column(name = "create_at")
     LocalDate createAt;
-    @Column(name = "updateat")
+    @Column(name = "update_at")
     LocalDate updateAt;
+    @Column(name = "create_by")
+    String createBy;
+    @Column(name = "update_by")
+    String updateBy;
+    @Column(name = "deleted")
+    Boolean deleted = false;
     @Column(name = "status_account")
     Integer status;
     @Column(name = "code_account")
@@ -42,6 +49,7 @@ public class Account {
     String address;
     @Column(name = "phone_number")
     String phone;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

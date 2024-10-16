@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -27,4 +28,14 @@ public class Role {
     String name;
     @Column(name = "description_role")
     String description;
+    @Column(name = "create_at")
+    LocalDate createAt;
+    @Column(name = "update_at")
+    LocalDate updateAt;
+    @Column(name = "create_by")
+    String createBy;
+    @Column(name = "update_by")
+    String updateBy;
+    @Column(name = "deleted")
+    Boolean deleted;
 }

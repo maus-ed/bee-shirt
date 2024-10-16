@@ -18,7 +18,6 @@ import java.util.List;
 //Access ModiFier
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountCreationRequest {
-    @NotEmpty(message = "Code cannot be empty")
     String code;
 
     String firstName;
@@ -33,8 +32,6 @@ public class AccountCreationRequest {
 
     Integer status;
 
-    LocalDate updateAt;
-
     @Size(min = 3,message = "USERNAME_INVALID")
     String username;
 
@@ -44,5 +41,7 @@ public class AccountCreationRequest {
 
     LocalDate createAt;
 
-    List<Integer> role;
+    String createBy;
+
+    List<String> role;
 }

@@ -26,6 +26,7 @@ public class AdminController {
     @GetMapping("/roles")
     public ApiResponse<List<RoleResponse>> getRoles(){
         return ApiResponse.<List<RoleResponse>>builder()
+                .code(1000)
                 .result(roleService.getAll())
                 .build();
     }
@@ -33,14 +34,16 @@ public class AdminController {
     @GetMapping("/accounts")
     public ApiResponse<List<AccountResponse>> getAccounts(){
         return ApiResponse.<List<AccountResponse>>builder()
+                .code(1000)
                 .result(accountService.getAll())
                 .build();
     }
 
     //thêm @Valid để create chạy validate
     @PostMapping("/create")
-    public ApiResponse<AccountResponse> createUser(@RequestBody @Valid AccountCreationRequest request) {
+    public ApiResponse<AccountResponse> createUser( @Valid @RequestBody AccountCreationRequest request) {
         return ApiResponse.<AccountResponse>builder()
+                .code(1000)
                 .result(accountService.createAccount(request))
                 .build();
     }

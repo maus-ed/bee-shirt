@@ -79,7 +79,7 @@ angular
 
     function redirectToPage(highestRole) {
       if (highestRole === "ROLE_ADMIN") {
-        window.location.href = "/page/admin/home.html"; // Kiểm tra đường dẫn này
+        // window.location.href = "/page/admin/home.html"; // Kiểm tra đường dẫn này
       } else if (highestRole === "ROLE_STAFF") {
         window.location.href = "/page/staff/home.html";
       } else {

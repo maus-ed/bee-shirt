@@ -14,5 +14,8 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     Optional<Account> findByUsername(String username);
 
-    Optional<Account> findByCode(String code);
+    @Query(value = """
+            SELECT TOP 1 * FROM account ORDER BY id DESC
+            """, nativeQuery = true)
+    Account getTop1();
 }

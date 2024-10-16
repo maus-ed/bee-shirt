@@ -31,14 +31,14 @@ public class AccountUpdateRequest {
 
     LocalDate updateAt;
 
+    String updateBy;
+
     @Size(min = 3,message = "USERNAME_INVALID")
     String username;
 
     //validate password
     @Size(min = 5,message = "PASSWORD_INVALID")
     String pass;
-
-    LocalDate createAt;
 
     List<Integer> role;
 }

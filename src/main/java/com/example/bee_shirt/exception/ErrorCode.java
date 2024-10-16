@@ -24,6 +24,10 @@ public enum ErrorCode {
 
     TOKEN_INVALID(1008,"Token invalid",HttpStatus.BAD_REQUEST),
 
+    ROLE_NOT_FOUND(1009,"Role not found",HttpStatus.NOT_FOUND),
+
+    ACCOUNT_ALREADY(1010,"Account has been already",HttpStatus.ALREADY_REPORTED)
+
     ;
     private int code;
 
