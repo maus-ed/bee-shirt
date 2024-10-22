@@ -2,7 +2,6 @@ package com.example.bee_shirt.service;
 
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
 import com.example.bee_shirt.dto.response.AccountResponse;
-import com.example.bee_shirt.dto.response.RoleResponse;
 import com.example.bee_shirt.entity.Account;
 import com.example.bee_shirt.entity.Role;
 import com.example.bee_shirt.exception.AppException;
@@ -26,7 +25,7 @@ import java.util.*;
 //Thay thế cho @Autowired
 //@RequiredArgsConstructor sẽ tự động tạo contructor của những method đc khai báo là final
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 //in ra log
 @Slf4j
 public class AccountService {
@@ -47,7 +46,7 @@ public class AccountService {
         return accountMapper.toUserResponse(account);
     }
 
-    public List<AccountResponse> getAll(){
+    public List<AccountResponse> getAll() {
         List<Account> accounts = accountRepository.findAll();
 
         // Kiểm tra dữ liệu Role được nạp
@@ -57,7 +56,6 @@ public class AccountService {
 
         return accounts.stream().map(accountMapper::toUserResponse).toList();
     }
-
 
 
     //Tạo account (admin)
@@ -121,7 +119,6 @@ public class AccountService {
     }
 
 
-
     // Phương thức riêng để lấy role từ request
     private Set<Role> getRolesFromRequest(List<String> roleCodes) {
         Set<Role> roles = new HashSet<>();
@@ -144,7 +141,6 @@ public class AccountService {
                 }
             }
         }
-
         return roles;
     }
 }
