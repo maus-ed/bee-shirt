@@ -3,12 +3,12 @@ angular
   .module("loginApp", ["ngRoute"]) // Thêm ngRoute vào module
   .config(function ($routeProvider) {
     $routeProvider
-      .when("/admin/home", {
-        templateUrl: "admin/home.html",
+      .when("/admin/admin", {
+        templateUrl: "admin/admin.html",
         controller: "AdminController",
       })
-      .when("/staff/home", {
-        templateUrl: "staff/home.html",
+      .when("/staff/staff", {
+        templateUrl: "staff/staff.html",
         controller: "StaffController",
       })
       .when("/user/home", {
@@ -50,8 +50,16 @@ angular
           // Lưu token vào localStorage hoặc sessionStorage dựa trên "Remember Me"
           if ($scope.rememberMe) {
             localStorage.setItem("jwtToken", token); // Lưu vào localStorage nếu nhớ
+            console.log(
+              "Token đã được lưu vào localStorage:",
+              localStorage.getItem("jwtToken")
+            ); // Kiểm tra xem token đã lưu chưa
           } else {
             sessionStorage.setItem("jwtToken", token); // Lưu vào sessionStorage nếu không nhớ
+            console.log(
+              "Token đã được lưu vào sessionStorage:",
+              sessionStorage.getItem("jwtToken")
+            ); // Kiểm tra xem token đã lưu chưa
           }
 
           // Lấy quyền cao nhất từ token
@@ -59,7 +67,7 @@ angular
           redirectToPage(highestRole);
         })
         .catch(function (error) {
-          console.log("Lỗi:", error);
+          console.log("Lỗi:", error); // Xem chi tiết lỗi
           if (error.data && error.data.message) {
             $scope.errorMessage = error.data.message; // Hiển thị thông báo lỗi từ server
           } else {
@@ -86,9 +94,9 @@ angular
     // Điều hướng đến trang tương ứng với quyền cao nhất
     function redirectToPage(highestRole) {
       if (highestRole === "ROLE_ADMIN") {
-        window.location.href = "/page/admin/home.html";
+        window.location.href = "/page/admin/admin.html";
       } else if (highestRole === "ROLE_STAFF") {
-        window.location.href = "/page/staff/home.html";
+        window.location.href = "/page/staff/staff.html";
       } else {
         window.location.href = "/page/user/home.html";
       }

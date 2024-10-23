@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-    <link rel="stylesheet" href="login.css" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <!-- Gọi file CSS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-    <script src="login.js"></script>
+    <script src="/js/login.js"></script>
   </head>
   <body ng-controller="loginController">
     <div class="login-container">
@@ -48,6 +49,7 @@
           >
             Đăng Nhập
           </button>
+          <!-- Thông báo lỗi -->
           <div class="error" ng-if="errorMessage">{{ errorMessage }}</div>
           <div class="register-link">
             Bạn chưa có tài khoản? <a href="#">Đăng ký</a>
