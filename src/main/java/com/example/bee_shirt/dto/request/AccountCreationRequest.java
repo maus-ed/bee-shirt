@@ -19,15 +19,15 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountCreationRequest {
     String code;
-
+    @NotEmpty(message = "FIRST NAME NOT EMPTY")
     String firstName;
-
+    @NotEmpty(message = "LAST NAME NOT EMPTY")
     String lastName;
 
     String avatar;
 
     String address;
-
+    @NotEmpty(message = "PHONE NOT EMPTY")
     String phone;
 
     Integer status;

@@ -24,13 +24,14 @@ angular
       username: "",
       password: "",
     };
+    $scope.rememberMe = false; // Mặc định không chọn "Remember Me"
     $scope.errorMessage = "";
 
+    // Hàm đăng nhập
     $scope.login = function () {
       $http
-        .post("http://localhost:8080/auth/token", $scope.user)
+        .post("http://localhost:8080/auth/login", $scope.user)
         .then(function (response) {
-          // Log toàn bộ response để kiểm tra
           console.log("Response nhận được từ server:", response);
 
           // Kiểm tra response.data có trường 'token' không
@@ -46,8 +47,12 @@ angular
           const payload = JSON.parse(atob(token.split(".")[1]));
           console.log("Payload giải mã:", payload);
 
-          // Lưu token vào localStorage
-          localStorage.setItem("jwtToken", token);
+          // Lưu token vào localStorage hoặc sessionStorage dựa trên "Remember Me"
+          if ($scope.rememberMe) {
+            localStorage.setItem("jwtToken", token); // Lưu vào localStorage nếu nhớ
+          } else {
+            sessionStorage.setItem("jwtToken", token); // Lưu vào sessionStorage nếu không nhớ
+          }
 
           // Lấy quyền cao nhất từ token
           const highestRole = getHighestRole(payload.scope);
@@ -63,6 +68,7 @@ angular
         });
     };
 
+    // Hàm lấy quyền cao nhất
     function getHighestRole(scopes) {
       const roles = scopes ? scopes.split(" ") : [];
       const rolePriority = {
@@ -77,9 +83,10 @@ angular
       return validRoles[0] || null;
     }
 
+    // Điều hướng đến trang tương ứng với quyền cao nhất
     function redirectToPage(highestRole) {
       if (highestRole === "ROLE_ADMIN") {
-        window.location.href = "/page/admin/home.html"; // Kiểm tra đường dẫn này
+        window.location.href = "/page/admin/home.html";
       } else if (highestRole === "ROLE_STAFF") {
         window.location.href = "/page/staff/home.html";
       } else {
