@@ -79,3 +79,5 @@ function getOrdersList(responseText) {
 $(document).ready(function() {
     loadDataOrderToTable(); // Tải dữ liệu vào bảng
 });
+
+
