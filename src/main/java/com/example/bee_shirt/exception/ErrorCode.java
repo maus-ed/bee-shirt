@@ -26,7 +26,11 @@ public enum ErrorCode {
 
     ROLE_NOT_FOUND(1009,"Role not found",HttpStatus.NOT_FOUND),
 
-    ACCOUNT_ALREADY(1010,"Account has been already",HttpStatus.ALREADY_REPORTED)
+    ACCOUNT_ALREADY(1010,"Account has been already",HttpStatus.ALREADY_REPORTED),
+
+    FILE_UPLOAD_FAILED(1011,"file upload has been fail",HttpStatus.BAD_REQUEST),
+
+    INVALID_FILE_TYPE(1012,"this file is not image",HttpStatus.BAD_REQUEST)
 
     ;
     private int code;

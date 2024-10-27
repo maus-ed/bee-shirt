@@ -1,5 +1,7 @@
 package com.example.bee_shirt.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.entity.Account;
@@ -17,74 +19,50 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
-//Thay thế cho @Autowired
-//@RequiredArgsConstructor sẽ tự động tạo contructor của những method đc khai báo là final
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-//in ra log
 @Slf4j
 public class AccountService {
     AccountMapper accountMapper;
-
     AccountRepository accountRepository;
-
     RoleRepository roleRepository;
+    Cloudinary cloudinary;
 
-    // lấy thông tin người đang đăng nhập
+    // Lấy thông tin người đang đăng nhập
     public AccountResponse getMyInfo() {
-        var context = SecurityContextHolder.getContext();
-        String name = context.getAuthentication().getName();
-
-        Account account = accountRepository.findByUsername(name).orElseThrow(
-                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
-
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return accountMapper.toUserResponse(account);
     }
 
     public List<AccountResponse> getAll() {
         List<Account> accounts = accountRepository.findAll();
-
-        // Kiểm tra dữ liệu Role được nạp
-        for (Account account : accounts) {
-            System.out.println("Account: " + account.getUsername() + " - Roles: " + account.getRole());
-        }
-
-        return accounts.stream().map(accountMapper::toUserResponse).toList();
+        accounts.forEach(account ->
+                log.info("Account: {} - Roles: {}", account.getUsername(), account.getRole())
+        );
+        return accounts.stream()
+                .map(accountMapper::toUserResponse)
+                .toList();
     }
 
-
-    //Tạo account (admin)
-    public AccountResponse createAccount(AccountCreationRequest request) {
-        // Kiểm tra xem tài khoản với username "admin" đã tồn tại chưa
-        if (request.getUsername().equals("admin") && accountRepository.findByUsername("admin").isPresent()) {
-            throw new AppException(ErrorCode.USER_EXISTED); // Hoặc một mã lỗi phù hợp khác
-        }
+    // Tạo account (admin)
+    public AccountResponse createAccount(AccountCreationRequest request, boolean isAdmin) {
+        validateUsername(request.getUsername());
 
         // Tạo mã tài khoản tự động
-        String generatedCode;
-
-        // Nếu chưa có tài khoản nào, tạo mã đầu tiên
-        if (accountRepository.getTop1() == null) {
-            generatedCode = "ACC1";
-        } else {
-            // Lấy giá trị code đầu tiên
-            String lastCode = accountRepository.getTop1().getCode();
-
-            // Đảm bảo độ dài mã tài khoản đủ để cắt
-            if (lastCode.length() > 3) {
-                String prefix = lastCode.substring(0, 3); // 3 ký tự đầu
-                int number = Integer.parseInt(lastCode.substring(3)); // Phần số sau
-                generatedCode = prefix + (number + 1); // Tạo mã mới
-            } else {
-                // Nếu mã cũ quá ngắn, sử dụng mã mặc định
-                generatedCode = "ACC1";
-            }
-        }
+        String generatedCode = generateAccountCode();
 
         // Thiết lập mã cho account
         request.setCode(generatedCode);
@@ -96,19 +74,28 @@ public class AccountService {
 
         // Chuyển đổi request thành account
         Account account = accountMapper.toUser(request);
-        System.out.println("Mã tài khoản mới: " + account.getCode());
+        log.info("Mã tài khoản mới: {}", account.getCode());
 
-        // Mã hóa pass
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        account.setPass(passwordEncoder.encode(request.getPass()));
+        // Mã hóa mật khẩu
+        account.setPass(encodePassword(request.getPass()));
 
-        // Lấy thông tin tài khoản đang đăng nhập
-        String code = this.getMyInfo().getCode();
-        account.setCreateBy(code);
+        // Thiết lập người tạo
+        account.setCreateBy(isAdmin ? this.getMyInfo().getCode() : "SYSTEM");
+        account.setCreateAt(LocalDate.now());
 
-        // Lấy ngày hiện tại
-        LocalDate now = LocalDate.now();
-        account.setCreateAt(now);
+        // Upload avatar lên Cloudinary
+        if (request.getAvatarFile() != null && !request.getAvatarFile().isEmpty()) {
+            String avatarUrl;
+            try {
+                avatarUrl = this.uploadFile(request.getAvatarFile());
+                account.setAvatar(avatarUrl); // Lưu URL vào avatar
+            } catch (IOException e) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED); // Bạn cần xử lý lỗi phù hợp
+            }
+        } else {
+            account.setAvatar("https://drive.google.com/file/d/1vGatwMMr89lX1l1_FkkhvyWZbCa40mD3/view?usp=drive_link"); // Đường dẫn mặc định nếu không có file
+        }
+
 
         // Lấy role từ request
         Set<Role> roles = getRolesFromRequest(request.getRole());
@@ -119,28 +106,68 @@ public class AccountService {
     }
 
 
+    // Kiểm tra tài khoản với username "admin" đã tồn tại chưa
+    private void validateUsername(String username) {
+        if (username.equals("admin") && accountRepository.findByUsername("admin").isPresent()) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+    }
+
+    // Tạo mã tài khoản tự động
+    private String generateAccountCode() {
+        String lastCode = Optional.ofNullable(accountRepository.getTop1())
+                .map(Account::getCode)
+                .orElse("ACC0");
+
+        if (lastCode.length() > 3) {
+            String prefix = lastCode.substring(0, 3); // 3 ký tự đầu
+            int number = Integer.parseInt(lastCode.substring(3)); // Phần số sau
+            return prefix + (number + 1); // Tạo mã mới
+        } else {
+            return "ACC1"; // Sử dụng mã mặc định
+        }
+    }
+
+    // Mã hóa mật khẩu
+    private String encodePassword(String password) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        return passwordEncoder.encode(password);
+    }
+
     // Phương thức riêng để lấy role từ request
     private Set<Role> getRolesFromRequest(List<String> roleCodes) {
         Set<Role> roles = new HashSet<>();
 
-        // Nếu roleCodes null hoặc rỗng, gán role mặc định là "USER"
         if (roleCodes == null || roleCodes.isEmpty()) {
-            Optional<Role> userRoleOptional = roleRepository.findRoleByCode("USER");
-            if (userRoleOptional.isEmpty()) {
-                throw new AppException(ErrorCode.ROLE_NOT_FOUND); // Nếu không tìm thấy role "USER"
-            }
-            roles.add(userRoleOptional.get());
+            Role defaultRole = roleRepository.findRoleByCode("USER")
+                    .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+            roles.add(defaultRole);
         } else {
-            // Lấy role từ danh sách roleCodes
             for (String roleCode : roleCodes) {
-                Optional<Role> userRoleOptional = roleRepository.findRoleByCode(roleCode);
-                if (userRoleOptional.isPresent()) {
-                    roles.add(userRoleOptional.get());
-                } else {
-                    throw new AppException(ErrorCode.ROLE_NOT_FOUND);
-                }
+                Role role = roleRepository.findRoleByCode(roleCode)
+                        .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+                roles.add(role);
             }
         }
         return roles;
     }
+    public String uploadFile(MultipartFile file) throws IOException {
+        // Kiểm tra kiểu file
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new AppException(ErrorCode.INVALID_FILE_TYPE); // Kiểm tra nếu file không phải là ảnh
+        }
+
+        try {
+            // Upload file lên Cloudinary
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto")); // Tự động xác định loại tài nguyên
+            return uploadResult.get("url").toString();  // Lấy URL của ảnh đã upload
+        } catch (IOException e) {
+            log.error("Upload file failed: {}", e.getMessage());
+            throw new AppException(ErrorCode.FILE_UPLOAD_FAILED); // Xử lý lỗi upload
+        }
+    }
+
+
 }

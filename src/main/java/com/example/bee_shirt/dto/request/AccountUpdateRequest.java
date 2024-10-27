@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -32,6 +33,10 @@ public class AccountUpdateRequest {
     LocalDate updateAt;
 
     String updateBy;
+
+    String email;
+
+    MultipartFile avatarFile;
 
     @Size(min = 3,message = "USERNAME_INVALID")
     String username;

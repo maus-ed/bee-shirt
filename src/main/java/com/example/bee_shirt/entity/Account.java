@@ -32,7 +32,7 @@ public class Account {
     @Column(name = "deleted")
     Boolean deleted = false;
     @Column(name = "status_account")
-    Integer status;
+    Integer status = 0;
     @Column(name = "code_account")
     String code;
     @Column(name = "username")
@@ -49,6 +49,8 @@ public class Account {
     String address;
     @Column(name = "phone_number")
     String phone;
+    @Column(name = "email")
+    String email;
 
 
     @ManyToMany(fetch = FetchType.EAGER)

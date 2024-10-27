@@ -48,7 +48,7 @@ public class AdminController {
     public ApiResponse<AccountResponse> createUser( @Valid @RequestBody AccountCreationRequest request) {
         return ApiResponse.<AccountResponse>builder()
                 .code(1000)
-                .result(accountService.createAccount(request))
+                .result(accountService.createAccount(request, true))
                 .build();
     }
 }
