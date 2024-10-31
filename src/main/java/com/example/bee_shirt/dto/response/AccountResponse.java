@@ -28,8 +28,6 @@ public class AccountResponse {
 
     String avatar;
 
-    String imageLink;
-
     String address;
 
     String phone;

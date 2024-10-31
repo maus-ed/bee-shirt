@@ -42,6 +42,24 @@ public class AdminController {
                 .build();
     }
 
+    @GetMapping("/staffs")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ApiResponse<List<AccountResponse>> getStaffs(){
+        return ApiResponse.<List<AccountResponse>>builder()
+                .code(1000)
+                .result(accountService.getAllStaff())
+                .build();
+    }
+
+    @GetMapping("/clients")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ApiResponse<List<AccountResponse>> getClients(){
+        return ApiResponse.<List<AccountResponse>>builder()
+                .code(1000)
+                .result(accountService.getAllClient())
+                .build();
+    }
+
     //thêm @Valid để create chạy validate
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

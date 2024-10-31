@@ -48,7 +48,27 @@ public class AccountService {
     }
 
     public List<AccountResponse> getAll() {
-        List<Account> accounts = accountRepository.findAll();
+        List<Account> accounts = accountRepository.getAll();
+        accounts.forEach(account ->
+                log.info("Account: {} - Roles: {}", account.getUsername(), account.getRole())
+        );
+        return accounts.stream()
+                .map(accountMapper::toUserResponse)
+                .toList();
+    }
+
+    public List<AccountResponse> getAllStaff() {
+        List<Account> accounts = accountRepository.getAllStaff();
+        accounts.forEach(account ->
+                log.info("Account: {} - Roles: {}", account.getUsername(), account.getRole())
+        );
+        return accounts.stream()
+                .map(accountMapper::toUserResponse)
+                .toList();
+    }
+
+    public List<AccountResponse> getAllClient() {
+        List<Account> accounts = accountRepository.getAllClient();
         accounts.forEach(account ->
                 log.info("Account: {} - Roles: {}", account.getUsername(), account.getRole())
         );
@@ -83,6 +103,8 @@ public class AccountService {
         account.setCreateBy(isAdmin ? this.getMyInfo().getCode() : "SYSTEM");
         account.setCreateAt(LocalDate.now());
 
+        account.setDeleted(false);
+
         // Upload avatar lên Cloudinary
         if (request.getAvatarFile() != null && !request.getAvatarFile().isEmpty()) {
             String avatarUrl;
@@ -95,7 +117,6 @@ public class AccountService {
         } else {
             account.setAvatar("https://drive.google.com/file/d/1vGatwMMr89lX1l1_FkkhvyWZbCa40mD3/view?usp=drive_link"); // Đường dẫn mặc định nếu không có file
         }
-
 
         // Lấy role từ request
         Set<Role> roles = getRolesFromRequest(request.getRole());
@@ -151,6 +172,7 @@ public class AccountService {
         }
         return roles;
     }
+
     public String uploadFile(MultipartFile file) throws IOException {
         // Kiểm tra kiểu file
         String contentType = file.getContentType();
