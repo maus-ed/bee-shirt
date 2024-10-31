@@ -5,10 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Bee-Shirt Admin Dashboard</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-  <link rel="icon" href="img/kaiadmin/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
   <!-- Fonts and icons -->
-  <script src="js/plugin/webfont/webfont.min.js"></script>
+  <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
   <script>
     WebFont.load({
       google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -19,7 +19,7 @@
           "Font Awesome 5 Brands",
           "simple-line-icons",
         ],
-        urls: ["css/fonts.min.css"],
+        urls: ["/assets/css/fonts.min.css"],
       },
       active: function () {
         sessionStorage.fonts = true;
@@ -28,15 +28,18 @@
   </script>
 
   <!-- CSS Files -->
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="css/plugins.min.css" />
-  <link rel="stylesheet" href="css/kaiadmin.min.css" />
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+  <link rel="stylesheet" href="/assets/css/kaiadmin.min.css" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" href="css/demo.css" />
+  <link rel="stylesheet" href="/assets/css/demo.css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="/assets/js/staff.js"></script>
 </head>
 
-<body>
+<body ng-app="staffApp" ng-controller="StaffController">
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="sidebar" data-background-color="dark">
@@ -44,7 +47,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
           <a href="BanHang.html" class="logo">
-            <img src="img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            <img src="/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
           </a>
           <div class="nav-toggle">
             <button class="btn btn-toggle toggle-sidebar">
@@ -184,7 +187,7 @@
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
             <a href="BanHang.html" class="logo">
-              <img src="img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+              <img src="/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
@@ -245,7 +248,7 @@
                       <div class="notif-center">
                         <a href="#">
                           <div class="notif-img">
-                            <img src="img/jm_denis.jpg" alt="Img Profile" />
+                            <img src="/assets/img/jm_denis.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Jimmy Denis</span>
@@ -255,7 +258,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="img/chadengle.jpg" alt="Img Profile" />
+                            <img src="/assets/img/chadengle.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Nguyễn Quốc Vượng</span>
@@ -265,7 +268,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="img/mlane.jpg" alt="Img Profile" />
+                            <img src="/assets/img/mlane.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Đỗ Trung Đăng</span>
@@ -277,7 +280,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="img/talha.jpg" alt="Img Profile" />
+                            <img src="/assets/img/talha.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Đỗ Trường Giang</span>
@@ -332,7 +335,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="img/profile2.jpg" alt="Img Profile" />
+                            <img src="/assets/img/profile2.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="block">
@@ -442,7 +445,7 @@
               <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
-                    <img src="img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    <img src="/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
@@ -454,7 +457,7 @@
                     <li>
                       <div class="user-box">
                         <div class="avatar-lg">
-                          <img src="img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          <img src="/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
                           <h4>Hizrian</h4>
@@ -482,16 +485,59 @@
         <!-- End Navbar -->
       </div>
 <!-- container -->
-      <div class="container">
-        <div class="page-inner">
-          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-              <h3 class="fw-bold mb-3">Nhân Viên ở đây nhé</h3>
-            </div>
-           
-          </div>
+<div class="container">
+  <div class="page-inner">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Staff List</h3>
+        <button ng-click="createStaff()" class="btn btn-primary">Create Staff</button>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="basic-datatables" class="display table table-striped table-hover">
+            <thead>
+              <tr>
+                <th colspan="4">
+                  <input type="text" id="searchInput" class="form-control w-50" placeholder="Search..." ng-model="searchQuery" ng-change="searchStaff()" style="float: right;">
+                </th>
+              </tr>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="staff in filteredStaffList">
+                <!-- <td>{{staff.firstName}} {{staff.lastName}}</td> -->
+                <td>{{staff.username}}</td>
+                <td>{{staff.email}}</td>
+                <td>{{staff.phone}}</td>
+                <!-- <td><img ng-src="{{staff.avatar}}" alt="Avatar" style="width: 50px; height: 50px;"></td> -->
+                <td>{{staff.address}}</td>
+                <td>{{staff.status === 1 ? 'Active' : 'Inactive'}}</td>
+                <!-- <td>{{staff.createAt | date:'yyyy-MM-dd'}}</td>
+                <td>{{staff.updateAt ? (staff.updateAt | date:'yyyy-MM-dd') : 'N/A'}}</td>
+                <td>{{staff.createBy}}</td>
+                <td>{{staff.updateBy || 'N/A'}}</td> -->
+                <td>
+                  <button ng-click="updateStaff(staff.id)" class="btn btn-warning btn-sm">Update</button>
+                  <button ng-click="removeStaff(staff.id)" class="btn btn-danger btn-sm">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+
+
    <!-- end container -->
       <footer class="footer">
         <div class="container-fluid d-flex justify-content-between">
@@ -586,42 +632,36 @@
     <!-- End Custom template -->
   </div>
   <!--   Core JS Files   -->
-  <script src="js/core/jquery-3.7.1.min.js"></script>
-  <script src="js/core/popper.min.js"></script>
-  <script src="js/core/bootstrap.min.js"></script>
+  <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
+  <script src="/assets/js/core/popper.min.js"></script>
+  <script src="/assets/js/core/bootstrap.min.js"></script>
 
   <!-- jQuery Scrollbar -->
-  <script src="js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
   <!-- Chart JS -->
-  <script src="js/plugin/chart.js/chart.min.js"></script>
+  <script src="/assets/js/plugin/chart.js/chart.min.js"></script>
 
   <!-- jQuery Sparkline -->
-  <script src="/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+  <script src="/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
   <!-- Chart Circle -->
-  <script src="js/plugin/chart-circle/circles.min.js"></script>
+  <script src="/assets/js/plugin/chart-circle/circles.min.js"></script>
 
   <!-- Datatables -->
-  <script src="js/plugin/datatables/datatables.min.js"></script>
+  <script src="/assets/js/plugin/datatables/datatables.min.js"></script>
 
   <!-- Bootstrap Notify -->
-  <script src="js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+  <script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
   <!-- jQuery Vector Maps -->
-  <script src="js/plugin/jsvectormap/jsvectormap.min.js"></script>
-  <script src="js/plugin/jsvectormap/world.js"></script>
+  <script src="/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+  <script src="/assets/js/plugin/jsvectormap/world.js"></script>
 
   <!-- Sweet Alert -->
-  <script src="js/plugin/sweetalert/sweetalert.min.js"></script>
+  <script src="/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
-  <!-- Kaiadmin JS -->
-  <script src="js/kaiadmin.min.js"></script>
 
-  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-  <script src="js/setting-demo.js"></script>
-  <script src="js/demo.js"></script>
-  <script src="js/oders.js"></script>
 
   <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
