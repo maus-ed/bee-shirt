@@ -19,7 +19,7 @@
           "Font Awesome 5 Brands",
           "simple-line-icons",
         ],
-        urls: ["/assets/css/fonts.min.css"],
+        urls: ["css/fonts.min.css"],
       },
       active: function () {
         sessionStorage.fonts = true;
@@ -34,12 +34,9 @@
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="/assets/css/demo.css" />
-
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  <script src="/assets/js/staff.js"></script>
 </head>
 
-<body ng-app="staffApp" ng-controller="StaffController">
+<body>
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="sidebar" data-background-color="dark">
@@ -66,7 +63,7 @@
       <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
-            <li class="nav-item">
+            <li class="nav-item active submenu">
               <a href="BanHang.html" class="collapsed" aria-expanded="false">
                 <i class="fas fa-home"></i>
                 <p>Bán Hàng</p>
@@ -131,7 +128,7 @@
                 </ul>
               </div>
             </li>
-            <li class="nav-item active submenu">
+            <li class="nav-item">
               <a data-bs-toggle="collapse" href="#account">
                 <i class="fas fa-user"></i>
                 <p>Account</p>
@@ -485,59 +482,16 @@
         <!-- End Navbar -->
       </div>
 <!-- container -->
-<div class="container">
-  <div class="page-inner">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h3>Staff List</h3>
-        <button ng-click="createStaff()" class="btn btn-primary">Create Staff</button>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table id="basic-datatables" class="display table table-striped table-hover">
-            <thead>
-              <tr>
-                <th colspan="4">
-                  <input type="text" id="searchInput" class="form-control w-50" placeholder="Search..." ng-model="searchQuery" ng-change="searchStaff()" style="float: right;">
-                </th>
-              </tr>
-              <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="staff in filteredStaffList">
-                <!-- <td>{{staff.firstName}} {{staff.lastName}}</td> -->
-                <td>{{staff.username}}</td>
-                <td>{{staff.email}}</td>
-                <td>{{staff.phone}}</td>
-                <!-- <td><img ng-src="{{staff.avatar}}" alt="Avatar" style="width: 50px; height: 50px;"></td> -->
-                <td>{{staff.address}}</td>
-                <td>{{staff.status === 1 ? 'Active' : 'Inactive'}}</td>
-                <!-- <td>{{staff.createAt | date:'yyyy-MM-dd'}}</td>
-                <td>{{staff.updateAt ? (staff.updateAt | date:'yyyy-MM-dd') : 'N/A'}}</td>
-                <td>{{staff.createBy}}</td>
-                <td>{{staff.updateBy || 'N/A'}}</td> -->
-                <td>
-                  <button ng-click="updateStaff(staff.id)" class="btn btn-warning btn-sm">Update</button>
-                  <button ng-click="removeStaff(staff.id)" class="btn btn-danger btn-sm">Remove</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="container">
+        <div class="page-inner">
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+              <h3 class="fw-bold mb-3">Bán Hàng ở đây nhé</h3>
+            </div>
+           
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-
-
    <!-- end container -->
       <footer class="footer">
         <div class="container-fluid d-flex justify-content-between">
@@ -660,8 +614,6 @@
 
   <!-- Sweet Alert -->
   <script src="/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-
-
 
   <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {

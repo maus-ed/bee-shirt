@@ -13,6 +13,7 @@ angular.module("staffApp", []).controller("StaffController", [
       const token = sessionStorage.getItem("jwtToken");
       if (!token) {
         alert("Bạn chưa đăng nhập!"); // Thông báo nếu chưa có token
+        window.location.href = "/assets/page/account/login.html";
         return false; // Không có quyền truy cập
       }
 
@@ -23,7 +24,7 @@ angular.module("staffApp", []).controller("StaffController", [
       // Kiểm tra xem người dùng có phải là admin không
       if (highestRole !== "ROLE_ADMIN") {
         alert("Bạn không có quyền truy cập vào trang này!"); // Thông báo không đủ quyền
-        window.location.href = "/assets/page/account/login.html";
+        window.location.href = "/assets/page/staff/BanHang.html";
         return false; // Không có quyền truy cập
       }
 
