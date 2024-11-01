@@ -15,6 +15,7 @@
           ng-app="registerApp"
           ng-controller="registerController"
           ng-submit="register()"
+          enctype="multipart/form-data"
         >
           <div class="input-group">
             <input
@@ -69,12 +70,7 @@
           </div>
           <div class="input-group">
             <label for="avatar">Chọn ảnh đại diện:</label>
-            <input
-              type="file"
-              id="avatar"
-              file-input="user.avatarFile"
-              required
-            />
+            <input type="file" id="avatar" file-input="user.avatarFile" />
           </div>
           <div class="error" ng-show="errorMessage">{{ errorMessage }}</div>
           <div class="success" ng-show="successMessage">
@@ -86,7 +82,7 @@
         <div class="register-link">
           <p>
             Đã có tài khoản?
-            <a href="/assets/page/account/login.html">Đăng Nhập</a>
+            <a href="/assets/account/login.html">Đăng Nhập</a>
           </p>
         </div>
       </div>

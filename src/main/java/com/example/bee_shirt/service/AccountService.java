@@ -83,11 +83,9 @@ public class AccountService {
 
         // Tạo mã tài khoản tự động
         String generatedCode = generateAccountCode();
-
-        // Thiết lập mã cho account
         request.setCode(generatedCode);
 
-        // Kiểm tra xem tài khoản đã tồn tại chưa sau khi thiết lập mã
+        // Kiểm tra xem tài khoản đã tồn tại chưa
         if (accountRepository.existsByCode(request.getCode())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -102,20 +100,21 @@ public class AccountService {
         // Thiết lập người tạo
         account.setCreateBy(isAdmin ? this.getMyInfo().getCode() : "SYSTEM");
         account.setCreateAt(LocalDate.now());
-
         account.setDeleted(false);
 
-        // Upload avatar lên Cloudinary
+        // Upload avatar lên Cloudinary hoặc dùng URL mặc định
         if (request.getAvatarFile() != null && !request.getAvatarFile().isEmpty()) {
             String avatarUrl;
             try {
                 avatarUrl = this.uploadFile(request.getAvatarFile());
-                account.setAvatar(avatarUrl); // Lưu URL vào avatar
+                account.setAvatar(avatarUrl); // Lưu URL ảnh vào avatar
             } catch (IOException e) {
-                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED); // Bạn cần xử lý lỗi phù hợp
+                log.error("Lỗi khi upload file: {}", e.getMessage()); // Ghi log lỗi
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED); // Xử lý lỗi upload
             }
         } else {
-            account.setAvatar("https://drive.google.com/file/d/1vGatwMMr89lX1l1_FkkhvyWZbCa40mD3/view?usp=drive_link"); // Đường dẫn mặc định nếu không có file
+            // Đường dẫn mặc định nếu không có file
+            account.setAvatar("https://drive.google.com/file/d/1vGatwMMr89lX1l1_FkkhvyWZbCa40mD3/view?usp=drive_link");
         }
 
         // Lấy role từ request
@@ -129,7 +128,8 @@ public class AccountService {
 
     // Kiểm tra tài khoản với username "admin" đã tồn tại chưa
     private void validateUsername(String username) {
-        if (username.equals("admin") && accountRepository.findByUsername("admin").isPresent()) {
+        // Kiểm tra xem username đã tồn tại trong cơ sở dữ liệu hay chưa
+        if (accountRepository.findByUsername(username).isPresent()) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
     }

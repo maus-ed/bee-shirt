@@ -3,10 +3,6 @@ angular
   .module("loginApp", ["ngRoute"]) // Thêm ngRoute vào module
   .config(function ($routeProvider) {
     $routeProvider
-      .when("/admin/admin", {
-        templateUrl: "admin/admin.html",
-        controller: "AdminController",
-      })
       .when("/staff/staff", {
         templateUrl: "staff/staff.html",
         controller: "StaffController",
@@ -94,7 +90,7 @@ angular
     // Điều hướng đến trang tương ứng với quyền cao nhất
     function redirectToPage(highestRole) {
       if (highestRole === "ROLE_ADMIN") {
-        window.location.href = "/assets/staff/Staff.html";
+        window.location.href = "/assets/BanHang.html";
       } else if (highestRole === "ROLE_STAFF") {
         window.location.href = "/assets/BanHang.html";
       } else {
