@@ -36,6 +36,7 @@ public class AccountCreationRequest {
     @Pattern(regexp = "^(0[3|5|7|8|9])[0-9]{8}$", message = "PHONE_INVALID")
     String phone;
 
+    @Builder.Default
     Integer status = 0;
 
     @NotEmpty(message = "EMAIL NOT EMPTY")

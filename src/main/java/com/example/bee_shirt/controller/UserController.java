@@ -25,9 +25,15 @@ public class UserController {
             @Valid @ModelAttribute AccountCreationRequest request,
             @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile) {
 
-        // Thiết lập avatar file vào request trước khi tạo tài khoản
-        request.setAvatarFile(avatarFile);
+        // Kiểm tra avatarFile trong request
+        if (request.getAvatarFile() != null && !request.getAvatarFile().isEmpty()) {
+            request.setAvatarFile(avatarFile);
+        } else {
+            // Nếu không có, có thể gán một giá trị mặc định
+            request.setAvatarFile(null); // hoặc không cần gán gì
+        }
 
+        // Tạo tài khoản
         AccountResponse accountResponse = accountService.createAccount(request, false);
 
         ApiResponse<AccountResponse> response = ApiResponse.<AccountResponse>builder()
@@ -36,6 +42,7 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
 
 
 

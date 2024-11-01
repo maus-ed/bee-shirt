@@ -36,7 +36,9 @@ angular
       formData.append("username", $scope.user.username);
       formData.append("pass", $scope.user.pass);
       formData.append("address", $scope.user.address);
-      formData.append("avatarFile", $scope.user.avatarFile); // Thêm avatar vào formData
+      if ($scope.user.avatarFile) {
+        formData.append("avatarFile", $scope.user.avatarFile); // Chỉ thêm nếu file không null
+      }
 
       // Gửi dữ liệu đến API
       $http
@@ -52,12 +54,17 @@ angular
 
           // Đợi 2 giây trước khi chuyển hướng đến trang đăng nhập
           setTimeout(() => {
-            window.location.href = "/page/account/login.html";
+            window.location.href = "/assets/account/login.html";
           }, 2000);
         })
         .catch(function (error) {
           console.log("Lỗi:", error);
-          $scope.errorMessage = error.data?.message || "Đăng ký thất bại."; // Hiển thị thông báo lỗi từ server
+          // Kiểm tra cấu trúc của đối tượng lỗi
+          if (error.data && error.data.message) {
+            $scope.errorMessage = error.data.message;
+          } else {
+            $scope.errorMessage = "Đăng ký thất bại.";
+          }
           $scope.successMessage = ""; // Xóa thông báo thành công (nếu có)
         });
     }
