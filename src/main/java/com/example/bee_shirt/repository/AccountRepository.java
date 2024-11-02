@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     boolean existsByCode(String code);
 
+    Optional<Account> findByCode(String code);
+
     Optional<Account> findByUsername(String username);
 
     @Query(value = """
@@ -25,7 +27,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
              FROM account a
              INNER JOIN account_role ar ON a.id = ar.account_id
              INNER JOIN role_A r ON ar.role_id = r.id
-             WHERE a.deleted = 0 AND (r.code_role LIKE 'STAFF' OR r.code_role LIKE 'ADMIN')
+             WHERE a.deleted = 0 AND (r.code_role LIKE 'STAFF')
              ORDER BY a.id DESC;             """, nativeQuery = true)
     List<Account> getAllStaff();
 
