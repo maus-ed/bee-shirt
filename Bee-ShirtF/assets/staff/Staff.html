@@ -490,18 +490,65 @@
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h3>Staff List</h3>
-        <button ng-click="createStaff()" class="btn btn-primary">Create Staff</button>
+        <button ng-click="showCreateAccountForm = true" class="btn btn-primary">Create Staff</button>
       </div>
       <div class="card-body">
+        <!-- New account creation form -->
+        <div ng-if="showCreateAccountForm">
+          <h3>Create New Account</h3>
+          <form ng-submit="createAccount()" enctype="multipart/form-data" class="account-form">
+            <div class="form-group">
+                <input type="text" ng-model="user.firstName" placeholder="Tên" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="user.lastName" placeholder="Họ" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="user.username" placeholder="Tên đăng nhập" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="email" ng-model="user.email" placeholder="Email" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="user.phone" placeholder="Số điện thoại" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="text" ng-model="user.address" placeholder="Địa chỉ" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="password" ng-model="user.pass" placeholder="Mật khẩu" required class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="avatar">Chọn ảnh đại diện:</label>
+              <div class="input-group">
+                <input type="file" id="avatar" file-input="user.avatarFile" class="form-control" />
+              </div>
+            </div>            
+            <div class="form-group">
+                <label for="role">Chọn vai trò:</label>
+                <select multiple ng-model="user.role" id="role" class="form-control" required>
+                    <option ng-repeat="role in availableRoles" ng-value="role">{{ role }}</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Tạo Tài Khoản</button>
+                <button type="button" ng-click="cancelCreateAccount()" class="btn btn-secondary">Hủy</button>
+            </div>
+          </form>
+          <div ng-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+          <div ng-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+        </div>
+
         <div class="table-responsive">
           <table id="basic-datatables" class="display table table-striped table-hover">
             <thead>
               <tr>
-                <th colspan="4">
-                  <input type="text" id="searchInput" class="form-control w-50" placeholder="Search..." ng-model="searchQuery" ng-change="searchStaff()" style="float: right;">
+                <th colspan="5">
+                  <input type="text" id="searchInput" class="form-control w-50" placeholder="Search..." ng-model="searchQuery" ng-change="searchStaff()" style="float: right;" />
                 </th>
               </tr>
               <tr>
+                <th>Code</th>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -512,20 +559,15 @@
             </thead>
             <tbody>
               <tr ng-repeat="staff in filteredStaffList">
-                <!-- <td>{{staff.firstName}} {{staff.lastName}}</td> -->
+                <td>{{staff.code}}</td>
                 <td>{{staff.username}}</td>
                 <td>{{staff.email}}</td>
                 <td>{{staff.phone}}</td>
-                <!-- <td><img ng-src="{{staff.avatar}}" alt="Avatar" style="width: 50px; height: 50px;"></td> -->
                 <td>{{staff.address}}</td>
-                <td>{{staff.status === 1 ? 'Active' : 'Inactive'}}</td>
-                <!-- <td>{{staff.createAt | date:'yyyy-MM-dd'}}</td>
-                <td>{{staff.updateAt ? (staff.updateAt | date:'yyyy-MM-dd') : 'N/A'}}</td>
-                <td>{{staff.createBy}}</td>
-                <td>{{staff.updateBy || 'N/A'}}</td> -->
+                <td>{{staff.status === 0 ? 'Active' : 'Inactive'}}</td>
                 <td>
                   <button ng-click="updateStaff(staff.id)" class="btn btn-warning btn-sm">Update</button>
-                  <button ng-click="removeStaff(staff.id)" class="btn btn-danger btn-sm">Remove</button>
+                  <button ng-click="deleteAccount(staff.code)" class="btn btn-danger btn-sm">Remove</button>
                 </td>
               </tr>
             </tbody>
