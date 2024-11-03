@@ -15,6 +15,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,13 +55,27 @@ public class AccountService {
         return getAccountsWithRoles(accountRepository.getAll());
     }
 
+    public List<AccountResponse> getAllClient() {
+        return getAccountsWithRoles(accountRepository.getAllClient());
+    }
+
     public List<AccountResponse> getAllStaff() {
         return getAccountsWithRoles(accountRepository.getAllStaff());
     }
 
-    public List<AccountResponse> getAllClient() {
-        return getAccountsWithRoles(accountRepository.getAllClient());
+    public List<AccountResponse> getAllPagingStaff(Pageable pageable) {
+        Page<Account> page = accountRepository.getAllPagingStaff(pageable);
+        return page.getContent().stream()
+                .map(accountMapper::toUserResponse)
+                .collect(Collectors.toList());
     }
+
+    public int getAllTotalPageStaff() {
+        long totalRecords = accountRepository.getAllTotalPageStaff(); // Tổng số tài khoản cho vai trò STAFF
+        int pageSize = 5; // Số lượng tài khoản mỗi trang
+        return (int) Math.ceil((double) totalRecords / pageSize); // Tính tổng số trang
+    }
+
 
     private List<AccountResponse> getAccountsWithRoles(List<Account> accounts) {
         accounts.forEach(account ->
@@ -68,6 +85,8 @@ public class AccountService {
                 .map(accountMapper::toUserResponse)
                 .toList();
     }
+
+
     public AccountResponse deleteAccount(String code){
         Account account =accountRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));

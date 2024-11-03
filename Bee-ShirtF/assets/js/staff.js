@@ -24,6 +24,9 @@ angular
         avatarFile: null, // File ảnh đại diện từ input
         role: [],
       };
+      $scope.currentPage = 1;
+      $scope.totalPages = 0;
+      $scope.pageSize = 5; // Số lượng nhân viên trên mỗi trang
 
       $scope.availableRoles = ["ADMIN", "STAFF", "USER"]; // Danh sách role có sẵn
 
@@ -65,12 +68,12 @@ angular
       }
 
       // Hàm lấy danh sách tài khoản
-      $scope.getStaffs = function () {
+      $scope.getStaffs = function (page = 1) {
         const token = sessionStorage.getItem("jwtToken");
 
         $http({
           method: "GET",
-          url: "http://localhost:8080/admin/staffs",
+          url: `http://localhost:8080/admin/list/${page}`,
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -100,6 +103,42 @@ angular
             console.error("Lỗi khi lấy danh sách tài khoản:", error);
             $scope.errorMessage = "Không thể lấy danh sách tài khoản.";
           });
+      };
+
+      $scope.getTotalPages = function () {
+        const token = sessionStorage.getItem("jwtToken");
+
+        $http({
+          method: "GET",
+          url: "http://localhost:8080/admin/totalPage",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+          .then(function (response) {
+            $scope.totalPages = response.data.result; // Cập nhật tổng số trang
+          })
+          .catch(function (error) {
+            console.error("Lỗi khi lấy tổng số trang:", error);
+          });
+      };
+
+      $scope.goToPage = function (page) {
+        if (page < 1 || page > $scope.totalPages) return;
+        $scope.currentPage = page;
+        $scope.getStaffs(page); // Gọi lại hàm lấy danh sách theo trang
+      };
+
+      $scope.nextPage = function () {
+        if ($scope.currentPage < $scope.totalPages) {
+          $scope.goToPage($scope.currentPage + 1);
+        }
+      };
+
+      $scope.previousPage = function () {
+        if ($scope.currentPage > 1) {
+          $scope.goToPage($scope.currentPage - 1);
+        }
       };
 
       function submitcreation() {
@@ -135,7 +174,8 @@ angular
             console.log("Response nhận được từ server:", response);
             $scope.successMessage =
               "Tạo thành công! Bạn có thể đăng nhập ngay."; // Thông báo thành công
-            $scope.getStaffs();
+            $scope.getStaffs($scope.currentPage);
+            $scope.getTotalPages();
             $scope.errorMessage = ""; // Xóa thông báo lỗi (nếu có)
             resetForm(); // Reset form sau khi tạo tài khoản thành công
           })
@@ -239,7 +279,8 @@ angular
             .then(function (response) {
               $scope.successMessage = "Account deleted successfully!";
               $scope.errorMessage = ""; // Xóa thông báo lỗi (nếu có)
-              $scope.getStaffs(); // Cập nhật lại danh sách nhân viên sau khi xóa
+              $scope.getStaffs($scope.currentPage); // Cập nhật lại danh sách nhân viên sau khi xóa
+              $scope.getTotalPages();
               $scope.isDeleting = false; // Kích hoạt lại nút sau khi hoàn tất
 
               // Tự động ẩn thông báo sau 3 giây
@@ -283,7 +324,8 @@ angular
       };
 
       // Gọi các hàm khởi tạo
-      $scope.getStaffs();
+      $scope.getStaffs($scope.currentPage);
+      $scope.getTotalPages();
     },
   ])
 
