@@ -44,7 +44,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
           <a href="BanHang.html" class="logo">
-            <img src="img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            <img src="img/kaiadmin/logo_light.sv" alt="navbar brand" class="navbar-brand" height="20" />
           </a>
           <div class="nav-toggle">
             <button class="btn btn-toggle toggle-sidebar">
@@ -488,10 +488,7 @@
             <div>
               <h3 class="fw-bold mb-3">Dashboard</h3>
             </div>
-            <div class="ms-md-auto py-2 py-md-0">
-              <a href="#" class="btn btn-label-info btn-round me-2">Quản Lý</a>
-              <a href="#" class="btn btn-primary btn-round">Thêm Khách Hàng</a>
-            </div>
+     
           </div>
           <div class="row">
             <div class="col-sm-6 col-md-3">
@@ -500,13 +497,13 @@
                   <div class="row align-items-center">
                     <div class="col-icon">
                       <div class="icon-big text-center icon-primary bubble-shadow-small">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-box"></i>
                       </div>
                     </div>
                     <div class="col col-stats ms-3 ms-sm-0">
                       <div class="numbers">
-                        <p class="card-category">Khách Ghé Xem</p>
-                        <h4 class="card-title">1,294</h4>
+                        <p class="card-category">Sản Phẩm</p>
+                        <h4 class="card-title">10</h4>
                       </div>
                     </div>
                   </div>
@@ -525,7 +522,7 @@
                     <div class="col col-stats ms-3 ms-sm-0">
                       <div class="numbers">
                         <p class="card-category">Khách Hàng Mới</p>
-                        <h4 class="card-title">1303</h4>
+                        <h4 class="card-title">3</h4>
                       </div>
                     </div>
                   </div>
@@ -544,7 +541,7 @@
                     <div class="col col-stats ms-3 ms-sm-0">
                       <div class="numbers">
                         <p class="card-category">Doanh Thu</p>
-                        <h4 class="card-title">$ 1,345</h4>
+                        <h4 class="card-title">$ 420</h4>
                       </div>
                     </div>
                   </div>
@@ -563,7 +560,7 @@
                     <div class="col col-stats ms-3 ms-sm-0">
                       <div class="numbers">
                         <p class="card-category">Đơn Hàng</p>
-                        <h4 class="card-title">576</h4>
+                        <h4 class="card-title">5</h4>
                       </div>
                     </div>
                   </div>
@@ -622,11 +619,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-category">March 25 - April 02</div>
+                  <div class="card-category">
+                    <input type="text" id="dateRangePicker" class="form-control" placeholder="Select date range" />
+                  </div>
+                  
                 </div>
                 <div class="card-body pb-0">
                   <div class="mb-4 mt-2">
-                    <h1>$4,578.58</h1>
+                    <h1>$420</h1>
                   </div>
                   <div class="pull-in">
                     <canvas id="dailySalesChart"></canvas>
@@ -794,113 +794,7 @@
                           <th scope="col" class="text-end">Trạng Thái</th>
                         </tr>
                       </thead>
-                      <!-- <tbody>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                        </tbody> -->
+                    
                     </table>
                   </div>
                 </div>
@@ -909,147 +803,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="row">
-          <div class="col-md-12">
-            <div class="card card-round">
-              <div class="card-header">
-                <div class="card-head-row card-tools-still-right">
-                  <h4 class="card-title">Địa Chỉ Khách Hàng</h4>
-                  <div class="card-tools">
-                    <button
-                      class="btn btn-icon btn-link btn-primary btn-xs"
-                    >
-                      <span class="fa fa-angle-down"></span>
-                    </button>
-                    <button
-                      class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"
-                    >
-                      <span class="fa fa-sync-alt"></span>
-                    </button>
-                    <button
-                      class="btn btn-icon btn-link btn-primary btn-xs"
-                    >
-                      <span class="fa fa-times"></span>
-                    </button>
-                  </div>
-                </div>
-                <p class="card-category">
-                 Bản đồ phân bố người dùng
-                </p>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="table-responsive table-hover table-sales">
-                      <table class="table">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <div class="flag">
-                                <img
-                                  src="assets/img/flags/id.png"
-                                  alt="indonesia"
-                                />
-                              </div>
-                            </td>
-                            <td>Indonesia</td>
-                            <td class="text-end">2.320</td>
-                            <td class="text-end">42.18%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="flag">
-                                <img
-                                  src="assets/img/flags/us.png"
-                                  alt="united states"
-                                />
-                              </div>
-                            </td>
-                            <td>USA</td>
-                            <td class="text-end">240</td>
-                            <td class="text-end">4.36%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="flag">
-                                <img
-                                  src="assets/img/flags/au.png"
-                                  alt="australia"
-                                />
-                              </div>
-                            </td>
-                            <td>Australia</td>
-                            <td class="text-end">119</td>
-                            <td class="text-end">2.16%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="flag">
-                                <img
-                                  src="assets/img/flags/ru.png"
-                                  alt="russia"
-                                />
-                              </div>
-                            </td>
-                            <td>Russia</td>
-                            <td class="text-end">1.081</td>
-                            <td class="text-end">19.65%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="flag">
-                                <img
-                                  src="assets/img/flags/cn.png"
-                                  alt="china"
-                                />
-                              </div>
-                            </td>
-                            <td>China</td>
-                            <td class="text-end">1.100</td>
-                            <td class="text-end">20%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="flag">
-                                <img
-                                  src="assets/img/flags/br.png"
-                                  alt="brazil"
-                                />
-                              </div>
-                            </td>
-                            <td>Brasil</td>
-                            <td class="text-end">640</td>
-                            <td class="text-end">11.63%</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mapcontainer">
-                      
-                      
-                              <div class="card-title">Bản Đồ</div>
-                            </div>
-                            <div class="card-body">
-                              <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.702594721587!2d105.78074571533232!3d21.02851118599816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab8d0a99b1a3%3A0xb1d86f60c21852e1!2zSGHDoG5vaSwgSMOgIE7hu5lpLCBWaWV0bmFt!5e0!3m2!1svi!2s!4v1701054428265!5m2!1svi!2s"
-                                width="800"
-                                height="300"
-                                style="border: 0; width: 100% "
-                                allowfullscreen=""
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"
-                              ></iframe>
-                     
-                        </div>
-                     
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+     
       <footer class="footer">
         <div class="container-fluid d-flex justify-content-between">
           <nav class="pull-left">
@@ -1208,6 +962,37 @@
       fillColor: "rgba(255, 165, 52, .14)",
     });
   </script>
+  <!-- //Lịch thống kê ngày tháng năm -->
+   <!-- Thêm CSS và JS cho Daterangepicker -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script>
+$(document).ready(function () {
+  $('#dateRangePicker').daterangepicker({
+    startDate: moment().subtract(7, 'days'),
+    endDate: moment(),
+    locale: {
+      format: 'DD/MM/YYYY', // Định dạng ngày
+      applyLabel: "Chọn",
+      cancelLabel: "Hủy",
+      fromLabel: "Từ",
+      toLabel: "Đến",
+      customRangeLabel: "Chọn khoảng",
+      daysOfWeek: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+      monthNames: [
+        "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+      ],
+      firstDay: 1 // Bắt đầu từ thứ Hai
+    }
+  }, function (start, end) {
+    $('#dateRangePicker').val(start.format('DD/MM') + ' - ' + end.format('DD/MM'));
+  });
+});
+
+
+</script>
 </body>
 
 </html>
