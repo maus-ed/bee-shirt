@@ -79,7 +79,8 @@ public class Bill {
     @Column(name = "deleted")
     private Boolean deleted;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bill_id")
-    private List<BillDetail> billDetails;
+
+
+
+
 }

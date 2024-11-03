@@ -1,5 +1,5 @@
 // Khu vực 1: Biến toàn cục
-const gURL = "http://localhost:8080/bill/list";
+const gURL = "http://localhost:8080/billHistory/list";
 
 // Biến cho trạng thái của biểu mẫu
 const gFORM_MODE_NORMAL = "Normal"; // Trạng thái bình thường
@@ -67,12 +67,13 @@ function getOrdersList(responseText) {
         stt: gSTT++,
         codeBill: order.codeBill,
         desiredDate: order.desiredDate,
-        totalMoney: order.totalMoney,
+        totalMoney: order.totalMoney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), // Định dạng tiền VND
         statusBill: order.statusBill === 1 ? "Đã thanh toán" : "Chưa thanh toán" // Kiểm tra trạng thái
     }));
     gOrderTable.rows.add(formattedData); // Thêm dữ liệu mới
     gOrderTable.draw(); // Vẽ lại bảng
 }
+
 
 
 // Gọi hàm này để tải dữ liệu khi tài liệu sẵn sàng
