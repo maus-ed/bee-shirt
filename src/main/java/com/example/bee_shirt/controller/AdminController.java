@@ -10,6 +10,7 @@ import com.example.bee_shirt.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,6 +55,30 @@ public class AdminController {
                 .result(accountService.getAllStaff())
                 .build();
     }
+
+    // phân trang staff
+    @GetMapping("/list/{page}")
+    public ResponseEntity<ApiResponse<List<AccountResponse>>> getAllPaging(@PathVariable Integer page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, 5); //5 phần tử 1 trang
+        List<AccountResponse> staffAccounts = accountService.getAllPagingStaff(pageRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.<List<AccountResponse>>builder()
+                        .result(staffAccounts)
+                        .message("Successfully retrieved paginated staff accounts.")
+                        .build());
+    }
+
+    // tổng số trang
+    @GetMapping("/totalPage")
+    public ResponseEntity<ApiResponse<Integer>> getAllTotalPage() {
+        int totalPages = accountService.getAllTotalPageStaff();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.<Integer>builder()
+                        .result(totalPages)
+                        .message("Total pages retrieved successfully.")
+                        .build());
+    }
+
 
     @GetMapping("/clients")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

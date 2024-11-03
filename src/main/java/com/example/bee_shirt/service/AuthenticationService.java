@@ -109,7 +109,7 @@ public class AuthenticationService {
                 .issuer("giangdtph40542")
                 .expirationTime(new Date(
                         //token hết hạn sau 3 giờ
-                        Instant.now().plus(3, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(24, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 //ID của token
                 .jwtID(UUID.randomUUID().toString())
