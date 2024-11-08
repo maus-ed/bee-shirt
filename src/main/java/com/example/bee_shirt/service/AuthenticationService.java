@@ -115,6 +115,7 @@ public class AuthenticationService {
                 .jwtID(UUID.randomUUID().toString())
                 //có thể tạo thêm claim custom
                 .claim("user ID", account.getId())
+                .claim("user Code", account.getCode())
 //                role của user
                 .claim("scope", buildScope(account))
                 .build();

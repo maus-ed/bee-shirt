@@ -3,6 +3,7 @@ package com.example.bee_shirt.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
+import com.example.bee_shirt.dto.request.AccountUpdateRequest;
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.entity.Account;
 import com.example.bee_shirt.entity.Role;
@@ -123,6 +124,47 @@ public class AccountService {
         return accountMapper.toUserResponse(accountRepository.save(account));
     }
 
+    public AccountResponse updateAccount(AccountUpdateRequest request, String code) {
+        Account account = accountRepository.findByCode(code)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        // giữ nguyên giá trị cũ nếu là null
+        if (request.getFirstName() != null) {
+            account.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            account.setLastName(request.getLastName());
+        }
+        if (request.getPhone() != null) {
+            account.setPhone(request.getPhone());
+        }
+        if (request.getEmail() != null) {
+            account.setEmail(request.getEmail());
+        }
+        if (request.getPass() != null) {
+            account.setPass(encodePassword(request.getPass()));
+        }
+        if (request.getAddress() != null) {
+            account.setAddress(request.getAddress());
+        }
+        if (request.getStatus() != null) {
+            account.setStatus(request.getStatus());
+        }
+        if (request.getDeleted() != null) {
+            account.setDeleted(request.getDeleted());
+        }
+        if (request.getAvatarFile() != null && !request.getAvatarFile().isEmpty()) {
+            account.setAvatar(uploadAvatar(request.getAvatarFile()));
+        }
+
+        // Set metadata fields
+        account.setUpdateBy(this.getMyInfo().getCode());
+        account.setUpdateAt(LocalDate.now());
+
+        return accountMapper.toUserResponse(accountRepository.save(account));
+    }
+
+
     private String uploadAvatar(MultipartFile avatarFile) {
         if (avatarFile != null && !avatarFile.isEmpty()) {
             try {
@@ -154,6 +196,12 @@ public class AccountService {
         } else {
             return "ACC1";
         }
+    }
+
+    public AccountResponse findByCode(String code){
+        Account account = accountRepository.findByCode(code)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+        return accountMapper.toUserResponse(account);
     }
 
     private String encodePassword(String password) {
