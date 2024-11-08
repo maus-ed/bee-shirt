@@ -1,4 +1,3 @@
-// Định nghĩa module và cấu hình router
 angular
   .module("loginApp", ["ngRoute"]) // Thêm ngRoute vào module
   .config(function ($routeProvider) {
@@ -15,7 +14,7 @@ angular
         redirectTo: "/login", // Redirect về trang đăng nhập nếu không khớp
       });
   })
-  .controller("loginController", function ($scope, $http) {
+  .controller("loginController", function ($scope, $http, $location, $window) {
     $scope.user = {
       username: "",
       password: "",
@@ -43,19 +42,21 @@ angular
           const payload = JSON.parse(atob(token.split(".")[1]));
           console.log("Payload giải mã:", payload);
 
+          // Kiểm tra nếu payload chứa 'user Code' (lưu ý có dấu cách giữa 'user' và 'Code')
+          if (payload && payload["user Code"]) {
+            console.log("userCode trong payload:", payload["user Code"]);
+            const userCode = payload["user Code"]; // Lấy đúng trường 'user Code'
+            sessionStorage.setItem("userCode", userCode); // Lưu vào sessionStorage
+            console.log("userCode đã được lưu vào sessionStorage:", userCode);
+          } else {
+            console.log("Không tìm thấy userCode trong payload");
+          }
+
           // Lưu token vào localStorage hoặc sessionStorage dựa trên "Remember Me"
           if ($scope.rememberMe) {
             localStorage.setItem("jwtToken", token); // Lưu vào localStorage nếu nhớ
-            console.log(
-              "Token đã được lưu vào localStorage:",
-              localStorage.getItem("jwtToken")
-            ); // Kiểm tra xem token đã lưu chưa
           } else {
             sessionStorage.setItem("jwtToken", token); // Lưu vào sessionStorage nếu không nhớ
-            console.log(
-              "Token đã được lưu vào sessionStorage:",
-              sessionStorage.getItem("jwtToken")
-            ); // Kiểm tra xem token đã lưu chưa
           }
 
           // Lấy quyền cao nhất từ token
@@ -97,4 +98,25 @@ angular
         window.location.href = "/assets/page/user/home.html";
       }
     }
+
+    // Hàm xem profile
+    $scope.viewProfile = function () {
+      const token = sessionStorage.getItem("jwtToken");
+
+      if (!token || token.split(".").length !== 3) {
+        console.log("Token không hợp lệ hoặc không tồn tại");
+        return;
+      }
+
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (payload && payload["user Code"]) {
+        const userCode = payload["user Code"];
+        sessionStorage.setItem("userCode", userCode);
+        console.log("userCode đã được lưu vào sessionStorage:", userCode);
+      } else {
+        console.log("Không tìm thấy userCode trong payload");
+      }
+
+      $window.location.href = "/assets/staff/Profile.html";
+    };
   });

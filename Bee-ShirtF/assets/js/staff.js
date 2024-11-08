@@ -1,9 +1,21 @@
 angular
-  .module("staffApp", [])
+  .module("staffApp", ["ngRoute"])
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when("/staff/Profile", {
+        templateUrl: "/staff/Profile.html",
+        controller: "ProfileController",
+      })
+      .otherwise({
+        redirectTo: "/login", // Redirect về trang đăng nhập nếu không khớp
+      });
+  })
   .controller("StaffController", [
     "$scope",
     "$http",
-    function ($scope, $http) {
+    "$location", // Thêm $location vào đây
+    "$window",
+    function ($scope, $http, $location, $window) {
       // Khởi tạo biến để kiểm soát hiển thị form tạo tài khoản
       $scope.showCreateAccountForm = false; // Biến này điều khiển hiển thị biểu mẫu
 
@@ -11,6 +23,12 @@ angular
       $scope.staffList = [];
       $scope.filteredStaffList = []; // Danh sách nhân viên đã lọc
       $scope.errorMessage = ""; // Để lưu thông báo lỗi
+      $scope.myProfile = {
+        avatar: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+      };
       $scope.successMessage = ""; // Để lưu thông báo thành công
       $scope.isSubmitting = false; // Biến để kiểm tra trạng thái submit
       $scope.user = {
@@ -66,6 +84,61 @@ angular
 
         return validRoles[0] || null;
       }
+
+      // Hàm xem profile
+      $scope.viewProfile = function () {
+        const token = sessionStorage.getItem("jwtToken");
+
+        if (!token || token.split(".").length !== 3) {
+          console.log("Token không hợp lệ hoặc không tồn tại");
+          return;
+        }
+
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        if (payload && payload["user Code"]) {
+          const userCode = payload["user Code"];
+          sessionStorage.setItem("userCode", userCode);
+          console.log("userCode đã được lưu vào sessionStorage:", userCode);
+        } else {
+          console.log("Không tìm thấy userCode trong payload");
+        }
+
+        $window.location.href = "/assets/staff/Profile.html";
+      };
+
+      $scope.getMyProfile = function () {
+        const token = sessionStorage.getItem("jwtToken");
+
+        // Gọi API để lấy thông tin người dùng
+      };
+
+      //Lấy thông tin của tài khoản đang đăng nhập
+      const token = sessionStorage.getItem("jwtToken");
+      $http({
+        method: "GET",
+        url: `http://localhost:8080/admin/myProfile`, // Đảm bảo URL đúng
+        headers: {
+          Authorization: "Bearer " + token, // Kiểm tra xem token có hợp lệ không
+        },
+      })
+        .then(function (response) {
+          console.log("Response:", response); // Log toàn bộ response để kiểm tra
+
+          if (response.data && response.data.result) {
+            $scope.myProfile = response.data.result;
+            console.log("My Profile:", $scope.myProfile); // Kiểm tra giá trị gán vào myProfile
+          } else {
+            $scope.errorMessage = "Không thể lấy thông tin người dùng.";
+            console.log($scope.errorMessage);
+          }
+        })
+        .catch(function (error) {
+          console.error("Lỗi khi lấy thông tin người dùng:", error);
+          $scope.errorMessage = "Có lỗi xảy ra khi lấy dữ liệu.";
+        })
+        .finally(function () {
+          $scope.loading = false; // Tắt trạng thái loading sau khi nhận được phản hồi
+        });
 
       // Hàm lấy danh sách tài khoản
       $scope.getStaffs = function (page = 1) {
@@ -296,6 +369,14 @@ angular
               $scope.isDeleting = false; // Kích hoạt lại nút sau khi gặp lỗi
             });
         }
+      };
+
+      $scope.goToUpdateProfile = function (userCode) {
+        // Lưu thông tin người dùng vào sessionStorage để chuyển trang
+        sessionStorage.setItem("userCode", userCode);
+
+        // Sử dụng $location để điều hướng trong AngularJS
+        window.location.href = "/assets/staff/Profile.html";
       };
 
       // Hàm tìm kiếm

@@ -1,6 +1,7 @@
 package com.example.bee_shirt.controller;
 
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
+import com.example.bee_shirt.dto.request.AccountUpdateRequest;
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.dto.response.ApiResponse;
 import com.example.bee_shirt.dto.response.RoleResponse;
@@ -93,6 +94,7 @@ public class AdminController {
     @PostMapping(value = "/create", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<AccountResponse> createUser(
+            @Valid
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("phone") String phone,
@@ -148,5 +150,64 @@ public class AdminController {
                     );
         }
     }
+
+    //thêm @Valid để update chạy validate
+    @PutMapping(value = "/update/{code}", consumes = "multipart/form-data")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ApiResponse<AccountResponse> updateUser(
+            @Valid
+            @PathVariable("code") String code,
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "lastName", required = false) String lastName,
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "pass", required = false) String pass,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile,
+            @RequestParam(value = "status", required = false) Integer status,
+            @RequestParam(value = "deleted", required = false) Boolean deleted) {
+
+        // Create an update request object
+        AccountUpdateRequest request = new AccountUpdateRequest();
+        request.setFirstName(firstName);
+        request.setLastName(lastName);
+        request.setPhone(phone);
+        request.setEmail(email);
+        request.setPass(pass);
+        request.setAddress(address);
+        request.setAvatarFile(avatarFile);
+        request.setStatus(status);
+        request.setDeleted(deleted);
+
+        log.info("Received account update request for user: {}", code);
+
+        // Call the service to perform the update
+        AccountResponse accountResponse = accountService.updateAccount(request, code);
+
+        return ApiResponse.<AccountResponse>builder()
+                .code(1000)
+                .result(accountResponse)
+                .build();
+    }
+
+    @GetMapping("/account/{code}")
+    public ApiResponse<AccountResponse> getAccountWithCode(
+            @PathVariable("code") String code
+    ) {
+        return ApiResponse.<AccountResponse>builder()
+                .code(1000)
+                .result(accountService.findByCode(code))
+                .build();
+    }
+
+    @GetMapping("/myProfile")
+    public ApiResponse<AccountResponse> getMyProfile(
+    ) {
+        return ApiResponse.<AccountResponse>builder()
+                .code(1000)
+                .result(accountService.getMyInfo())
+                .build();
+    }
+
 
 }
