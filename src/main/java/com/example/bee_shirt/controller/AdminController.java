@@ -58,8 +58,8 @@ public class AdminController {
     }
 
     // phân trang staff
-    @GetMapping("/list/{page}")
-    public ResponseEntity<ApiResponse<List<AccountResponse>>> getAllPaging(@PathVariable Integer page) {
+    @GetMapping("/staffs/{page}")
+    public ResponseEntity<ApiResponse<List<AccountResponse>>> getAllPagingStaff(@PathVariable Integer page) {
         PageRequest pageRequest = PageRequest.of(page - 1, 5); //5 phần tử 1 trang
         List<AccountResponse> staffAccounts = accountService.getAllPagingStaff(pageRequest);
         return ResponseEntity.status(HttpStatus.OK)
@@ -69,10 +69,33 @@ public class AdminController {
                         .build());
     }
 
-    // tổng số trang
-    @GetMapping("/totalPage")
-    public ResponseEntity<ApiResponse<Integer>> getAllTotalPage() {
+    // tổng số trang staff
+    @GetMapping("/totalPageStaff")
+    public ResponseEntity<ApiResponse<Integer>> getAllTotalPageStaff() {
         int totalPages = accountService.getAllTotalPageStaff();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.<Integer>builder()
+                        .result(totalPages)
+                        .message("Total pages retrieved successfully.")
+                        .build());
+    }
+
+    // phân trang client
+    @GetMapping("/clients/{page}")
+    public ResponseEntity<ApiResponse<List<AccountResponse>>> getAllPagingClient(@PathVariable Integer page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, 5); //5 phần tử 1 trang
+        List<AccountResponse> staffAccounts = accountService.getAllPagingClient(pageRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.<List<AccountResponse>>builder()
+                        .result(staffAccounts)
+                        .message("Successfully retrieved paginated staff accounts.")
+                        .build());
+    }
+
+    // tổng số trang client
+    @GetMapping("/totalPageClient")
+    public ResponseEntity<ApiResponse<Integer>> getAllTotalPageClient() {
+        int totalPages = accountService.getAllTotalPageClient();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.<Integer>builder()
                         .result(totalPages)

@@ -496,7 +496,10 @@
                   </div>
                 </li> -->
 
-                <li class="nav-item topbar-user dropdown hidden-caret">
+                <li
+                  class="nav-item topbar-user dropdown hidden-caret"
+                  ng-if="myProfile"
+                >
                   <a
                     class="dropdown-toggle profile-pic"
                     data-bs-toggle="dropdown"
@@ -504,33 +507,40 @@
                     aria-expanded="false"
                   >
                     <div class="avatar-sm">
+                      <!-- Hiển thị avatar của người dùng hoặc ảnh mặc định -->
                       <img
-                        src="img/profile.jpg"
+                        ng-src="{{ myProfile.avatar }}"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
                     </div>
                     <span class="profile-username">
                       <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Đăng Ngố</span>
+                      <span class="fw-bold">{{ myProfile.firstName }}</span>
+                      <!-- Hiển thị tên người dùng -->
                     </span>
                   </a>
+
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
                     <div class="dropdown-user-scroll scrollbar-outer">
-                      <li>
+                      <li ng-if="myProfile">
+                        <!-- Ngăn lỗi nếu myProfile chưa tải xong -->
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="img/profile.jpg"
+                              ng-src="{{ myProfile.avatar }}"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
                           </div>
                           <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
+                            <h4>
+                              {{ myProfile.firstName }} {{ myProfile.lastName }}
+                            </h4>
+                            <p class="text-muted">{{ myProfile.email }}</p>
                             <a
-                              href="profile.html"
+                              href="#"
+                              ng-click="viewProfile()"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >
@@ -539,13 +549,12 @@
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
-                        <a class="dropdown-item" href="#">My Balance</a>
-                        <a class="dropdown-item" href="#">Inbox</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Account Setting</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a
+                          class="dropdown-item"
+                          href="/assets/account/login.html"
+                          ng-click="logout()"
+                          >Logout</a
+                        >
                       </li>
                     </div>
                   </ul>
@@ -560,28 +569,23 @@
         <div class="container">
           <div class="page-inner">
             <div class="card">
-              <div
-                class="card-header d-flex justify-content-between align-items-center"
-              >
-                <h3>Customer List</h3>
-              </div>
               <div class="card-body">
-                <div class="table-responsive">
+                <!-- client List -->
+                <div class="table-responsive mt-4">
                   <table
                     id="basic-datatables"
                     class="display table table-striped table-hover"
                   >
                     <thead>
                       <tr>
-                        <th colspan="5">
+                        <th colspan="7">
                           <input
                             type="text"
                             id="searchInput"
-                            class="form-control w-50"
+                            class="form-control w-50 float-end"
                             placeholder="Search..."
                             ng-model="searchQuery"
                             ng-change="searchCustomer()"
-                            style="float: right"
                           />
                         </th>
                       </tr>
@@ -596,24 +600,24 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="customer in filteredCustomerList">
-                        <td>{{customer.code}}</td>
-                        <td>{{customer.username}}</td>
-                        <td>{{customer.email}}</td>
-                        <td>{{customer.phone}}</td>
-                        <td>{{customer.address}}</td>
+                      <tr ng-repeat="custom in filteredCustomerList">
+                        <td>{{ custom.code }}</td>
+                        <td>{{ custom.username }}</td>
+                        <td>{{ custom.email }}</td>
+                        <td>{{ custom.phone }}</td>
+                        <td>{{ custom.address }}</td>
                         <td>
-                          {{customer.status === 0 ? 'Active' : 'Inactive'}}
+                          {{ custom.status === 0 ? 'Active' : 'Inactive' }}
                         </td>
                         <td>
                           <button
-                            ng-click="updateStaff(customer.id)"
+                            ng-click="goToUpdateProfile(custom.code)"
                             class="btn btn-warning btn-sm"
                           >
-                            Update
+                            Detail
                           </button>
                           <button
-                            ng-click="deleteAccount(customer.code)"
+                            ng-click="deleteAccount(custom.code)"
                             class="btn btn-danger btn-sm"
                           >
                             Remove
@@ -622,6 +626,26 @@
                       </tr>
                     </tbody>
                   </table>
+                  <!-- Pagination Controls -->
+                  <div class="pagination mt-3 d-flex justify-content-center">
+                    <button
+                      ng-click="previousPage()"
+                      class="btn btn-secondary"
+                      ng-disabled="currentPage === 1"
+                    >
+                      Previous
+                    </button>
+                    <span class="mx-3"
+                      >Page {{ currentPage }} of {{ totalPages }}</span
+                    >
+                    <button
+                      ng-click="nextPage()"
+                      class="btn btn-secondary"
+                      ng-disabled="currentPage === totalPages"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

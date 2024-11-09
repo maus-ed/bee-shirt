@@ -77,6 +77,19 @@ public class AccountService {
         return (int) Math.ceil((double) totalRecords / pageSize); // Tính tổng số trang
     }
 
+    public List<AccountResponse> getAllPagingClient(Pageable pageable) {
+        Page<Account> page = accountRepository.getAllPagingClient(pageable);
+        return page.getContent().stream()
+                .map(accountMapper::toUserResponse)
+                .collect(Collectors.toList());
+    }
+
+    public int getAllTotalPageClient() {
+        long totalRecords = accountRepository.getAllTotalPageClient(); // Tổng số tài khoản cho vai trò STAFF
+        int pageSize = 5; // Số lượng tài khoản mỗi trang
+        return (int) Math.ceil((double) totalRecords / pageSize); // Tính tổng số trang
+    }
+
 
     private List<AccountResponse> getAccountsWithRoles(List<Account> accounts) {
         accounts.forEach(account ->

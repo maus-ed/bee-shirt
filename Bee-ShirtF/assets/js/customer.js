@@ -1,15 +1,25 @@
 angular.module("customerApp", []).controller("CustomerController", [
   "$scope",
   "$http",
-  function ($scope, $http) {
+  "$window",
+  function ($scope, $http, $window) {
     // Khởi tạo biến để kiểm soát hiển thị form tạo tài khoản
     $scope.showCreateAccountForm = false; // Biến này điều khiển hiển thị biểu mẫu
 
     // Dữ liệu
     $scope.customerList = [];
     $scope.filteredCustomerList = []; // Danh sách nhân viên đã lọc
+    $scope.myProfile = {
+      avatar: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+    };
     $scope.errorMessage = ""; // Để lưu thông báo lỗi
     $scope.successMessage = ""; // Để lưu thông báo thành công
+    $scope.currentPage = 1;
+    $scope.totalPages = 0;
+    $scope.pageSize = 5; // Số lượng nhân viên trên mỗi trang
 
     $scope.availableRoles = ["ADMIN", "STAFF", "USER"]; // Danh sách role có sẵn
 
@@ -51,27 +61,27 @@ angular.module("customerApp", []).controller("CustomerController", [
     }
 
     // Hàm lấy danh sách tài khoản
-    $scope.getCustomers = function () {
+    $scope.getClients = function (page = 1) {
       const token = sessionStorage.getItem("jwtToken");
 
       $http({
         method: "GET",
-        url: "http://localhost:8080/admin/clients",
+        url: `http://localhost:8080/admin/clients/${page}`,
         headers: {
           Authorization: "Bearer " + token,
         },
       })
         .then(function (response) {
           if (Array.isArray(response.data.result)) {
-            $scope.customerList = response.data.result.map((customer) => ({
-              code: customer.code,
-              fullName: `${customer.firstName} ${customer.lastName}`,
-              username: customer.username,
-              email: customer.email,
-              phone: customer.phone,
-              avatar: customer.avatar,
-              address: customer.address,
-              status: customer.status,
+            $scope.customerList = response.data.result.map((client) => ({
+              code: client.code,
+              fullName: `${client.firstName} ${client.lastName}`,
+              username: client.username,
+              email: client.email,
+              phone: client.phone,
+              avatar: client.avatar,
+              address: client.address,
+              status: client.status,
             }));
 
             $scope.filteredCustomerList = $scope.customerList;
@@ -88,35 +98,62 @@ angular.module("customerApp", []).controller("CustomerController", [
         });
     };
 
-    // Hàm xác thực dữ liệu
-    function validateForm() {
-      const phoneRegex = /^(0[3|5|7|8|9])[0-9]{8}$/;
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    $scope.getTotalPages = function () {
+      const token = sessionStorage.getItem("jwtToken");
 
-      if (!$scope.user.firstName || !$scope.user.lastName) {
-        $scope.errorMessage = "Tên và họ không được để trống.";
-        return false;
+      $http({
+        method: "GET",
+        url: "http://localhost:8080/admin/totalPageClient",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then(function (response) {
+          $scope.totalPages = response.data.result; // Cập nhật tổng số trang
+        })
+        .catch(function (error) {
+          console.error("Lỗi khi lấy tổng số trang:", error);
+        });
+    };
+
+    $scope.goToPage = function (page) {
+      if (page < 1 || page > $scope.totalPages) return;
+      $scope.currentPage = page;
+      $scope.getClients(page); // Gọi lại hàm lấy danh sách theo trang
+    };
+
+    $scope.nextPage = function () {
+      if ($scope.currentPage < $scope.totalPages) {
+        $scope.goToPage($scope.currentPage + 1);
       }
-      if (!$scope.user.phone || !$scope.user.phone.match(phoneRegex)) {
-        $scope.errorMessage = "Số điện thoại không hợp lệ.";
-        return false;
+    };
+
+    $scope.previousPage = function () {
+      if ($scope.currentPage > 1) {
+        $scope.goToPage($scope.currentPage - 1);
       }
-      if (!$scope.user.email || !$scope.user.email.match(emailRegex)) {
-        $scope.errorMessage = "Email không hợp lệ.";
-        return false;
-      }
-      if ($scope.user.username.length < 3) {
-        $scope.errorMessage = "Tên đăng nhập phải lớn hơn 3 ký tự.";
-        return false;
-      }
-      if ($scope.user.pass.length < 5) {
-        $scope.errorMessage = "Mật khẩu phải lớn hơn 5 ký tự.";
-        return false;
+    };
+
+    // Hàm xem profile
+    $scope.viewProfile = function () {
+      const token = sessionStorage.getItem("jwtToken");
+
+      if (!token || token.split(".").length !== 3) {
+        console.log("Token không hợp lệ hoặc không tồn tại");
+        return;
       }
 
-      $scope.errorMessage = "";
-      return true;
-    }
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (payload && payload["user Code"]) {
+        const userCode = payload["user Code"];
+        sessionStorage.setItem("userCode", userCode);
+        console.log("userCode đã được lưu vào sessionStorage:", userCode);
+      } else {
+        console.log("Không tìm thấy userCode trong payload");
+      }
+
+      $window.location.href = "/assets/staff/Profile.html";
+    };
 
     $scope.deleteAccount = function (code) {
       if (confirm("Are you sure you want to delete this account?")) {
@@ -180,7 +217,47 @@ angular.module("customerApp", []).controller("CustomerController", [
       }
     };
 
+    //Lấy thông tin của tài khoản đang đăng nhập
+    $scope.getMyProfile = function () {
+      const token = sessionStorage.getItem("jwtToken");
+      $http({
+        method: "GET",
+        url: `http://localhost:8080/admin/myProfile`, // Đảm bảo URL đúng
+        headers: {
+          Authorization: "Bearer " + token, // Kiểm tra xem token có hợp lệ không
+        },
+      })
+        .then(function (response) {
+          console.log("Response:", response); // Log toàn bộ response để kiểm tra
+
+          if (response.data && response.data.result) {
+            $scope.myProfile = response.data.result;
+            console.log("My Profile:", $scope.myProfile); // Kiểm tra giá trị gán vào myProfile
+          } else {
+            $scope.errorMessage = "Không thể lấy thông tin người dùng.";
+            console.log($scope.errorMessage);
+          }
+        })
+        .catch(function (error) {
+          console.error("Lỗi khi lấy thông tin người dùng:", error);
+          $scope.errorMessage = "Có lỗi xảy ra khi lấy dữ liệu.";
+        })
+        .finally(function () {
+          $scope.loading = false; // Tắt trạng thái loading sau khi nhận được phản hồi
+        });
+    };
+    // Hàm xem profile
+    $scope.goToUpdateProfile = function (userCode) {
+      // Lưu thông tin người dùng vào sessionStorage để chuyển trang
+      sessionStorage.setItem("userCode", userCode);
+
+      // Sử dụng $location để điều hướng trong AngularJS
+      window.location.href = "/assets/staff/Profile.html";
+    };
+
     // Gọi các hàm khởi tạo
-    $scope.getCustomers();
+    $scope.getClients($scope.currentPage);
+    $scope.getTotalPages();
+    $scope.getMyProfile();
   },
 ]);
