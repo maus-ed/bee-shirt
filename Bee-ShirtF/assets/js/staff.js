@@ -107,38 +107,34 @@ angular
       };
 
       $scope.getMyProfile = function () {
+        //Lấy thông tin của tài khoản đang đăng nhập
         const token = sessionStorage.getItem("jwtToken");
+        $http({
+          method: "GET",
+          url: `http://localhost:8080/admin/myProfile`, // Đảm bảo URL đúng
+          headers: {
+            Authorization: "Bearer " + token, // Kiểm tra xem token có hợp lệ không
+          },
+        })
+          .then(function (response) {
+            console.log("Response:", response); // Log toàn bộ response để kiểm tra
 
-        // Gọi API để lấy thông tin người dùng
+            if (response.data && response.data.result) {
+              $scope.myProfile = response.data.result;
+              console.log("My Profile:", $scope.myProfile); // Kiểm tra giá trị gán vào myProfile
+            } else {
+              $scope.errorMessage = "Không thể lấy thông tin người dùng.";
+              console.log($scope.errorMessage);
+            }
+          })
+          .catch(function (error) {
+            console.error("Lỗi khi lấy thông tin người dùng:", error);
+            $scope.errorMessage = "Có lỗi xảy ra khi lấy dữ liệu.";
+          })
+          .finally(function () {
+            $scope.loading = false; // Tắt trạng thái loading sau khi nhận được phản hồi
+          });
       };
-
-      //Lấy thông tin của tài khoản đang đăng nhập
-      const token = sessionStorage.getItem("jwtToken");
-      $http({
-        method: "GET",
-        url: `http://localhost:8080/admin/myProfile`, // Đảm bảo URL đúng
-        headers: {
-          Authorization: "Bearer " + token, // Kiểm tra xem token có hợp lệ không
-        },
-      })
-        .then(function (response) {
-          console.log("Response:", response); // Log toàn bộ response để kiểm tra
-
-          if (response.data && response.data.result) {
-            $scope.myProfile = response.data.result;
-            console.log("My Profile:", $scope.myProfile); // Kiểm tra giá trị gán vào myProfile
-          } else {
-            $scope.errorMessage = "Không thể lấy thông tin người dùng.";
-            console.log($scope.errorMessage);
-          }
-        })
-        .catch(function (error) {
-          console.error("Lỗi khi lấy thông tin người dùng:", error);
-          $scope.errorMessage = "Có lỗi xảy ra khi lấy dữ liệu.";
-        })
-        .finally(function () {
-          $scope.loading = false; // Tắt trạng thái loading sau khi nhận được phản hồi
-        });
 
       // Hàm lấy danh sách tài khoản
       $scope.getStaffs = function (page = 1) {
@@ -146,7 +142,7 @@ angular
 
         $http({
           method: "GET",
-          url: `http://localhost:8080/admin/list/${page}`,
+          url: `http://localhost:8080/admin/staffs/${page}`,
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -183,7 +179,7 @@ angular
 
         $http({
           method: "GET",
-          url: "http://localhost:8080/admin/totalPage",
+          url: "http://localhost:8080/admin/totalPageStaff",
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -407,6 +403,7 @@ angular
       // Gọi các hàm khởi tạo
       $scope.getStaffs($scope.currentPage);
       $scope.getTotalPages();
+      $scope.getMyProfile();
     },
   ])
 

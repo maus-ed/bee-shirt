@@ -54,6 +54,26 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     long getAllTotalPageStaff();  // Trả về số lượng bản ghi tổng cộng
 
     @Query(value = """
+            SELECT a.*, ar.role_id, r.code_role
+            FROM account a
+            INNER JOIN account_role ar ON a.id = ar.account_id
+            INNER JOIN role_A r ON ar.role_id = r.id
+            WHERE a.deleted = 0 AND r.code_role = 'USER'
+            ORDER BY a.id DESC; 
+             """, nativeQuery = true)
+    Page<Account> getAllPagingClient(Pageable pageable);
+
+
+    @Query(value = """
+            SELECT COUNT(a.id)
+             FROM account a
+             INNER JOIN account_role ar ON a.id = ar.account_id
+             INNER JOIN role_A r ON ar.role_id = r.id
+             WHERE a.deleted = 0 AND (r.code_role LIKE 'USER')
+            """, nativeQuery = true)
+    long getAllTotalPageClient();  // Trả về số lượng bản ghi tổng cộng
+
+    @Query(value = """
             SELECT a.*
              FROM account a
              INNER JOIN account_role ar ON a.id = ar.account_id
