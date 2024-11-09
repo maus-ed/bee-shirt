@@ -1,84 +1,109 @@
-// Khu vực 1: Biến toàn cục
-const gURL = "http://localhost:8080/billHistory/list";
+angular
+  .module("orderApp", [])
+  .controller("OrderController", [
+    "$scope",
+    function ($scope) {
+      // Biến để kiểm soát hiển thị form
+      $scope.showCreateForm = false;
 
-// Biến cho trạng thái của biểu mẫu
-const gFORM_MODE_NORMAL = "Normal"; // Trạng thái bình thường
-const gFORM_MODE_INSERT = "Insert"; // Trạng thái chèn
-const gFORM_MODE_UPDATE = "Update"; // Trạng thái cập nhật
-const gFORM_MODE_DELETE = "Delete"; // Trạng thái xóa
+      // Dữ liệu
+      $scope.orders = [];
+      $scope.errorMessage = ""; // Để lưu thông báo lỗi
+      $scope.successMessage = ""; // Để lưu thông báo thành công
 
-var gFormMode = gFORM_MODE_NORMAL; // Trạng thái biểu mẫu mặc định
-var gId = 0; // ID của phiếu đang được cập nhật hoặc xóa
-var gSTT = 1; // Số thứ tự
+      // Hàm định dạng ngày
+      $scope.formatDate = function (dateString) {
+        const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        const date = new Date(dateString);
+        return date.toLocaleDateString("vi-VN", options);
+      };
 
-var gOrderTable = $("#order-table").DataTable({
-    columns: [
-        { data: "stt" },
-        { data: "codeBill" },
-        { data: "desiredDate" },
-        { data: "totalMoney" },
-        { data: "statusBill" },
-    ],
-    columnDefs: [
-        {
-            targets: [2],
-            render: function(date) {
-                return formatDate(date); // Định dạng ngày
+      // Hàm tải danh sách đơn hàng từ server bằng AJAX
+      $scope.loadDataOrderToTable = function () {
+        const token = sessionStorage.getItem("jwtToken");
+        // Kiểm tra xem mã thông báo có tồn tại không
+        if (!token) {
+          alert("Bạn chưa đăng nhập. Vui lòng đăng nhập lại.");
+          window.location.href = "http://127.0.0.1:5500/assets/account/login.html#!/login"; // Redirect to the login page
+          return;
+      }
+      
+        // Sử dụng jQuery AJAX
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:8080/bills/history",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            if (Array.isArray(response.result)) {
+              $scope.orders = response.result.map((order) => ({
+                codeBill: order.codeBill,
+                desiredDate: $scope.formatDate(order.desiredDate),
+                totalMoney: order.totalMoney.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }),
+                statusBill: order.statusBill === 1 ? "Đã thanh toán" : "Chưa thanh toán",
+              }));
+              $scope.successMessage = "Tải dữ liệu thành công!";
+              $scope.initializeDataTable(); // Khởi tạo DataTable
+            } else {
+              console.error("Dữ liệu không phải là một mảng:", response.result);
+              $scope.errorMessage = "Dữ liệu không đúng định dạng.";
             }
-        },
-        {
-            targets: -1,
-            defaultContent: `
-                <i class="far fa-lg fa-edit text-success btn-edit"></i> | 
-                <i class="fas fa-lg fa-info-circle text-primary btn-detail"></i> | 
-                <i class="fas fa-lg fa-trash btn-delete text-danger"></i>`,
-        },
-    ],
-});
+            $scope.$apply(); // Áp dụng thay đổi cho Angular
+          },
+          error: function (error) {
+            console.error("Lỗi khi lấy dữ liệu:", error);
+            if (error.responseJSON) {
+              console.error("Chi tiết lỗi:", error.responseJSON);
+            }
+            $scope.errorMessage = "Không thể lấy dữ liệu.";
+            $scope.$apply(); // Áp dụng thay đổi cho Angular
+          },
+        });
+      };
 
-// Hàm để định dạng ngày
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', options);
-}
+      // Hàm khởi tạo DataTable
+      $scope.initializeDataTable = function () {
+        // Khởi tạo DataTable và thêm dữ liệu từ orders
+        const table = $('#order-table').DataTable({
+          paging: true,
+          searching: true,
+          ordering: true,
+          pageLength: 5,
+          data: $scope.orders.map((order, index) => ([
+            index + 1, // STT
+            order.codeBill, // Mã Hóa Đơn
+            order.desiredDate, // Ngày Thanh Toán
+            order.totalMoney, // Tổng Tiền
+            order.statusBill // Trạng Thái
+          ])),
+          columns: [
+            { title: "STT" },
+            { title: "Mã Hóa Đơn" },
+            { title: "Ngày Thanh Toán", className: "text-end" },
+            { title: "Tổng Tiền", className: "text-end" },
+            { title: "Trạng Thái", className: "text-end" }
+          ],
+          language: {
+            search: "Tìm kiếm:",
+            lengthMenu: "Hiện _MENU_ mục",
+            info: "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            paginate: {
+              first: "Đầu",
+              last: "Cuối",
+              next: "Tiếp",
+              previous: "Trước"
+            }
+          }
+        });
+      };
 
-// Hàm để tải dữ liệu từ server và populate bảng
-function loadDataOrderToTable() {
-    $.ajax({
-        url: gURL,
-        method: "GET",
-        dataType: "json",
-        success: function(responseText) {
-            console.log("Dữ liệu trả về:", responseText); // Ghi lại dữ liệu trả về
-            getOrdersList(responseText);
-        },
-        error: function(xhr, status, error) {
-            console.error("Lỗi khi lấy dữ liệu:", error); // Ghi lại lỗi
-        }
-    });
-}
-
-// Hàm để populate DataTable với các đơn hàng
-function getOrdersList(responseText) {
-    gSTT = 1; // Đặt lại số thứ tự
-    gOrderTable.clear(); // Xóa dữ liệu hiện có trong bảng
-    const formattedData = responseText.map(order => ({
-        stt: gSTT++,
-        codeBill: order.codeBill,
-        desiredDate: order.desiredDate,
-        totalMoney: order.totalMoney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), // Định dạng tiền VND
-        statusBill: order.statusBill === 1 ? "Đã thanh toán" : "Chưa thanh toán" // Kiểm tra trạng thái
-    }));
-    gOrderTable.rows.add(formattedData); // Thêm dữ liệu mới
-    gOrderTable.draw(); // Vẽ lại bảng
-}
-
-
-
-// Gọi hàm này để tải dữ liệu khi tài liệu sẵn sàng
-$(document).ready(function() {
-    loadDataOrderToTable(); // Tải dữ liệu vào bảng
-});
-
-
+      // Gọi hàm này để tải dữ liệu khi tài liệu sẵn sàng
+      angular.element(document).ready(function () {
+        $scope.loadDataOrderToTable(); // Tải dữ liệu vào bảng
+      });
+    },
+  ]);

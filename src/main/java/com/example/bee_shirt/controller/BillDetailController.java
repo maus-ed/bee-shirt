@@ -1,28 +1,36 @@
 package com.example.bee_shirt.controller;
 
 import com.example.bee_shirt.dto.request.BillDetailDTO;
+import com.example.bee_shirt.dto.response.ApiResponse;
 import com.example.bee_shirt.service.BillDetailService; // Sử dụng service thay vì repository
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+@RequestMapping("bills") // Đường dẫn cho chi tiết hóa đơn
+@CrossOrigin(origins = "http://127.0.0.1:5500")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class BillDetailController {
 
-    private final BillDetailService billDetailService; // Chỉnh sửa ở đây để sử dụng service
+    BillDetailService billDetailService; // Sử dụng service thay vì repository
 
-    @Autowired
-    public BillDetailController(BillDetailService billDetailService) { // Sửa ở đây
-        this.billDetailService = billDetailService;
-    }
+    @GetMapping("/details/{codeBill}")
+    public ApiResponse<List<BillDetailDTO>> getBillDetail(@PathVariable String codeBill) {
+        log.info("Fetching bill details for bill code: {}", codeBill); // Thêm log
 
-    @GetMapping("/bill/details/{codeBill}")
-    public List<BillDetailDTO> getBillDetail(@PathVariable String codeBill) {
-        return billDetailService.getBillDetails(codeBill); // Gọi phương thức từ service
+        List<BillDetailDTO> billDetails = billDetailService.getBillDetails(codeBill);
+        log.info("Số lượng chi tiết hóa đơn: {}", billDetails.size()); // Log số lượng chi tiết hóa đơn
+
+        return ApiResponse.<List<BillDetailDTO>>builder()
+                .code(1000)
+                .result(billDetails)
+                .build();
     }
 }

@@ -1,12 +1,8 @@
 package com.example.bee_shirt.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
-
 public class BillDetailDTO {
     private String nameImage;
     private String nameShirt;
@@ -17,11 +13,15 @@ public class BillDetailDTO {
     private String nameVoucher;
     private double subtotalBeforeDiscount;
     private double totalMoney;
+    private String customerName;       // Thêm trường này
+    private String addressCustomer;    // Thêm trường này
+    private String phoneNumber;        // Thêm trường này
 
     // Constructor
     public BillDetailDTO(String nameImage, String nameShirt, String nameBrand, String nameSize,
                          int quantity, double price, String nameVoucher,
-                         double subtotalBeforeDiscount, double totalMoney) {
+                         double subtotalBeforeDiscount, double totalMoney,
+                         String customerName, String addressCustomer, String phoneNumber) {
         this.nameImage = nameImage;
         this.nameShirt = nameShirt;
         this.nameBrand = nameBrand;
@@ -31,5 +31,8 @@ public class BillDetailDTO {
         this.nameVoucher = nameVoucher;
         this.subtotalBeforeDiscount = subtotalBeforeDiscount;
         this.totalMoney = totalMoney;
+        this.customerName = customerName;          // Gán giá trị cho trường mới
+        this.addressCustomer = addressCustomer;    // Gán giá trị cho trường mới
+        this.phoneNumber = phoneNumber;            // Gán giá trị cho trường mới
     }
 }
