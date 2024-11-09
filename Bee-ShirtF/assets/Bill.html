@@ -6,7 +6,10 @@
   <title>Hóa Đơn - Bee-Shirt</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
   <link rel="icon" href="../assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
-
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <!-- Fonts and icons -->
   <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
   <script>
@@ -26,17 +29,19 @@
       },
     });
   </script>
-
   <!-- CSS Files -->
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../assets/css/plugins.min.css" />
   <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+  <!-- angularjs -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <!-- <script src="js/bill.js"></script> -->
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="../assets/css/demo.css" />
 </head>
 
-<body>
+<body ng-app="billApp" ng-controller="BillController">
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="sidebar" data-background-color="dark">
@@ -137,7 +142,7 @@
               <div class="collapse" id="account">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="#">
+                    <a href="staff/Staff.html">
                       <span class="sub-item">Nhân Viên</span>
                     </a>
                   </li>
@@ -504,6 +509,7 @@
                         <tr>
                           <th>STT</th>
                           <th>Mã Hóa Đơn</th>
+                          <th>Tên Khách Hàng</th>
                           <th>Ngày Thanh Toán</th>
                           <th>Hình Thức Thanh Toán</th>
                           <th>Tổng Tiền</th>
@@ -511,12 +517,12 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- Dữ liệu sẽ được điền động từ API -->
+                  
                       </tbody>
                     </table>
-
                   </div>
                 </div>
+                
               </div>
             </div>
 
@@ -621,7 +627,10 @@
   <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
-
+  <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
+  <script src="/path/to/jquery.scrollbar.min.js"></script> <!-- Đảm bảo đây là đường dẫn đúng -->
+  <script src="/assets/js/kaiadmin.min.js"></script>
+  
   <!-- jQuery Scrollbar -->
   <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
   <!-- Datatables -->
@@ -630,7 +639,8 @@
   <script src="../assets/js/kaiadmin.min.js"></script>
   <!-- Kaiadmin DEMO methods, don't include it in your project! -->
   <script src="../assets/js/setting-demo2.js"></script>
-  <script>
+
+  <!-- <script>
     $(document).ready(function () {
       $("#basic-datatables").DataTable({});
 
@@ -686,141 +696,133 @@
         $("#addRowModal").modal("hide");
       });
     });
-  </script>
+  </script> -->
 
   <!-- //cdn -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-  <script>
-    // Hàm này để hiển thị form hóa đơn chi tiết
-    $(document).ready(function () {
-  // Hủy DataTable nếu đã tồn tại
-  if ($.fn.DataTable.isDataTable('#basic-datatables')) {
-    $('#basic-datatables').DataTable().destroy();
-  }
+<!-- dataTable -->
+<script>
+  angular
+  .module("billApp", [])
+  .controller("BillController", [
+    "$scope", "$timeout",
+    function ($scope, $timeout) {
+      $scope.showCreateForm = false;
+      $scope.orders = [];
+      $scope.errorMessage = "";
+      $scope.successMessage = "";
 
-  // Khởi tạo lại DataTable
-  var table = $('#basic-datatables').DataTable({
-    columns: [
-      { title: "STT" },
-      { title: "Mã Hóa Đơn" },
-      { title: "Ngày Thanh Toán" },
-      { title: "Hình Thức Thanh Toán" },
-      { title: "Tổng Tiền" },
-      { title: "Trạng Thái" }
-    ]
-  });
+      $scope.formatDate = function (dateString) {
+        const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        const date = new Date(dateString);
+        return date.toLocaleDateString("vi-VN", options);
+      };
 
-  // Gọi API để lấy dữ liệu và điền vào bảng
-  $.ajax({
-    url: 'http://localhost:8080/bill/list',
-    method: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      data.forEach((item, index) => {
-        table.row.add([
-          index + 1,
-          item.codeBill,
-          formatDate(item.desiredDate),
-          item.namePaymentMethod,
-          item.totalMoney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
-          item.statusBill === 1 ? "Đã thanh toán" : "Chưa thanh toán"
-        ]).draw(false);
+      $scope.loadDataOrderToTable = function () {
+        const token = sessionStorage.getItem("jwtToken");
+        if (!token) {
+          alert("Bạn chưa đăng nhập. Vui lòng đăng nhập lại.");
+          window.location.href = "http://127.0.0.1:5500/assets/account/login.html#!/login";
+          return;
+        }
+
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:8080/bills/list",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+   console.log("Phản hồi từ server:", response);
+
+   // Sử dụng response.result thay vì response.data
+   const ordersData = Array.isArray(response.result) ? response.result : [];
+   
+   if (ordersData.length > 0) {
+     $scope.orders = ordersData.map((order, index) => ({
+       stt: index + 1,
+       codeBill: order.codeBill,
+       customerName: order.customerName,
+       desiredDate: $scope.formatDate(order.desiredDate),
+       paymentMethod: order.namePaymentMethod,
+       totalMoney: order.totalMoney.toLocaleString("vi-VN", {
+         style: "currency",
+         currency: "VND",
+       }),
+       statusBill: order.statusBill === 1 ? "Đã thanh toán" : "Chưa thanh toán",
+     }));
+     $scope.successMessage = "Tải dữ liệu thành công!";
+     $timeout($scope.initializeDataTable, 0); // Khởi tạo DataTable sau khi $scope.orders được cập nhật
+   } else {
+     $scope.errorMessage = "Không có dữ liệu đơn hàng nào để hiển thị.";
+   }
+   $scope.$apply(); // Áp dụng thay đổi cho Angular
+},
+
+        });
+      };
+
+      $scope.initializeDataTable = function () {
+        // Hủy DataTable nếu đã tồn tại
+        if ($.fn.DataTable.isDataTable("#basic-datatables")) {
+          $("#basic-datatables").DataTable().destroy();
+        }
+
+        // Khởi tạo DataTable mới với dữ liệu từ $scope.orders
+        const table = $("#basic-datatables").DataTable({
+          paging: true,
+          searching: true,
+          ordering: true,
+          pageLength: 5,
+          data: $scope.orders.map((order) => [
+            order.stt,
+            order.codeBill,
+            order.customerName,
+            order.desiredDate,
+            order.paymentMethod,
+            order.totalMoney,
+            order.statusBill,
+          ]),
+          columns: [
+            { title: "STT" },
+            { title: "Mã Hóa Đơn" },
+            { title: "Tên Khách Hàng" },
+            { title: "Ngày Thanh Toán" },
+            { title: "Hình Thức Thanh Toán" },
+            { title: "Tổng Tiền" },
+            { title: "Trạng Thái" },
+          ],
+          language: {
+            search: "Tìm kiếm:",
+            lengthMenu: "Hiện _MENU_ mục",
+            info: "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            paginate: {
+              first: "Đầu",
+              last: "Cuối",
+              next: "Tiếp",
+              previous: "Trước",
+            },
+          },
+        });
+        // Xử lý sự kiện click vào hàng để mở rộng thông tin chi tiết
+        $("#basic-datatables tbody").on("click", "tr", function () {
+          const rowData = table.row(this).data();
+          const codeBill = rowData[1];
+          window.location.href = `/assets/BillDetail.html?codeBill=${encodeURIComponent(codeBill)}`;
+        });
+      };
+
+      angular.element(document).ready(function () {
+        $scope.loadDataOrderToTable();
       });
     },
-    error: function (error) {
-      console.error('Lỗi khi gọi API:', error);
-      alert('Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại!');
-    }
-  });
-
-  // Xử lý sự kiện click vào hàng để mở rộng thông tin chi tiết
-// Xử lý sự kiện click vào hàng để mở rộng thông tin chi tiết
-$('#basic-datatables tbody').on('click', 'tr', function () {
-    var row = table.row(this); // Lấy hàng hiện tại
-    var rowData = row.data(); // Lấy dữ liệu của hàng hiện tại
-    var codeBill = rowData[1]; // Lấy mã hóa đơn từ cột Mã Hóa Đơn
-
-    // Chuyển hướng sang trang mới với mã hóa đơn trong query parameter
-    window.location.href = `/assets/BillDetail.html?codeBill=${encodeURIComponent(codeBill)}`;
-});
-// Hàm lấy giá trị của query parameter từ URL
-function getQueryParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
-
-// Lấy mã hóa đơn từ URL
-const codeBill = getQueryParameter('codeBill');
-
-// Kiểm tra nếu có mã hóa đơn, gọi API để lấy chi tiết
-if (codeBill) {
-    $.ajax({
-        url: `http://localhost:8080/bill/details/${codeBill}`, // URL API để lấy chi tiết hóa đơn
-        method: 'GET',
-        dataType: 'json',
-        success: function (detailData) {
-            // Kiểm tra và hiển thị dữ liệu chi tiết
-            let totalMoney = 0; // Khởi tạo biến tổng tiền
-            let detailHtml = `<table style="width: 100%; border-collapse: collapse;">`; // Bắt đầu bảng
-
-            // Lặp qua mảng chi tiết để tạo HTML cho từng sản phẩm
-            detailData.forEach(function(detail) {
-                totalMoney += detail.totalMoney; // Cộng dồn tổng tiền của từng sản phẩm
-
-                detailHtml += `
-                    <tr style="border: 1px solid #ccc;">
-                        <td style="border: 1px solid #ccc; padding: 10px; width: 100px;">
-                            <img src="${detail.nameImage || 'default_image.png'}" alt="Ảnh sản phẩm" style="width: 80px; height: auto; border-radius: 5px;">
-                        </td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">
-                            <strong>Tên sản phẩm:</strong> ${detail.nameShirt}<br>
-                            <strong>Thương hiệu:</strong> ${detail.nameBrand}<br>
-                            <strong>Size:</strong> ${detail.nameSize}<br>
-                            <strong>Số lượng:</strong> ${detail.quantity}<br>
-                            <strong>Giá:</strong> ${detail.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}<br>
-                            <strong>Voucher:</strong> ${detail.nameVoucher || 'Không có'}<br>
-                            <strong>Tổng tiền:</strong> ${detail.totalMoney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                        </td>
-                    </tr>
-                `;
-            });
-
-            // Thêm hàng tổng tiền
-            detailHtml += `
-                <tr style="border: 1px solid #ccc; background-color: #f9f9f9;">
-                    <td style="border: 1px solid #ccc; padding: 10px; text-align: right;" colspan="2">
-                        <strong>Tổng tiền:</strong> ${totalMoney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                    </td>
-                </tr>
-            `;
-
-            detailHtml += '</table>'; // Kết thúc bảng
-
-            // Thêm HTML vào phần tử trên trang (ví dụ, một phần tử có id="billDetailsContainer")
-            $('#billDetailsContainer').html(detailHtml);
-        },
-        error: function (error) {
-            console.error('Lỗi khi lấy chi tiết hóa đơn:', error);
-            alert('Không thể tải thông tin chi tiết.');
-        }
-    });
-}
+  ]);
 
 
+</script>
 
-
-});
-
-// Hàm để định dạng ngày
-function formatDate(dateString) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  const date = new Date(dateString);
-  return date.toLocaleDateString('vi-VN', options);
-}
-
-  </script>
 </body>
 
 </html>

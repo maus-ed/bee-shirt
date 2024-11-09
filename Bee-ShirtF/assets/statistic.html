@@ -26,17 +26,20 @@
       },
     });
   </script>
+  <script src="path/to/jquery.sparkline.min.js"></script>
 
   <!-- CSS Files -->
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/plugins.min.css" />
   <link rel="stylesheet" href="css/kaiadmin.min.css" />
+  <!-- angularjs -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="css/demo.css" />
 </head>
 
-<body>
+<body ng-app="orderApp" ng-controller="OrderController">
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="sidebar" data-background-color="dark">
@@ -64,7 +67,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a  href="BanHang.html" class="collapsed" aria-expanded="false">
+              <a href="BanHang.html" class="collapsed" aria-expanded="false">
                 <i class="fas fa-home"></i>
                 <p>Bán Hàng </p>
               </a>
@@ -137,7 +140,7 @@
               <div class="collapse" id="account">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="#">
+                    <a href="staff/Staff.html">
                       <span class="sub-item">Nhân Viên</span>
                     </a>
                   </li>
@@ -150,10 +153,10 @@
               </div>
             </li>
             <li class="nav-item active submenu">
-              <a  href="statistic.html">
+              <a href="statistic.html">
                 <i class="far fa-chart-bar"></i>
                 <p>Thống Kê</p>
-             
+
               </a>
               <!-- <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
@@ -488,7 +491,7 @@
             <div>
               <h3 class="fw-bold mb-3">Dashboard</h3>
             </div>
-     
+
           </div>
           <div class="row">
             <div class="col-sm-6 col-md-3">
@@ -622,7 +625,7 @@
                   <div class="card-category">
                     <input type="text" id="dateRangePicker" class="form-control" placeholder="Select date range" />
                   </div>
-                  
+
                 </div>
                 <div class="card-body pb-0">
                   <div class="mb-4 mt-2">
@@ -794,205 +797,307 @@
                           <th scope="col" class="text-end">Trạng Thái</th>
                         </tr>
                       </thead>
-                    
+                      <tbody>
+                        <!-- Dữ liệu sẽ được thêm vào từ JavaScript -->
+                      </tbody>
                     </table>
+                    <!-- Hiển thị thông báo lỗi hoặc thành công
+                    <div ng-if="errorMessage" class="alert alert-danger">
+                      {{errorMessage}}
+                    </div>
+                    <div ng-if="successMessage" class="alert alert-success">
+                      {{successMessage}}
+                    </div> -->
+
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-     
-      <footer class="footer">
-        <div class="container-fluid d-flex justify-content-between">
-          <nav class="pull-left">
-            <ul class="nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  Home
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"> Help </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"> Licenses </a>
-              </li>
-            </ul>
-          </nav>
-          <div class="copyright">
-            2024, made with <i class="fa fa-heart heart text-danger"></i> by
-            <a href="#">5 Anh Em Siêu Nhân</a>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <nav class="pull-left">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    Home
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Help </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Licenses </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="copyright">
+              2024, made with <i class="fa fa-heart heart text-danger"></i> by
+              <a href="#">5 Anh Em Siêu Nhân</a>
+            </div>
+            <div>
+              Distributed by
+              <a target="_blank" href="https://themewagon.com/">Bee-Shirt</a>.
+            </div>
           </div>
-          <div>
-            Distributed by
-            <a target="_blank" href="https://themewagon.com/">Bee-Shirt</a>.
+        </footer>
+      </div>
+
+      <!-- Custom template | don't include it in your project! -->
+      <div class="custom-template">
+        <div class="title">Settings</div>
+        <div class="custom-content">
+          <div class="switcher">
+            <div class="switch-block">
+              <h4>Logo Header</h4>
+              <div class="btnSwitch">
+                <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
+                <br />
+                <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
+                <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+              </div>
+            </div>
+            <div class="switch-block">
+              <h4>Navbar Header</h4>
+              <div class="btnSwitch">
+                <button type="button" class="changeTopBarColor" data-color="dark"></button>
+                <button type="button" class="changeTopBarColor" data-color="blue"></button>
+                <button type="button" class="changeTopBarColor" data-color="purple"></button>
+                <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
+                <button type="button" class="changeTopBarColor" data-color="green"></button>
+                <button type="button" class="changeTopBarColor" data-color="orange"></button>
+                <button type="button" class="changeTopBarColor" data-color="red"></button>
+                <button type="button" class="selected changeTopBarColor" data-color="white"></button>
+                <br />
+                <button type="button" class="changeTopBarColor" data-color="dark2"></button>
+                <button type="button" class="changeTopBarColor" data-color="blue2"></button>
+                <button type="button" class="changeTopBarColor" data-color="purple2"></button>
+                <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
+                <button type="button" class="changeTopBarColor" data-color="green2"></button>
+                <button type="button" class="changeTopBarColor" data-color="orange2"></button>
+                <button type="button" class="changeTopBarColor" data-color="red2"></button>
+              </div>
+            </div>
+            <div class="switch-block">
+              <h4>Sidebar</h4>
+              <div class="btnSwitch">
+                <button type="button" class="changeSideBarColor" data-color="white"></button>
+                <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
+                <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+              </div>
+            </div>
           </div>
         </div>
-      </footer>
-    </div>
-
-    <!-- Custom template | don't include it in your project! -->
-    <div class="custom-template">
-      <div class="title">Settings</div>
-      <div class="custom-content">
-        <div class="switcher">
-          <div class="switch-block">
-            <h4>Logo Header</h4>
-            <div class="btnSwitch">
-              <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
-              <br />
-              <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
-            </div>
-          </div>
-          <div class="switch-block">
-            <h4>Navbar Header</h4>
-            <div class="btnSwitch">
-              <button type="button" class="changeTopBarColor" data-color="dark"></button>
-              <button type="button" class="changeTopBarColor" data-color="blue"></button>
-              <button type="button" class="changeTopBarColor" data-color="purple"></button>
-              <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
-              <button type="button" class="changeTopBarColor" data-color="green"></button>
-              <button type="button" class="changeTopBarColor" data-color="orange"></button>
-              <button type="button" class="changeTopBarColor" data-color="red"></button>
-              <button type="button" class="selected changeTopBarColor" data-color="white"></button>
-              <br />
-              <button type="button" class="changeTopBarColor" data-color="dark2"></button>
-              <button type="button" class="changeTopBarColor" data-color="blue2"></button>
-              <button type="button" class="changeTopBarColor" data-color="purple2"></button>
-              <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
-              <button type="button" class="changeTopBarColor" data-color="green2"></button>
-              <button type="button" class="changeTopBarColor" data-color="orange2"></button>
-              <button type="button" class="changeTopBarColor" data-color="red2"></button>
-            </div>
-          </div>
-          <div class="switch-block">
-            <h4>Sidebar</h4>
-            <div class="btnSwitch">
-              <button type="button" class="changeSideBarColor" data-color="white"></button>
-              <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
-              <button type="button" class="changeSideBarColor" data-color="dark2"></button>
-            </div>
-          </div>
+        <div class="custom-toggle">
+          <i class="icon-settings"></i>
         </div>
       </div>
-      <div class="custom-toggle">
-        <i class="icon-settings"></i>
-      </div>
+      <!-- End Custom template -->
     </div>
-    <!-- End Custom template -->
-  </div>
-  <!--   Core JS Files   -->
-  <script src="js/core/jquery-3.7.1.min.js"></script>
-  <script src="js/core/popper.min.js"></script>
-  <script src="js/core/bootstrap.min.js"></script>
+    <!--   Core JS Files   -->
+    <script src="js/core/jquery-3.7.1.min.js"></script>
+    <script src="js/core/popper.min.js"></script>
+    <script src="js/core/bootstrap.min.js"></script>
 
-  <!-- jQuery Scrollbar -->
-  <script src="js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- jQuery Scrollbar -->
+    <script src="js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-  <!-- Chart JS -->
-  <script src="js/plugin/chart.js/chart.min.js"></script>
+    <!-- Chart JS -->
+    <script src="js/plugin/chart.js/chart.min.js"></script>
 
-  <!-- jQuery Sparkline -->
-  <script src="/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+    <!-- jQuery Sparkline -->
+    <script src="/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
-  <!-- Chart Circle -->
-  <script src="js/plugin/chart-circle/circles.min.js"></script>
+    <!-- Chart Circle -->
+    <script src="js/plugin/chart-circle/circles.min.js"></script>
 
-  <!-- Datatables -->
-  <script src="js/plugin/datatables/datatables.min.js"></script>
+    <!-- Datatables -->
+    <script src="js/plugin/datatables/datatables.min.js"></script>
 
-  <!-- Bootstrap Notify -->
-  <script src="js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
-  <!-- jQuery Vector Maps -->
-  <script src="js/plugin/jsvectormap/jsvectormap.min.js"></script>
-  <script src="js/plugin/jsvectormap/world.js"></script>
+    <!-- jQuery Vector Maps -->
+    <script src="js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="js/plugin/jsvectormap/world.js"></script>
 
-  <!-- Sweet Alert -->
-  <script src="js/plugin/sweetalert/sweetalert.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="js/plugin/sweetalert/sweetalert.min.js"></script>
 
-  <!-- Kaiadmin JS -->
-  <script src="js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="js/kaiadmin.min.js"></script>
 
-  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-  <script src="js/setting-demo.js"></script>
-  <script src="js/demo.js"></script>
-  <script src="js/oders.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="js/setting-demo.js"></script>
+    <script src="js/demo.js"></script>
+    <script src="js/oders.js"></script>
 
-  <script>
-    $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-      type: "line",
-      height: "70",
-      width: "100%",
-      lineWidth: "2",
-      lineColor: "#177dff",
-      fillColor: "rgba(23, 125, 255, 0.14)",
-    });
+    <script>
+      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#177dff",
+        fillColor: "rgba(23, 125, 255, 0.14)",
+      });
 
-    $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-      type: "line",
-      height: "70",
-      width: "100%",
-      lineWidth: "2",
-      lineColor: "#f3545d",
-      fillColor: "rgba(243, 84, 93, .14)",
-    });
+      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#f3545d",
+        fillColor: "rgba(243, 84, 93, .14)",
+      });
 
-    $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-      type: "line",
-      height: "70",
-      width: "100%",
-      lineWidth: "2",
-      lineColor: "#ffa534",
-      fillColor: "rgba(255, 165, 52, .14)",
-    });
-  </script>
-  <!-- //Lịch thống kê ngày tháng năm -->
-   <!-- Thêm CSS và JS cho Daterangepicker -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-<script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script>
-$(document).ready(function () {
-  $('#dateRangePicker').daterangepicker({
-    startDate: moment().subtract(7, 'days'),
-    endDate: moment(),
-    locale: {
-      format: 'DD/MM/YYYY', // Định dạng ngày
-      applyLabel: "Chọn",
-      cancelLabel: "Hủy",
-      fromLabel: "Từ",
-      toLabel: "Đến",
-      customRangeLabel: "Chọn khoảng",
-      daysOfWeek: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-      monthNames: [
-        "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
-      ],
-      firstDay: 1 // Bắt đầu từ thứ Hai
-    }
-  }, function (start, end) {
-    $('#dateRangePicker').val(start.format('DD/MM') + ' - ' + end.format('DD/MM'));
-  });
-});
+      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#ffa534",
+        fillColor: "rgba(255, 165, 52, .14)",
+      });
+    </script>
+    <!-- //Lịch thống kê ngày tháng năm -->
+    <!-- Thêm CSS và JS cho Daterangepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- <script>
+      $(document).ready(function () {
+        $('#dateRangePicker').daterangepicker({
+          startDate: moment().subtract(7, 'days'),
+          endDate: moment(),
+          locale: {
+            format: 'DD/MM/YYYY', // Định dạng ngày
+            applyLabel: "Chọn",
+            cancelLabel: "Hủy",
+            fromLabel: "Từ",
+            toLabel: "Đến",
+            customRangeLabel: "Chọn khoảng",
+            daysOfWeek: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+            monthNames: [
+              "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+              "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+            ],
+            firstDay: 1 // Bắt đầu từ thứ Hai
+          }
+        }, function (start, end) {
+          $('#dateRangePicker').val(start.format('DD/MM') + ' - ' + end.format('DD/MM'));
+        });
+      });
 
 
-</script>
+    </script> -->
+
+
+    <!-- <script>
+      $(document).ready(function () {
+        $("#basic-datatables").DataTable({});
+
+        $("#multi-filter-select").DataTable({
+          pageLength: 5,
+          initComplete: function () {
+            this.api()
+              .columns()
+              .every(function () {
+                var column = this;
+                var select = $(
+                  '<select class="form-select"><option value=""></option></select>'
+                )
+                  .appendTo($(column.footer()).empty())
+                  .on("change", function () {
+                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column
+                      .search(val ? "^" + val + "$" : "", true, false)
+                      .draw();
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                    select.append(
+                      '<option value="' + d + '">' + d + "</option>"
+                    );
+                  });
+              });
+          },
+        });
+
+        // Add Row
+        $("#add-row").DataTable({
+          pageLength: 5,
+        });
+
+        var action =
+          '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+        $("#addRowButton").click(function () {
+          $("#add-row")
+            .dataTable()
+            .fnAddData([
+              $("#addName").val(),
+              $("#addPosition").val(),
+              $("#addOffice").val(),
+              action,
+            ]);
+          $("#addRowModal").modal("hide");
+        });
+      });
+    </script> -->
+    <!-- <script>
+      // Hàm này để hiển thị form hóa đơn chi tiết
+      $(document).ready(function () {
+        // Hủy DataTable nếu đã tồn tại
+        if ($.fn.DataTable.isDataTable('#basic-datatables')) {
+          $('#basic-datatables').DataTable().destroy();
+        }
+
+        // Khởi tạo lại DataTable
+        var table = $('#basic-datatables').DataTable({
+          columns: [
+            { title: "STT" },
+            { title: "Mã Hóa Đơn" },
+            { title: "Ngày Thanh Toán" },
+            { title: "Hình Thức Thanh Toán" },
+            { title: "Tổng Tiền" },
+            { title: "Trạng Thái" }
+          ]
+        });
+
+
+
+
+      });
+
+      // Hàm để định dạng ngày
+      function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('vi-VN', options);
+      }
+
+    </script> -->
 </body>
 
 </html>

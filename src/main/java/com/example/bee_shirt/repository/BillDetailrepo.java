@@ -18,7 +18,10 @@ public interface BillDetailrepo extends JpaRepository<BillDetail, Integer> {
             "bd.price AS price, " +
             "v.name_voucher AS nameVoucher, " +
             "bl.subtotal_before_discount AS subtotalBeforeDiscount, " +
-            "(bd.price * bd.quantity) AS totalAmount " + // Tính tổng tiền tại đây
+            "bl.total_money AS totalMoney, " +
+            "bl.customer_name AS customerName, " +
+            "bl.address_customer AS addressCustomer, " +
+            "bl.phone_number AS phoneNumber " +
             "FROM bill_detail bd " +
             "JOIN bill bl ON bd.bill_id = bl.id " +
             "JOIN shirt_detail sd ON bd.shirt_detail_id = sd.id " +
@@ -27,9 +30,8 @@ public interface BillDetailrepo extends JpaRepository<BillDetail, Integer> {
             "JOIN size sz ON sd.size_id = sz.id " +
             "LEFT JOIN voucher v ON bl.voucher_id = v.id " +
             "LEFT JOIN image_shirt_detail img ON sd.id = img.shirt_detail_id AND img.main_image = 1 " +
-            "WHERE bl.code_bill = :codeBill",
+            "WHERE bl.code_bill = :codeBill", // Thêm điều kiện lọc này
             nativeQuery = true)
-    List<Object[]> findBillDetailsWithImageAndVoucherNative(@Param("codeBill") String codeBill);
+    List<Object[]> findBillDetailsByCodeBill(@Param("codeBill") String codeBill);
 
-    // Phương thức này sẽ trả về danh sách các Object[], từ đó có thể chuyển đổi trong service hoặc controller
 }
