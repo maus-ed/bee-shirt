@@ -1,21 +1,23 @@
 package com.example.bee_shirt.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
-@Entity
 @Table(name = "bill_detail")
+@Entity
 public class BillDetail {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "shirt_detail_id")
-    private Integer shirtDetailId;
+    @ManyToOne
+    @JoinColumn(name = "shirt_detail_id")
+    private ShirtDetail shirtDetail;
 
     @Column(name = "code_bill_detail", length = 50)
     private String codeBillDetail;
@@ -25,19 +27,12 @@ public class BillDetail {
 
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
-
     @Column(name = "status_bill_detail")
     private Integer statusBillDetail;
 
     @Column(name = "deleted")
     private Boolean deleted;
-
     @ManyToOne
-    @JoinColumn(name = "bill_id", insertable = false, updatable = false)
+    @JoinColumn(name = "bill_id")
     private Bill bill;
-
-    @ManyToOne
-    @JoinColumn(name = "bill_id", insertable = false, updatable = false)
-    private BillPayment billpayment;
-
 }

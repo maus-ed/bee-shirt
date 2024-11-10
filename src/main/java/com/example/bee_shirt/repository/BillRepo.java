@@ -2,6 +2,7 @@ package com.example.bee_shirt.repository;
 
 import com.example.bee_shirt.entity.Bill;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
