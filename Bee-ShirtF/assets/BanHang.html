@@ -488,73 +488,138 @@
       <!-- container -->
       <div class="container">
         <div class="page-inner">
-          <!-- Navbar -->
-          <nav class="navbar navbar-light bg-light p-3">
-            <div class="container-fluid">
-              <form id="searchForm">
-                <div class="input-group">
-                  <div class="position-relative">
-                    <input type="text" class="form-control" id="searchInput" placeholder="Search..."
-                      onkeyup="performSearch()" autocomplete="off">
-                    <ul id="suggestions" class="suggestions-list list-group position-absolute w-100"></ul>
-                  </div>
-                  <button class="btn btn-outline-secondary" type="button" onclick="scanBarcode()">
-                    <i class="bi bi-upc-scan"></i>
-                  </button>
-                  <button class="btn btn-outline-secondary" type="button" onclick="creatBill()">
-                    <i class="bi bi-plus-circle"></i>
-                  </button>
-                </div>
-              </form>
-              <div class="d-flex align-items-center">
-                <span class="me-3">Mauded</span>
-                <span>(; ´ д ` ) </span>
-              </div>
-            </div>
-          </nav>
-
-          <!-- Bill -->
-          <div class="container mt-3">
-            <div class="row justify-content-center">
-              <div class="col text-center" id="bill-buttons">
-                <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
-              </div>
+          <div class="page-header">
+            <h3 class="fw-bold mb-3">Bán Hàng</h3>
+            <ul class="breadcrumbs mb-3">
+              <li class="nav-home">
+                <a href="/statistic.html">
+                  <i class="fas fa-layer-group"></i>
+                </a>
+              </li>
+              <li class="separator">
+                <i class="icon-arrow-right"></i>
+              </li>
+              <li class="nav-item">
+                <a href="/assets/Bill.html">Bán Hàng</a>
+              </li>
+              <li class="separator">
+                <i class="icon-arrow-right"></i>
+              </li>
+              <li class="nav-item">
+                <a href="/assets/BillDetail.html">Tạo Hóa Đơn</a>
+              </li>
+            </ul>
+            <div class="ms-md-auto py-2 py-md-0">
+              <!-- <a href="#" class="btn btn-label-info btn-round me-2">Quản Lý</a> -->
+              <a href="BanHang.html" class="btn btn-primary btn-round" onclick="creatBill()">Thêm Hóa Đơn</a>
             </div>
           </div>
+          <!-- endheader bán hàng -->
 
-          <div class="container mt-4">
-            <div class="row">
-              <!-- Menu Section -->
-              <div class="col-lg-8">
-                <h3>Haha</h3>
-                <div class="row">
-                  <!-- Sample Menu Item -->
-                  <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
-                    <div class="card">
-                      <img src="abc.jpg" class="card-img-top" alt="Image">
-                      <div class="card-body">
-                        <h5
-                          th:text="${product.shirt.nameShirt + product.color.nameColor + product.size.nameSize + product.brand.nameBrand+product.material.nameMaterial}"
-                          class="card-title">Pasta Bolognese</h5>
-                        <p th:text="${product.price}" class="card-text">$50.5</p>
-                        <div class="d-flex align-items-center">
-                          <button class="btn btn-sm btn-outline-secondary">-</button>
-                          <input type="number" class="form-control w-25 mx-2 text-center" value="1">
-                          <button class="btn btn-sm btn-outline-secondary">+</button>
-                        </div>
-                      </div>
+
+          <div class="row">
+            <nav class="navbar navbar-light bg-light p-3">
+              <div class="container-fluid">
+                <form id="searchForm">
+                  <div class="input-group">
+                    <div class="position-relative">
+                      <input type="text" class="form-control" id="searchInput" placeholder="Search..."
+                        onkeyup="performSearch()" autocomplete="off">
+                      <ul id="suggestions" class="suggestions-list list-group position-absolute w-100"></ul>
                     </div>
+                    <button class="btn btn-outline-secondary" type="button" onclick="scanBarcode()">
+                      <i class="bi bi-upc-scan"></i>
+                    </button>
+
                   </div>
-                  <!-- Repeat for other menu items -->
+                </form>
+                <div class="d-flex align-items-center">
+                  <span class="me-3">muốn thêm nút gì thì thêm</span>
+                  <span> cho đỡ trống </span>
                 </div>
               </div>
-
+            </nav>
+            <div class="col-md-8">
+              <!-- Bill -->
+              <div class="container mt-3">
+                  <div class="row justify-content-center">
+                      <div class="col text-center" id="bill-buttons">
+                          <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
+                          <!-- Đây sẽ là phần có thanh cuộn khi nội dung vượt quá chiều cao -->
+                      </div>
+                  </div>
+              </div>
+              <div class="modal" id="myModal">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                              <h4 class="modal-title">Thêm sản phẩm</h4>
+                              <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
+                          </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                              <p id="shirtCodeDetail">Modal body..</p>
+                              <div class="mb-3">
+                                  <label for="quantityInput" class="form-label">Số lượng</label>
+                                  <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
+                              </div>
+                          </div>
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          
+              <!-- Modal 2 -->
+              <div class="modal" id="myModal2">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                              <h4 class="modal-title">Thêm sản phẩm</h4>
+                              <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
+                          </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                              <p id="shirtCodeDetail2">Modal body..</p>
+                              <div class="mb-3">
+                                  <label for="quantityInput" class="form-label">Số lượng</label>
+                                  <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
+                              </div>
+                          </div>
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+            <div class="col-md-4">
               <!-- Invoice Section -->
-              <div class="col-lg-4">
-                <h3>Invoice</h3>
-                <button type="button" class="btn btn-outline-secondary" onclick="cancel()">Hủy đơn</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="openModal2()">Sửa</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="remove()">Xóa</button>
+              <div class="col-lg-12">
+                <h3>Hóa Đơn</h3>
+                <button type="button" class="btn btn-danger btn-sm" onclick="cancel()">
+                  <i class="fas fa-times"></i>
+                  Hủy đơn
+                </button>
+                <!-- Nút "Sửa" -->
+                <button type="button" class="btn btn-primary btn-sm" onclick="openModal2()">
+                  <i class="fas fa-pen"></i>
+                  Sửa
+                </button>
+                <!-- Nút "Xóa" -->
+                <button type="button" class="btn btn-danger btn-sm" onclick="remove()">
+                  <i class="fas fa-trash"></i>
+                  Xóa
+                </button>
+
                 <ul class="list-group mb-3" id="product-list">
                   <!-- Sản phẩm sẽ được thêm vào đây -->
                 </ul>
@@ -580,224 +645,125 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- end container -->
-      <footer class="footer">
-        <div class="container-fluid d-flex justify-content-between">
-          <nav class="pull-left">
-            <ul class="nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  Home
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"> Help </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"> Licenses </a>
-              </li>
-            </ul>
-          </nav>
-          <div class="copyright">
-            2024, made with <i class="fa fa-heart heart text-danger"></i> by
-            <a href="#">5 Anh Em Siêu Nhân</a>
-          </div>
-          <div>
-            Distributed by
-            <a target="_blank" href="https://themewagon.com/">Bee-Shirt</a>.
-          </div>
-        </div>
-      </footer>
-    </div>
-
-    <!-- Custom template | don't include it in your project! -->
-    <div class="custom-template">
-      <div class="title">Settings</div>
-      <div class="custom-content">
-        <div class="switcher">
-          <div class="switch-block">
-            <h4>Logo Header</h4>
-            <div class="btnSwitch">
-              <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
-              <br />
-              <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
-              <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+          <div class="row">
+          <h3>Sản phẩm</h3>
+            <!-- Sample Menu Item -->
+            <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
+              <div class="card">
+                <img src="abc.jpg" class="card-img-top" alt="Image">
+                <div class="card-body">
+                  <h5
+                    th:text="${product.shirt.nameShirt + product.color.nameColor + product.size.nameSize + product.brand.nameBrand+product.material.nameMaterial}"
+                    class="card-title">Tự thiết kế nhé. Đây sẽ là giao diện ảnh của các SP trong hóa đơn</h5>
+                  <p th:text="${product.price}" class="card-text">Giá:$50.5</p>
+                  <div class="d-flex align-items-center">
+                    Số Lượng:
+                    <button class="btn btn-sm btn-outline-secondary">-</button>
+                    <input type="number" class="form-control w-25 mx-2 text-center" value="1">
+                    <button class="btn btn-sm btn-outline-secondary">+</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="switch-block">
-            <h4>Navbar Header</h4>
-            <div class="btnSwitch">
-              <button type="button" class="changeTopBarColor" data-color="dark"></button>
-              <button type="button" class="changeTopBarColor" data-color="blue"></button>
-              <button type="button" class="changeTopBarColor" data-color="purple"></button>
-              <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
-              <button type="button" class="changeTopBarColor" data-color="green"></button>
-              <button type="button" class="changeTopBarColor" data-color="orange"></button>
-              <button type="button" class="changeTopBarColor" data-color="red"></button>
-              <button type="button" class="selected changeTopBarColor" data-color="white"></button>
-              <br />
-              <button type="button" class="changeTopBarColor" data-color="dark2"></button>
-              <button type="button" class="changeTopBarColor" data-color="blue2"></button>
-              <button type="button" class="changeTopBarColor" data-color="purple2"></button>
-              <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
-              <button type="button" class="changeTopBarColor" data-color="green2"></button>
-              <button type="button" class="changeTopBarColor" data-color="orange2"></button>
-              <button type="button" class="changeTopBarColor" data-color="red2"></button>
-            </div>
-          </div>
-          <div class="switch-block">
-            <h4>Sidebar</h4>
-            <div class="btnSwitch">
-              <button type="button" class="changeSideBarColor" data-color="white"></button>
-              <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
-              <button type="button" class="changeSideBarColor" data-color="dark2"></button>
-            </div>
-          </div>
+          <!-- Repeat for other menu items -->
+
         </div>
-      </div>
-      <div class="custom-toggle">
-        <i class="icon-settings"></i>
       </div>
     </div>
-    <!-- End Custom template -->
+    <!-- end container -->
+    <footer class="footer">
+      <div class="container-fluid d-flex justify-content-between">
+        <nav class="pull-left">
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Help </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Licenses </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="copyright">
+          2024, made with <i class="fa fa-heart heart text-danger"></i> by
+          <a href="#">5 Anh Em Siêu Nhân</a>
+        </div>
+        <div>
+          Distributed by
+          <a target="_blank" href="https://themewagon.com/">Bee-Shirt</a>.
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <!--__  __           _       _-->
-  <!--|  \/  |         | |     | |-->
-  <!--| \  / | ___   __| | __ _| |-->
-  <!--| |\/| |/ _ \ / _` |/ _` | |-->
-  <!--| |  | | (_) | (_| | (_| | |-->
-  <!--|_|  |_|\___/ \__,_|\__,_|_|-->
-
-
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Thêm sản phẩm</h4>
-          <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <p id="shirtCodeDetail">Modal body..</p>
-          <div class="mb-3">
-            <label for="quantityInput" class="form-label">Số lượng</label>
-            <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
+  <!-- Custom template | don't include it in your project! -->
+  <div class="custom-template">
+    <div class="title">Settings</div>
+    <div class="custom-content">
+      <div class="switcher">
+        <div class="switch-block">
+          <h4>Logo Header</h4>
+          <div class="btnSwitch">
+            <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
+            <br />
+            <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
+            <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
           </div>
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="myModal2">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Thêm sản phẩm</h4>
-          <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <p id="shirtCodeDetail2">Modal body..</p>
-          <div class="mb-3">
-            <label for="quantityInput" class="form-label">Số lượng</label>
-            <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
+        <div class="switch-block">
+          <h4>Navbar Header</h4>
+          <div class="btnSwitch">
+            <button type="button" class="changeTopBarColor" data-color="dark"></button>
+            <button type="button" class="changeTopBarColor" data-color="blue"></button>
+            <button type="button" class="changeTopBarColor" data-color="purple"></button>
+            <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
+            <button type="button" class="changeTopBarColor" data-color="green"></button>
+            <button type="button" class="changeTopBarColor" data-color="orange"></button>
+            <button type="button" class="changeTopBarColor" data-color="red"></button>
+            <button type="button" class="selected changeTopBarColor" data-color="white"></button>
+            <br />
+            <button type="button" class="changeTopBarColor" data-color="dark2"></button>
+            <button type="button" class="changeTopBarColor" data-color="blue2"></button>
+            <button type="button" class="changeTopBarColor" data-color="purple2"></button>
+            <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
+            <button type="button" class="changeTopBarColor" data-color="green2"></button>
+            <button type="button" class="changeTopBarColor" data-color="orange2"></button>
+            <button type="button" class="changeTopBarColor" data-color="red2"></button>
           </div>
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
+        <div class="switch-block">
+          <h4>Sidebar</h4>
+          <div class="btnSwitch">
+            <button type="button" class="changeSideBarColor" data-color="white"></button>
+            <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
+            <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+          </div>
         </div>
-
       </div>
     </div>
+    <div class="custom-toggle">
+      <i class="icon-settings"></i>
+    </div>
   </div>
-
-  <style>
-    body {
-        background-color: #f8f8f8;
-    }
-
-    .navbar {
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card {
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        border: none;
-        border-radius: 8px;
-    }
-
-    .list-group-item {
-        font-size: 14px;
-    }
-
-    .card-body h5 {
-        font-weight: bold;
-    }
-
-
-    .suggestions-list {
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000; /* Đảm bảo hiển thị trên các thành phần khác */
-        border: 1px solid #ddd;
-        background-color: white;
-        border-radius: 0 0 5px 5px;
-        margin-top: -1px; /* Để tránh khoảng trống giữa input và ul */
-    }
-
-    .suggestions-list li {
-        padding: 10px;
-        cursor: pointer;
-    }
-
-    .suggestions-list li:hover {
-        background-color: #f1f1f1;
-    }
-
-    button.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    /* CSS cho lớp highlight */
-    .highlight {
-        background-color: #f0f8ff; /* Màu nền khi highlight */
-        font-weight: bold; /* Có thể thêm các hiệu ứng khác */
-    }
-</style>
-
+  <!-- End Custom template -->
+  </div>
   <!--   Core JS Files   -->
   <script src="js/core/jquery-3.7.1.min.js"></script>
   <script src="js/core/popper.min.js"></script>
@@ -835,6 +801,66 @@
   <script src="js/setting-demo.js"></script>
   <script src="js/demo.js"></script>
   <script src="js/oders.js"></script>
+
+  <style>
+    body {
+      background-color: #f8f8f8;
+    }
+
+    .navbar {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 8px;
+    }
+
+    .list-group-item {
+      font-size: 14px;
+    }
+
+    .card-body h5 {
+      font-weight: bold;
+    }
+
+
+    .suggestions-list {
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      /* Đảm bảo hiển thị trên các thành phần khác */
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 0 0 5px 5px;
+      margin-top: -1px;
+      /* Để tránh khoảng trống giữa input và ul */
+    }
+
+    .suggestions-list li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestions-list li:hover {
+      background-color: #f1f1f1;
+    }
+
+    button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    /* CSS cho lớp highlight */
+    .highlight {
+      background-color: #f0f8ff;
+      /* Màu nền khi highlight */
+      font-weight: bold;
+      /* Có thể thêm các hiệu ứng khác */
+    }
+  </style>
 
   <script type="text/javascript">
 

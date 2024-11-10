@@ -51,7 +51,6 @@ public class AccountUpdateRequest {
     @Size(min = 3,message = "USERNAME_INVALID")
     String username;
 
-    //validate password
 
     @NotNull(message = "PASSWORD NOT EMPTY")
     @Size(min = 5,message = "PASSWORD_INVALID")

@@ -76,7 +76,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     long getAllTotalPageClient();  // Trả về số lượng bản ghi tổng cộng
 
     @Query(value = """
->>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
             SELECT a.*
              FROM account a
              INNER JOIN account_role ar ON a.id = ar.account_id

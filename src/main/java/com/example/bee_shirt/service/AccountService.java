@@ -59,6 +59,7 @@ public class AccountService {
         return getAccountsWithRoles(accountRepository.getAll());
     }
 
+
     public List<AccountResponse> getAllClient() {
         return getAccountsWithRoles(accountRepository.getAllClient());
     }
@@ -66,6 +67,7 @@ public class AccountService {
     public List<AccountResponse> getAllStaff() {
         return getAccountsWithRoles(accountRepository.getAllStaff());
     }
+
 
     public List<AccountResponse> getAllPagingStaff(Pageable pageable) {
         Page<Account> page = accountRepository.getAllPagingStaff(pageable);
@@ -140,6 +142,7 @@ public class AccountService {
         return accountMapper.toUserResponse(accountRepository.save(account));
     }
 
+
     public AccountResponse updateAccount(AccountUpdateRequest request, String code) {
         Account account = accountRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -213,6 +216,7 @@ public class AccountService {
             return "ACC1";
         }
     }
+
 
     public AccountResponse findByCode(String code){
         Account account = accountRepository.findByCode(code)
