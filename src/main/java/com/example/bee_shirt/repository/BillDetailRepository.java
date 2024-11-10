@@ -14,6 +14,4 @@ public interface BillDetailRepository extends JpaRepository<BillDetail,Integer> 
     @Query("SELECT bd FROM BillDetail bd WHERE bd.bill.codeBill LIKE :query AND bd.statusBillDetail = :status")
     List<BillDetail> findBillDetailByBillCodeAndStatusBillDetail(String query, Integer status);
 
-    @Query("SELECT bd FROM BillDetail bd WHERE bd.bill.codeBill LIKE :codeBill AND bd.shirtDetail.codeShirtDetail like :codeShirtDetail AND bd.statusBillDetail = :status")
-    BillDetail findBillDetailByCodeBillAndCodeShirtDetailAndStatusBillDetail(String codeBill, String codeShirtDetail, Integer status);
 }
