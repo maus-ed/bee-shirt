@@ -46,7 +46,10 @@ public class AccountResponse {
 
     String email;
 
+<<<<<<< HEAD
+=======
     String deleted;
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     Set<RoleResponse> role;
 }

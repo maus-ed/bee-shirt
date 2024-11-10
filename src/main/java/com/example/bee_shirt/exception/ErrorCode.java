@@ -32,7 +32,9 @@ public enum ErrorCode {
 
     INVALID_FILE_TYPE(1012,"This file is not image",HttpStatus.BAD_REQUEST),
 
+
     ACCOUNT_NOT_FOUND(1013,"Account not found",HttpStatus.NOT_FOUND)
+
 
     ;
     private int code;

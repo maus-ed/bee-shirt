@@ -1,7 +1,10 @@
 package com.example.bee_shirt.controller;
 
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
+<<<<<<< HEAD
+=======
 import com.example.bee_shirt.dto.request.AccountUpdateRequest;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.dto.response.ApiResponse;
 import com.example.bee_shirt.dto.response.RoleResponse;
@@ -11,7 +14,10 @@ import com.example.bee_shirt.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+=======
 import org.springframework.data.domain.PageRequest;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,6 +63,8 @@ public class AdminController {
                 .build();
     }
 
+<<<<<<< HEAD
+=======
     // phân trang staff
     @GetMapping("/staffs/{page}")
     public ResponseEntity<ApiResponse<List<AccountResponse>>> getAllPagingStaff(@PathVariable Integer page) {
@@ -104,6 +112,7 @@ public class AdminController {
     }
 
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     @GetMapping("/clients")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<List<AccountResponse>> getClients() {
@@ -117,7 +126,10 @@ public class AdminController {
     @PostMapping(value = "/create", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<AccountResponse> createUser(
+<<<<<<< HEAD
+=======
             @Valid
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("phone") String phone,
@@ -174,6 +186,8 @@ public class AdminController {
         }
     }
 
+<<<<<<< HEAD
+=======
     //thêm @Valid để update chạy validate
     @PutMapping(value = "/update/{code}", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -233,4 +247,5 @@ public class AdminController {
     }
 
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 }
