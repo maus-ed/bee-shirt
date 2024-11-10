@@ -1,12 +1,17 @@
 package com.example.bee_shirt.repository;
 
+<<<<<<< HEAD
 import com.example.bee_shirt.dto.ShirtDetailDTO;
 import com.example.bee_shirt.entity.ShirtDetail;
 import org.springframework.data.domain.Page;
+=======
+import com.example.bee_shirt.entity.ShirtDetail;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+<<<<<<< HEAD
 public interface ShirtDetailRepository extends JpaRepository<ShirtDetail, Integer> {
 
     // Truy vấn tất cả chi tiết áo không bị xóa và có trạng thái 1
@@ -47,4 +52,14 @@ public interface ShirtDetailRepository extends JpaRepository<ShirtDetail, Intege
             "WHERE sdt.codeShirtDetail = ?1 AND sdt.deleted = false AND sdt.statusshirtdetail = 0 " +
             "ORDER BY sdt.id DESC")
     ShirtDetailDTO findByCodeShirtDetailDTO(String codeShirtDetail);
+=======
+import java.util.List;
+
+public interface ShirtDetailRepository extends JpaRepository<ShirtDetail, Integer> {
+    @Query("SELECT sd FROM ShirtDetail sd WHERE (sd.codeShirtDetail LIKE :query) OR (sd.shirt.nameShirt LIKE :query)")
+    List<ShirtDetail> findListShirtDetailByCodeOrName(String query, Pageable pageable);
+
+    @Query("SELECT sd FROM ShirtDetail sd WHERE sd.codeShirtDetail LIKE :query")
+    ShirtDetail findShirtDetailByCode(String query);
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 }

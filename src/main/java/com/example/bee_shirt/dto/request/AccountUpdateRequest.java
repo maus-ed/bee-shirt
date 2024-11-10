@@ -1,7 +1,13 @@
 package com.example.bee_shirt.dto.request;
 
+<<<<<<< HEAD
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+=======
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micrometer.common.lang.Nullable;
+import jakarta.validation.constraints.*;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +24,7 @@ import java.util.List;
 //Access ModiFier
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountUpdateRequest {
+<<<<<<< HEAD
     String firstName;
 
     String lastName;
@@ -26,10 +33,28 @@ public class AccountUpdateRequest {
 
     String address;
 
+=======
+    String code;
+    @NotEmpty(message = "FIRST NAME NOT EMPTY")
+    String firstName;
+    @NotEmpty(message = "LAST NAME NOT EMPTY")
+    String lastName;
+
+    MultipartFile avatarFile;
+
+    @Nullable
+    @Pattern(regexp = "^(https?|ftp)://[^\s/$.?#].[^\s]*$", message = "AVATAR_URL_INVALID")
+    String avatar;
+
+    String address;
+    @NotEmpty(message = "PHONE NOT EMPTY")
+    @Pattern(regexp = "^(0[3|5|7|8|9])[0-9]{8}$", message = "PHONE_INVALID")
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     String phone;
 
     Integer status;
 
+<<<<<<< HEAD
     LocalDate updateAt;
 
     String updateBy;
@@ -38,12 +63,31 @@ public class AccountUpdateRequest {
 
     MultipartFile avatarFile;
 
+=======
+    Boolean deleted;
+
+    @NotEmpty(message = "EMAIL NOT EMPTY")
+    @Email(message = "EMAIL_INVALID")
+    String email;
+
+    @NotEmpty(message = "USERNAME NOT EMPTY")
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     @Size(min = 3,message = "USERNAME_INVALID")
     String username;
 
     //validate password
+<<<<<<< HEAD
     @Size(min = 5,message = "PASSWORD_INVALID")
     String pass;
 
     List<Integer> role;
+=======
+    @NotNull(message = "PASSWORD NOT EMPTY")
+    @Size(min = 5,message = "PASSWORD_INVALID")
+    String pass;
+
+    String createBy;
+
+    List<String> role;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 }

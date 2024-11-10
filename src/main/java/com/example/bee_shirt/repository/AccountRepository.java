@@ -2,6 +2,11 @@ package com.example.bee_shirt.repository;
 
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.entity.Account;
+<<<<<<< HEAD
+=======
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,6 +37,49 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     List<Account> getAllStaff();
 
     @Query(value = """
+<<<<<<< HEAD
+=======
+            SELECT a.*, ar.role_id, r.code_role
+            FROM account a
+            INNER JOIN account_role ar ON a.id = ar.account_id
+            INNER JOIN role_A r ON ar.role_id = r.id
+            WHERE a.deleted = 0 AND r.code_role = 'STAFF'
+            ORDER BY a.id DESC; 
+             """, nativeQuery = true)
+    Page<Account> getAllPagingStaff(Pageable pageable);
+
+
+    @Query(value = """
+            SELECT COUNT(a.id)
+             FROM account a
+             INNER JOIN account_role ar ON a.id = ar.account_id
+             INNER JOIN role_A r ON ar.role_id = r.id
+             WHERE a.deleted = 0 AND (r.code_role LIKE 'STAFF')
+            """, nativeQuery = true)
+    long getAllTotalPageStaff();  // Trả về số lượng bản ghi tổng cộng
+
+    @Query(value = """
+            SELECT a.*, ar.role_id, r.code_role
+            FROM account a
+            INNER JOIN account_role ar ON a.id = ar.account_id
+            INNER JOIN role_A r ON ar.role_id = r.id
+            WHERE a.deleted = 0 AND r.code_role = 'USER'
+            ORDER BY a.id DESC; 
+             """, nativeQuery = true)
+    Page<Account> getAllPagingClient(Pageable pageable);
+
+
+    @Query(value = """
+            SELECT COUNT(a.id)
+             FROM account a
+             INNER JOIN account_role ar ON a.id = ar.account_id
+             INNER JOIN role_A r ON ar.role_id = r.id
+             WHERE a.deleted = 0 AND (r.code_role LIKE 'USER')
+            """, nativeQuery = true)
+    long getAllTotalPageClient();  // Trả về số lượng bản ghi tổng cộng
+
+    @Query(value = """
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
             SELECT a.*
              FROM account a
              INNER JOIN account_role ar ON a.id = ar.account_id
