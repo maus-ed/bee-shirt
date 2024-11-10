@@ -3,7 +3,10 @@ package com.example.bee_shirt.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
+<<<<<<< HEAD
+=======
 import com.example.bee_shirt.dto.request.AccountUpdateRequest;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.entity.Account;
 import com.example.bee_shirt.entity.Role;
@@ -16,8 +19,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< HEAD
+=======
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +37,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
+<<<<<<< HEAD
+=======
 import java.util.stream.Collectors;
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 
 @Service
 @RequiredArgsConstructor
@@ -56,14 +65,23 @@ public class AccountService {
         return getAccountsWithRoles(accountRepository.getAll());
     }
 
+<<<<<<< HEAD
+=======
     public List<AccountResponse> getAllClient() {
         return getAccountsWithRoles(accountRepository.getAllClient());
     }
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     public List<AccountResponse> getAllStaff() {
         return getAccountsWithRoles(accountRepository.getAllStaff());
     }
 
+<<<<<<< HEAD
+    public List<AccountResponse> getAllClient() {
+        return getAccountsWithRoles(accountRepository.getAllClient());
+    }
+
+=======
     public List<AccountResponse> getAllPagingStaff(Pageable pageable) {
         Page<Account> page = accountRepository.getAllPagingStaff(pageable);
         return page.getContent().stream()
@@ -91,6 +109,7 @@ public class AccountService {
     }
 
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     private List<AccountResponse> getAccountsWithRoles(List<Account> accounts) {
         accounts.forEach(account ->
                 log.info("Account: {} - Roles: {}", account.getUsername(), account.getRole())
@@ -99,8 +118,11 @@ public class AccountService {
                 .map(accountMapper::toUserResponse)
                 .toList();
     }
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     public AccountResponse deleteAccount(String code){
         Account account =accountRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
@@ -137,6 +159,8 @@ public class AccountService {
         return accountMapper.toUserResponse(accountRepository.save(account));
     }
 
+<<<<<<< HEAD
+=======
     public AccountResponse updateAccount(AccountUpdateRequest request, String code) {
         Account account = accountRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -178,6 +202,7 @@ public class AccountService {
     }
 
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     private String uploadAvatar(MultipartFile avatarFile) {
         if (avatarFile != null && !avatarFile.isEmpty()) {
             try {
@@ -211,12 +236,15 @@ public class AccountService {
         }
     }
 
+<<<<<<< HEAD
+=======
     public AccountResponse findByCode(String code){
         Account account = accountRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
         return accountMapper.toUserResponse(account);
     }
 
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }

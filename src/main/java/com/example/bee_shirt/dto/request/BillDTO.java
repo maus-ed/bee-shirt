@@ -8,6 +8,21 @@ import java.time.LocalDate;
 @Data
 public class BillDTO {
 
+<<<<<<< HEAD
+        private String codeBill;
+        private LocalDate desiredDate;
+        private BigDecimal totalMoney;
+        private Integer statusBill;
+
+        // Constructor, getters và setters
+        public BillDTO(String codeBill, LocalDate desiredDate, BigDecimal totalMoney, Integer statusBill) {
+            this.codeBill = codeBill;
+            this.desiredDate = desiredDate;
+            this.totalMoney = totalMoney;
+            this.statusBill = statusBill;
+        }
+
+=======
     private String codeBill;
     private String customerName;
     private LocalDate desiredDate;
@@ -25,4 +40,5 @@ public class BillDTO {
         this.totalMoney = totalMoney;
         this.statusBill = statusBill;
     }
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 }

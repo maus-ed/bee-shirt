@@ -1,5 +1,8 @@
 package com.example.bee_shirt.controller;
 
+<<<<<<< HEAD
+public class BillDetailController {
+=======
 import com.example.bee_shirt.dto.request.BillDetailDTO;
 import com.example.bee_shirt.dto.response.ApiResponse;
 import com.example.bee_shirt.service.BillDetailService; // Sử dụng service thay vì repository
@@ -33,4 +36,5 @@ public class BillDetailController {
                 .result(billDetails)
                 .build();
     }
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 }

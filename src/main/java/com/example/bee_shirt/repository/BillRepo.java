@@ -2,6 +2,10 @@ package com.example.bee_shirt.repository;
 
 import com.example.bee_shirt.entity.Bill;
 import org.springframework.data.jpa.repository.JpaRepository;
+<<<<<<< HEAD
+
+public interface BillRepo extends JpaRepository<Bill,Integer> {
+=======
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -20,4 +24,5 @@ public interface BillRepo extends JpaRepository<Bill, Integer> {
             "LEFT JOIN voucher v ON bl.voucher_id = v.id",
             nativeQuery = true)
     List<Object[]> findBillSummaryNative();
+>>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 }
