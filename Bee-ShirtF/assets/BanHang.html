@@ -488,171 +488,97 @@
       <!-- container -->
       <div class="container">
         <div class="page-inner">
-          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-              <nav class="navbar navbar-light bg-light p-3">
-                <div class="container-fluid">
-                  <form id="searchForm">
-                    <div class="input-group">
-                      <div class="position-relative">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Search..."
-                          onkeyup="performSearch()" autocomplete="off">
-                        <ul id="suggestions" class="suggestions-list list-group position-absolute w-100"></ul>
-                      </div>
-                      <button class="btn btn-outline-secondary" type="button" onclick="scanBarcode()">
-                        <i class="bi bi-upc-scan"></i>
-                      </button>
-                      <button class="btn btn-outline-secondary" type="button" onclick="creatBill()">
-                        <i class="bi bi-plus-circle"></i>
-                      </button>
-                    </div>
-                  </form>
-                  <div class="d-flex align-items-center">
-                    <span class="me-3">Mauded</span>
-                    <span>(; ´ д ` ) </span>
+          <!-- Navbar -->
+          <nav class="navbar navbar-light bg-light p-3">
+            <div class="container-fluid">
+              <form id="searchForm">
+                <div class="input-group">
+                  <div class="position-relative">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search..."
+                      onkeyup="performSearch()" autocomplete="off">
+                    <ul id="suggestions" class="suggestions-list list-group position-absolute w-100"></ul>
                   </div>
+                  <button class="btn btn-outline-secondary" type="button" onclick="scanBarcode()">
+                    <i class="bi bi-upc-scan"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" onclick="creatBill()">
+                    <i class="bi bi-plus-circle"></i>
+                  </button>
                 </div>
-              </nav>
-
-              <!-- Bill -->
-              <div class="container mt-3">
-                <div class="row justify-content-center">
-                  <div class="col text-center" id="bill-buttons">
-                    <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
-                  </div>
-                </div>
+              </form>
+              <div class="d-flex align-items-center">
+                <span class="me-3">Mauded</span>
+                <span>(; ´ д ` ) </span>
               </div>
+            </div>
+          </nav>
 
-              <!-- Main content -->
-              <div class="container mt-4">
+          <!-- Bill -->
+          <div class="container mt-3">
+            <div class="row justify-content-center">
+              <div class="col text-center" id="bill-buttons">
+                <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
+              </div>
+            </div>
+          </div>
+
+          <div class="container mt-4">
+            <div class="row">
+              <!-- Menu Section -->
+              <div class="col-lg-8">
+                <h3>Haha</h3>
                 <div class="row">
-                  <!-- Menu Section -->
-                  <div class="col-lg-8">
-                    <h3>Haha</h3>
-                    <div class="row">
-                      <!-- Sample Menu Item -->
-                      <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
-                        <div class="card">
-                          <img src="abc.jpg" class="card-img-top" alt="Image">
-                          <div class="card-body">
-                            <h5
-                              th:text="${product.shirt.nameShirt + product.color.nameColor + product.size.nameSize + product.brand.nameBrand+product.material.nameMaterial}"
-                              class="card-title">Pasta Bolognese</h5>
-                            <p th:text="${product.price}" class="card-text">$50.5</p>
-                            <div class="d-flex align-items-center">
-                              <button class="btn btn-sm btn-outline-secondary">-</button>
-                              <input type="number" class="form-control w-25 mx-2 text-center" value="1">
-                              <button class="btn btn-sm btn-outline-secondary">+</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Repeat for other menu items -->
-                    </div>
-                  </div>
-
-                  <!-- Invoice Section -->
-                  <div class="col-lg-4">
-                    <h3>Invoice</h3>
-                    <button type="button" class="btn btn-outline-secondary" onclick="cancel()">Hủy đơn</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="openModal2()">Sửa</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="remove()">Xóa</button>
-                    <ul class="list-group mb-3" id="product-list">
-                      <!-- Sản phẩm sẽ được thêm vào đây -->
-                    </ul>
-
+                  <!-- Sample Menu Item -->
+                  <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
                     <div class="card">
+                      <img src="abc.jpg" class="card-img-top" alt="Image">
                       <div class="card-body">
-                        <h5 class="card-title">Payment Summary</h5>
-                        <div class="d-flex justify-content-between">
-                          <span>Sub Total</span>
-                          <span id="subtotal">$131.2</span>
+                        <h5
+                          th:text="${product.shirt.nameShirt + product.color.nameColor + product.size.nameSize + product.brand.nameBrand+product.material.nameMaterial}"
+                          class="card-title">Pasta Bolognese</h5>
+                        <p th:text="${product.price}" class="card-text">$50.5</p>
+                        <div class="d-flex align-items-center">
+                          <button class="btn btn-sm btn-outline-secondary">-</button>
+                          <input type="number" class="form-control w-25 mx-2 text-center" value="1">
+                          <button class="btn btn-sm btn-outline-secondary">+</button>
                         </div>
-                        <div class="d-flex justify-content-between">
-                          <span>Tax</span>
-                          <span id="tax">$5.2</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                          <span><strong>Total Payment</strong></span>
-                          <span><strong id="totalPayment">$136.4</strong></span>
-                        </div>
-                        <button class="btn btn-primary w-100" onclick="checkout()">Place An Order</button>
                       </div>
                     </div>
                   </div>
+                  <!-- Repeat for other menu items -->
                 </div>
               </div>
 
+              <!-- Invoice Section -->
+              <div class="col-lg-4">
+                <h3>Invoice</h3>
+                <button type="button" class="btn btn-outline-secondary" onclick="cancel()">Hủy đơn</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="openModal2()">Sửa</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="remove()">Xóa</button>
+                <ul class="list-group mb-3" id="product-list">
+                  <!-- Sản phẩm sẽ được thêm vào đây -->
+                </ul>
 
-              <!--__  __           _       _-->
-              <!--|  \/  |         | |     | |-->
-              <!--| \  / | ___   __| | __ _| |-->
-              <!--| |\/| |/ _ \ / _` |/ _` | |-->
-              <!--| |  | | (_) | (_| | (_| | |-->
-              <!--|_|  |_|\___/ \__,_|\__,_|_|-->
-
-
-              <div class="modal" id="myModal">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                      <h4 class="modal-title">Thêm sản phẩm</h4>
-                      <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Payment Summary</h5>
+                    <div class="d-flex justify-content-between">
+                      <span>Sub Total</span>
+                      <span id="subtotal">$131.2</span>
                     </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                      <p id="shirtCodeDetail">Modal body..</p>
-                      <div class="mb-3">
-                        <label for="quantityInput" class="form-label">Số lượng</label>
-                        <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1"
-                          value="1">
-                      </div>
+                    <div class="d-flex justify-content-between">
+                      <span>Tax</span>
+                      <span id="tax">$5.2</span>
                     </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
+                    <div class="d-flex justify-content-between mb-3">
+                      <span><strong>Total Payment</strong></span>
+                      <span><strong id="totalPayment">$136.4</strong></span>
                     </div>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="modal" id="myModal2">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                      <h4 class="modal-title">Thêm sản phẩm</h4>
-                      <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                      <p id="shirtCodeDetail2">Modal body..</p>
-                      <div class="mb-3">
-                        <label for="quantityInput" class="form-label">Số lượng</label>
-                        <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng"
-                          min="1" value="1">
-                      </div>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
-                    </div>
-
+                    <button class="btn btn-primary w-100" onclick="checkout()">Place An Order</button>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -749,43 +675,72 @@
     </div>
     <!-- End Custom template -->
   </div>
-  <!--   Core JS Files   -->
-  <script src="js/core/jquery-3.7.1.min.js"></script>
-  <script src="js/core/popper.min.js"></script>
-  <script src="js/core/bootstrap.min.js"></script>
 
-  <!-- jQuery Scrollbar -->
-  <script src="js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+  <!--__  __           _       _-->
+  <!--|  \/  |         | |     | |-->
+  <!--| \  / | ___   __| | __ _| |-->
+  <!--| |\/| |/ _ \ / _` |/ _` | |-->
+  <!--| |  | | (_) | (_| | (_| | |-->
+  <!--|_|  |_|\___/ \__,_|\__,_|_|-->
 
-  <!-- Chart JS -->
-  <script src="js/plugin/chart.js/chart.min.js"></script>
 
-  <!-- jQuery Sparkline -->
-  <script src="/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
-  <!-- Chart Circle -->
-  <script src="js/plugin/chart-circle/circles.min.js"></script>
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Thêm sản phẩm</h4>
+          <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
+        </div>
 
-  <!-- Datatables -->
-  <script src="js/plugin/datatables/datatables.min.js"></script>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p id="shirtCodeDetail">Modal body..</p>
+          <div class="mb-3">
+            <label for="quantityInput" class="form-label">Số lượng</label>
+            <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
+          </div>
+        </div>
 
-  <!-- Bootstrap Notify -->
-  <script src="js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
+        </div>
 
-  <!-- jQuery Vector Maps -->
-  <script src="js/plugin/jsvectormap/jsvectormap.min.js"></script>
-  <script src="js/plugin/jsvectormap/world.js"></script>
+      </div>
+    </div>
+  </div>
 
-  <!-- Sweet Alert -->
-  <script src="js/plugin/sweetalert/sweetalert.min.js"></script>
+  <div class="modal" id="myModal2">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
-  <!-- Kaiadmin JS -->
-  <script src="js/kaiadmin.min.js"></script>
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Thêm sản phẩm</h4>
+          <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
+        </div>
 
-  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-  <script src="js/setting-demo.js"></script>
-  <script src="js/demo.js"></script>
-  <script src="js/oders.js"></script>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p id="shirtCodeDetail2">Modal body..</p>
+          <div class="mb-3">
+            <label for="quantityInput" class="form-label">Số lượng</label>
+            <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <style>
     body {
@@ -843,6 +798,44 @@
     }
 </style>
 
+  <!--   Core JS Files   -->
+  <script src="js/core/jquery-3.7.1.min.js"></script>
+  <script src="js/core/popper.min.js"></script>
+  <script src="js/core/bootstrap.min.js"></script>
+
+  <!-- jQuery Scrollbar -->
+  <script src="js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+  <!-- Chart JS -->
+  <script src="js/plugin/chart.js/chart.min.js"></script>
+
+  <!-- jQuery Sparkline -->
+  <script src="/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+  <!-- Chart Circle -->
+  <script src="js/plugin/chart-circle/circles.min.js"></script>
+
+  <!-- Datatables -->
+  <script src="js/plugin/datatables/datatables.min.js"></script>
+
+  <!-- Bootstrap Notify -->
+  <script src="js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+  <!-- jQuery Vector Maps -->
+  <script src="js/plugin/jsvectormap/jsvectormap.min.js"></script>
+  <script src="js/plugin/jsvectormap/world.js"></script>
+
+  <!-- Sweet Alert -->
+  <script src="js/plugin/sweetalert/sweetalert.min.js"></script>
+
+  <!-- Kaiadmin JS -->
+  <script src="js/kaiadmin.min.js"></script>
+
+  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+  <script src="js/setting-demo.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/oders.js"></script>
+
   <script type="text/javascript">
 
     let activeBillCode;
@@ -867,8 +860,8 @@
     async function fetchBillDetails(codeBill) {
       try {
         const response = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${codeBill}`, {
-            method: 'GET',
-            headers: headers // Thêm headers vào yêu cầu
+          method: 'GET',
+          headers: headers // Thêm headers vào yêu cầu
         });
 
         // Kiểm tra xem phản hồi có thành công không
@@ -958,8 +951,8 @@
     async function fetchBills() {
       try {
         const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: headers // Thêm headers vào yêu cầu
+          method: 'GET',
+          headers: headers // Thêm headers vào yêu cầu
         });
         const bills = await response.json(); // Chuyển đổi response thành JSON
 
@@ -1073,8 +1066,8 @@
 
       if (searchQuery.length > 0) {
         fetch(`http://localhost:8080/point-of-sale/search?query=${searchQuery}`, {
-            method: 'GET',
-            headers: headers // Thêm headers vào yêu cầu
+          method: 'GET',
+          headers: headers // Thêm headers vào yêu cầu
         })
           .then(response => response.json())
           .then(data => {
