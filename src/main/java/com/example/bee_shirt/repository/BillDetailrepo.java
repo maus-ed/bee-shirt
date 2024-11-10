@@ -1,12 +1,5 @@
 package com.example.bee_shirt.repository;
 
-<<<<<<< HEAD
-import com.example.bee_shirt.entity.BillDetail;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface BillDetailrepo extends JpaRepository<BillDetail,Integer> {
-}
-=======
 import com.example.bee_shirt.dto.request.BillDetailDTO;
 import com.example.bee_shirt.entity.BillDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +35,3 @@ public interface BillDetailrepo extends JpaRepository<BillDetail, Integer> {
     List<Object[]> findBillDetailsByCodeBill(@Param("codeBill") String codeBill);
 
 }
->>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c

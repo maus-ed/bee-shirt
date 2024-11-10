@@ -109,20 +109,13 @@ public class AuthenticationService {
                 .issuer("giangdtph40542")
                 .expirationTime(new Date(
                         //token hết hạn sau 3 giờ
-<<<<<<< HEAD
-                        Instant.now().plus(3, ChronoUnit.HOURS).toEpochMilli()
-=======
                         Instant.now().plus(24, ChronoUnit.HOURS).toEpochMilli()
->>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
                 ))
                 //ID của token
                 .jwtID(UUID.randomUUID().toString())
                 //có thể tạo thêm claim custom
                 .claim("user ID", account.getId())
-<<<<<<< HEAD
-=======
                 .claim("user Code", account.getCode())
->>>>>>> 8e525c1d04e8811245e54faa619af4494760a40c
 //                role của user
                 .claim("scope", buildScope(account))
                 .build();
