@@ -8,6 +8,7 @@ import com.example.bee_shirt.entity.BillDetail;
 import com.example.bee_shirt.repository.BillDetailrepo;
 import com.example.bee_shirt.repository.BillPaymentRepo;
 import com.example.bee_shirt.repository.BillRepo;
+import com.example.bee_shirt.service.BillService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +31,7 @@ public class BillController {
     BillRepo billrepo;
     BillPaymentRepo billpaymentrepo;
     BillDetailrepo billDetailrepo;
+    private final BillService billService;
 
     @GetMapping("/history") // Đổi đường dẫn cho lịch sử hóa đơn
     public ApiResponse<List<BillHistoryDTO>> getBillHistory() {
@@ -44,18 +46,15 @@ public class BillController {
                 .build();
     }
 
-    @GetMapping("/list") // Đổi đường dẫn cho danh sách hóa đơn
-    public ApiResponse<List<BillDTO>> getBill() {
-        List<BillDetail> bills = billDetailrepo.findAll();
-        log.info("Số lượng hóa đơn: {}", bills.size()); // Thêm log
-        List<BillDTO> response = bills.stream()
-                .map(bill -> new BillDTO(bill.getBill().getCodeBill(),bill.getBill().getCustomerName(), bill.getBill().getDesiredDate(),
-                        bill.getBillpayment().getPaymentMethod().getNamePaymentMethod(), bill.getBill().getTotalMoney(),
-                        bill.getBill().getStatusBill()))
-                .collect(Collectors.toList());
+
+    @GetMapping("/list")
+    public ApiResponse<List<BillDTO>> getBillList() {
+        List<BillDTO> bills = billService.getAllBillSummaries();
+        log.info("Số lượng hóa đơn: {}", bills.size());
+
         return ApiResponse.<List<BillDTO>>builder()
                 .code(1000)
-                .result(response)
+                .result(bills)
                 .build();
     }
 
