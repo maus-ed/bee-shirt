@@ -16,14 +16,15 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "voucher_id")
-    private Integer voucherId;
-
-    @Column(name = "account_id")
-    private Integer accountId;
-
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @ManyToOne
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Account customer;
 
     @Column(name = "code_bill", length = 50)
     private String codeBill;
@@ -78,9 +79,4 @@ public class Bill {
 
     @Column(name = "deleted")
     private Boolean deleted;
-
-
-
-
-
 }

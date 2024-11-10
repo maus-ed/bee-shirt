@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -69,7 +71,7 @@ public class PointOfSaleService {
         String randomCode = generateRandomCode();
         Bill bill = new Bill();
         bill.setCodeBill("CB" + randomCode);
-        bill.setCreateAt(new Date());
+        bill.setCreateAt(LocalDate.now());
         bill.setStatusBill(0);
         billRepository.save(bill);
         return "Create blank bill successfully";
@@ -89,10 +91,11 @@ public class PointOfSaleService {
             billDetail.setQuantity(quantity);
             billDetail.setBill(bill);
             billDetail.setShirtDetail(shirtDetail);
-            billDetail.setPrice(shirtDetail.getPrice());
+            billDetail.setPrice(BigDecimal.valueOf(shirtDetail.getPrice()));
             billDetail.setStatusBillDetail(0);
             billDetail.setCodeBillDetail("CBD" + randomCode);
             billDetailRepository.save(billDetail);
+            System.out.println(bill);
         }
         return "Add to cart successfully";
     }
@@ -131,18 +134,18 @@ public class PointOfSaleService {
         bill.setCustomerName("1");
         bill.setPhoneNumber("1");
         bill.setAddressCustomer("1");
-        bill.setMoneyShip(0.0);
+        bill.setMoneyShip(BigDecimal.valueOf(0.0));
         Double subtotalBeforeDiscount = 0.0, moneyReduce = 0.0;
         for (BillDetail bd : billDetailRepository.findBillDetailByBillCodeAndStatusBillDetail(codeBill, 0)) {
             subtotalBeforeDiscount += bd.getQuantity() * bd.getShirtDetail().getPrice();
         }
-        bill.setSubtotalBeforeDiscount(subtotalBeforeDiscount);
-        bill.setMoneyReduce(moneyReduce);
-        bill.setTotalMoney(subtotalBeforeDiscount - moneyReduce);
-        bill.setCreateDate(new Date());
-        bill.setDesiredDate(new Date());
+        bill.setSubtotalBeforeDiscount(BigDecimal.valueOf(subtotalBeforeDiscount));
+        bill.setMoneyReduce(BigDecimal.valueOf(moneyReduce));
+        bill.setTotalMoney(BigDecimal.valueOf(subtotalBeforeDiscount - moneyReduce));
+        bill.setCreateDate(LocalDate.now());
+        bill.setDesiredDate(LocalDate.now());
         bill.setStatusBill(1);
-        bill.setUpdateAt(new Date());
+        bill.setUpdateAt(LocalDate.now());
         bill.setNote("None");
         billRepository.save(bill);
         return "Checkout successfully";
