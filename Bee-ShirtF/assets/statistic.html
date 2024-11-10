@@ -787,6 +787,18 @@
                 <div class="card-body p-0">
                   <div class="table-responsive">
                     <!-- Projects table -->
+                    <!-- HTML Table Structure -->
+                    <div style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                      <label for="startDate" style="margin-right: 5px;">Từ ngày:</label>
+                      <input type="date" id="startDate" ng-model="startDate" class="form-control" style="width: 150px; padding: 2px 5px;" />
+                    
+                      <label for="endDate" style="margin-left: 10px; margin-right: 5px;">Đến ngày:</label>
+                      <input type="date" id="endDate" ng-model="endDate" class="form-control" style="width: 150px; padding: 2px 5px;" />
+                    
+                      <button ng-click="applyDateFilter()" class="btn btn-primary" style="padding: 3px 10px; font-size: 0.9em;">Lọc</button>
+                    </div>
+                    
+                    
                     <table class="table align-items-center mb-0" id="order-table">
                       <thead class="thead-light">
                         <tr>
@@ -798,9 +810,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- Dữ liệu sẽ được thêm vào từ JavaScript -->
+                        <!-- Data will be dynamically added by JavaScript -->
                       </tbody>
                     </table>
+
                     <!-- Hiển thị thông báo lỗi hoặc thành công
                     <div ng-if="errorMessage" class="alert alert-danger">
                       {{errorMessage}}
