@@ -511,7 +511,7 @@
             </ul>
             <div class="ms-md-auto py-2 py-md-0">
               <!-- <a href="#" class="btn btn-label-info btn-round me-2">Quản Lý</a> -->
-              <a href="BanHang.html" class="btn btn-primary btn-round" onclick="creatBill()">Thêm Hóa Đơn</a>
+              <a class="btn btn-primary btn-round" onclick="creatBill()">Thêm Hóa Đơn</a>
             </div>
           </div>
           <!-- endheader bán hàng -->
@@ -542,65 +542,114 @@
             <div class="col-md-8">
               <!-- Bill -->
               <div class="container mt-3">
-                  <div class="row justify-content-center">
-                      <div class="col text-center" id="bill-buttons">
-                          <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
-                          <!-- Đây sẽ là phần có thanh cuộn khi nội dung vượt quá chiều cao -->
-                      </div>
+                <div class="row justify-content-center">
+                  <div class="col text-center" id="bill-buttons">
+                    <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
+                    <!-- Đây sẽ là phần có thanh cuộn khi nội dung vượt quá chiều cao -->
                   </div>
+                </div>
               </div>
               <div class="modal" id="myModal">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <!-- Modal Header -->
-                          <div class="modal-header">
-                              <h4 class="modal-title">Thêm sản phẩm</h4>
-                              <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
-                          </div>
-                          <!-- Modal body -->
-                          <div class="modal-body">
-                              <p id="shirtCodeDetail">Modal body..</p>
-                              <div class="mb-3">
-                                  <label for="quantityInput" class="form-label">Số lượng</label>
-                                  <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
-                              </div>
-                          </div>
-                          <!-- Modal footer -->
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
-                          </div>
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Thêm sản phẩm</h4>
+                      <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <p id="shirtCodeDetail">Modal body..</p>
+                      <div class="mb-3">
+                        <label for="quantityInput" class="form-label">Số lượng</label>
+                        <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1"
+                          value="1">
                       </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
+                    </div>
                   </div>
+                </div>
               </div>
-          
+
               <!-- Modal 2 -->
               <div class="modal" id="myModal2">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <!-- Modal Header -->
-                          <div class="modal-header">
-                              <h4 class="modal-title">Thêm sản phẩm</h4>
-                              <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
-                          </div>
-                          <!-- Modal body -->
-                          <div class="modal-body">
-                              <p id="shirtCodeDetail2">Modal body..</p>
-                              <div class="mb-3">
-                                  <label for="quantityInput" class="form-label">Số lượng</label>
-                                  <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
-                              </div>
-                          </div>
-                          <!-- Modal footer -->
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
-                          </div>
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Sửa số lượng</h4>
+                      <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <!-- <p id="shirtCodeDetail2">Modal body..</p> -->
+                      <div class="mb-3">
+                        <label for="quantityInput" class="form-label">Số lượng</label>
+                        <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng"
+                          min="1" value="1">
                       </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
+                    </div>
                   </div>
+                </div>
               </div>
-          </div>
-          
+
+              <!-- Modal 3 -->
+              <div class="modal" id="myModal3">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Thanh toán</h4>
+                      <button type="button" class="btn-close" id="closeModal3" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <!-- <p id="shirtCodeDetail2">Modal body..</p> -->
+                      <div class="mb-3">
+                        <label for="codeVoucher" class="form-label">Mã voucher</label>
+                        <input type="text" id="codeVoucher" class="form-control" placeholder="Nhập mã voucher"
+                          oninput="applyVoucherOnChange()" />
+                        <div id="voucherFeedback" style="display: none; color: red;"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="codeCustomer" class="form-label">Khách hàng</label>
+                        <input type="text" id="codeCustomer" class="form-control" placeholder="Nhập tài khoản">
+                      </div>
+                      <div class="mb-3">
+                        <label for="paymentInput" class="form-label">Tiền phải trả</label>
+                        <input type="number" id="totalMoney" class="form-control" readonly>
+                      </div>
+                      <div class="mb-3">
+                        <label for="paymentInput" class="form-label">Tiền khách đưa</label>
+                        <input type="number" id="paymentInput" class="form-control" placeholder="Nhập số lượng" min="1"
+                          value="1">
+                      </div>
+                      <div class="mb-3">
+                        <label for="changeMoney" class="form-label">Tiền thừa</label>
+                        <input type="text" id="changeMoney" class="form-control" readonly>
+                      </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="confirmButton" onclick="checkout()" disabled>Xác
+                        nhận</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div class="col-md-4">
               <!-- Invoice Section -->
               <div class="col-lg-12">
@@ -639,14 +688,15 @@
                       <span><strong>Total Payment</strong></span>
                       <span><strong id="totalPayment">$136.4</strong></span>
                     </div>
-                    <button class="btn btn-primary w-100" onclick="checkout()">Place An Order</button>
+                    <button class="btn btn-primary w-100" onclick="openModal3()">Place An Order</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
-          <h3>Sản phẩm</h3>
+            <h3>Sản phẩm</h3>
+
             <!-- Sample Menu Item -->
             <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
               <div class="card">
@@ -755,6 +805,8 @@
             <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
             <button type="button" class="changeSideBarColor" data-color="dark2"></button>
           </div>
+          <!-- Repeat for other menu items -->
+
         </div>
       </div>
     </div>
@@ -801,6 +853,86 @@
   <script src="js/setting-demo.js"></script>
   <script src="js/demo.js"></script>
   <script src="js/oders.js"></script>
+
+  <style>
+    body {
+      background-color: #f8f8f8;
+    }
+
+    .navbar {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 8px;
+    }
+
+    .list-group-item {
+      font-size: 14px;
+    }
+
+    .card-body h5 {
+      font-weight: bold;
+    }
+
+
+    .suggestions-list {
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      /* Đảm bảo hiển thị trên các thành phần khác */
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 0 0 5px 5px;
+      margin-top: -1px;
+      /* Để tránh khoảng trống giữa input và ul */
+    }
+
+    .suggestions-list li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestions-list li:hover {
+      background-color: #f1f1f1;
+    }
+
+    button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    /* CSS cho lớp highlight */
+    .highlight {
+      background-color: #f0f8ff;
+      /* Màu nền khi highlight */
+      font-weight: bold;
+      /* Có thể thêm các hiệu ứng khác */
+    }
+
+    /* Tooltip CSS */
+    .tooltip {
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+
+    .button-container:hover .tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 
   <style>
     body {
@@ -973,46 +1105,80 @@
     }
 
 
-    // Gọi API để lấy dữ liệu hóa đơn
+    // Hiển thị tooltip khi hover vào nút bill
+    function showTooltip(button, codeBillDetail, createAt) {
+      let tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+
+      // Kiểm tra dữ liệu và hiển thị tooltip
+      tooltip.innerText = codeBillDetail && codeBillDetail.length > 0
+        ? `Chi tiết: ${codeBillDetail}\nNgày tạo: ${createAt}`
+        : "Không có dữ liệu";
+
+      button.appendChild(tooltip);
+    }
+
+    // Ẩn tooltip khi rời chuột khỏi nút bill
+    function hideTooltip(button) {
+      let tooltip = button.querySelector(".tooltip");
+      if (tooltip) {
+        tooltip.remove();
+      }
+    }
+
+    // Thêm sự kiện vào các nút bill
     async function fetchBills() {
       try {
         const response = await fetch(apiUrl, {
           method: 'GET',
-          headers: headers // Thêm headers vào yêu cầu
+          headers: headers
         });
-        const bills = await response.json(); // Chuyển đổi response thành JSON
+        const bills = await response.json();
 
         if (bills.length > 0) {
           activeBillCode = bills[0].codeBill;
-          fetchBillDetails(activeBillCode); // Gọi hàm để hiển thị thông tin hóa đơn đầu tiên
+          fetchBillDetails(activeBillCode);
         }
 
-        // Hiển thị các nút hóa đơn dựa trên dữ liệu từ API
         const billButtonsContainer = document.getElementById('bill-buttons');
-        billButtonsContainer.innerHTML = ''; // Xóa nội dung cũ (nếu có)
+        billButtonsContainer.innerHTML = '';
 
         bills.forEach(bill => {
           const button = document.createElement('button');
-          button.className = 'btn btn-outline-primary m-1';
-          button.textContent = bill.codeBill;  // Hiển thị mã hóa đơn
-          button.value = bill.codeBill;  // Gán giá trị mã hóa đơn
+          button.className = 'btn btn-outline-primary m-1 button-container';
+          button.textContent = bill.codeBill;
+          button.value = bill.codeBill;
 
           if (bill.codeBill === activeBillCode) {
             button.classList.add('active');
           }
 
-          // Thêm sự kiện khi người dùng click vào nút
           button.addEventListener('click', () => {
             fetchBillDetails(bill.codeBill);
           });
 
-          // Thêm nút vào container
+          // Gọi API để lấy chi tiết bill
+          button.addEventListener('mouseenter', async () => {
+            const detailsResponse = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${bill.codeBill}`, {
+              method: 'GET',
+              headers: headers
+            });
+            const details = await detailsResponse.json();
+            const codeBillDetail = details.map(detail => detail.codeBillDetail).join(", ");
+            showTooltip(button, codeBillDetail, bill.createAt);
+          });
+
+          button.addEventListener('mouseleave', () => {
+            hideTooltip(button);
+          });
+
           billButtonsContainer.appendChild(button);
         });
       } catch (error) {
         console.error('Lỗi khi gọi API:', error);
       }
     }
+
 
     // Gọi hàm fetchBills khi trang load
     window.onload = fetchBills;
@@ -1032,13 +1198,17 @@
     }
 
     function checkout() {
-      fetch(`http://localhost:8080/point-of-sale/checkout?codeBill=${activeBillCode}&codeVoucher=`, {
+      const codeVoucherCheckout = document.getElementById("codeVoucher").value;
+      const username = document.getElementById("codeCustomer").value;
+
+      fetch(`http://localhost:8080/point-of-sale/checkout?codeBill=${activeBillCode}&codeVoucher=${codeVoucherCheckout}&username=${username}`, {
         method: 'POST',
         headers: headers
       }).then(data => {
         console.log("Check out successfully", data);
         currentCodeShirtDetail = 'cocainit';
         fetchBills()
+        document.getElementById('closeModal3').click()
       }
       ).catch(error => console.error("Error with checkout", error));
     }
@@ -1188,6 +1358,163 @@
         .catch(error => console.error("Error adding item to cart:", error));
       document.getElementById('closeModal2').click()
     }
+
+    async function openModal3() {
+      try {
+        // Lấy thông tin chi tiết hóa đơn từ API
+        const response = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
+          method: 'GET',
+          headers: headers
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching bill details');
+        }
+
+        const data = await response.json();
+
+        // Tính tổng tiền
+        let subtotal = 0;
+        data.forEach(item => {
+          subtotal += item.price * item.quantity;
+        });
+
+        // Hiển thị tổng tiền vào ô input
+        document.getElementById('totalMoney').value = subtotal.toFixed(2);
+
+        // Reset các ô nhập liệu
+        document.getElementById('codeVoucher').value = ''; // Xóa mã voucher
+        document.getElementById('voucherFeedback').style.display = 'none'; // Ẩn thông báo
+        document.getElementById('paymentInput').value = ''; // Tiền khách đưa
+        document.getElementById('changeMoney').value = ''; // Tiền thừa
+        document.getElementById('confirmButton').disabled = true; // Tắt nút Xác nhận
+
+        // Thêm sưj kiện validate
+        document.getElementById('paymentInput').oninput = validatePayment;
+
+        // Mở modal
+        const myModal = new bootstrap.Modal(document.getElementById('myModal3'), {
+          keyboard: false // Thay đổi nếu bạn muốn tắt tính năng đóng bằng phím ESC
+        });
+        myModal.show();
+      } catch (error) {
+        console.error('Error in openModal3:', error);
+      }
+    }
+
+    function validatePayment() {
+      const totalMoney = parseFloat(document.getElementById('totalMoney').value) || 0;
+      const paymentInput = parseFloat(document.getElementById('paymentInput').value) || 0;
+
+      // Tính tiền thừa
+      const changeMoney = paymentInput - totalMoney;
+
+      // Hiển thị tiền thừa
+      const changeMoneyInput = document.getElementById('changeMoney');
+      changeMoneyInput.value = changeMoney > 0 ? changeMoney.toFixed(2) : 0;
+
+      // Bật/tắt nút Xác nhận
+      const confirmButton = document.getElementById('confirmButton');
+      confirmButton.disabled = paymentInput < totalMoney;
+    }
+
+    async function applyVoucherOnChange() {
+      const codeVoucher = document.getElementById("codeVoucher").value.trim();
+      const totalMoneyInput = document.getElementById("totalMoney");
+      const feedback = document.getElementById("voucherFeedback");
+
+      // Ẩn thông báo
+      feedback.style.display = "none";
+
+      try {
+        const response = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
+          method: 'GET',
+          headers: headers
+        });
+
+        const data = await response.json();
+
+        // Tính tổng tiền
+        let totalMoney = 0;
+        data.forEach(item => {
+          totalMoney += item.price * item.quantity;
+        });
+
+        // Nếu không có mã voucher, giữ nguyên tổng tiền
+        if (!codeVoucher) {
+          totalMoneyInput.value = totalMoney.toFixed(2);
+          validatePayment()
+          return;
+        }
+
+        // Gửi yêu cầu lấy voucher
+        const voucherResponse = await fetch(`http://localhost:8080/point-of-sale/get-voucher?codeVoucher=${codeVoucher}`, {
+          method: "GET",
+          headers: headers
+        });
+
+        if (!voucherResponse.ok) {
+          throw new Error("Mã voucher không hợp lệ hoặc không tồn tại!");
+        }
+
+        const voucherResponseClone = voucherResponse.clone();
+
+        const voucherData = await voucherResponse.text();
+        if (voucherData=='') {
+          feedback.style.display = "block";
+          feedback.textContent = "";
+          totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
+          validatePayment()
+          return;
+        }
+
+        const voucher = await voucherResponseClone.json();
+
+        // Kiểm tra nếu voucher không hợp lệ
+        if (!voucher) {
+          feedback.style.display = "block";
+          feedback.textContent = "Mã voucher không hợp lệ hoặc đã hết hạn!";
+          totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
+          validatePayment()
+          return;
+        }
+
+        // Kiểm tra điều kiện áp dụng voucher
+        if (voucher.minBillValue > totalMoney) {
+          feedback.style.display = "block";
+          feedback.style.color = "red";
+          feedback.textContent = `Hóa đơn phải từ ${voucher.minBillValue.toFixed(2)} mới áp dụng được voucher này.`;
+          totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
+          validatePayment()
+          return;
+        }
+
+        // Tính toán giảm giá
+        let discount = 0;
+        if (voucher.typeVoucher === "Percent") {
+          discount = Math.min(totalMoney * (voucher.discountValue / 100), voucher.maximumDiscount);
+        } else if (voucher.typeVoucher === "Amount") {
+          discount = Math.min(voucher.discountValue, voucher.maximumDiscount);
+        }
+
+        // Cập nhật tổng tiền
+        const newTotal = totalMoney - discount;
+        totalMoneyInput.value = newTotal.toFixed(2);
+        validatePayment()
+
+        // Hiển thị thông báo thành công
+        feedback.style.display = "block";
+        feedback.style.color = "green";
+        feedback.textContent = `Áp dụng voucher thành công! Giảm giá: ${discount.toFixed(2)}`;
+      } catch (error) {
+        // Hiển thị lỗi nếu có
+        feedback.style.display = "block";
+        feedback.style.color = "red";
+        feedback.textContent = error.message || "Đã xảy ra lỗi trong quá trình áp dụng voucher!";
+      }
+    }
+
+
 
     function remove() {
       const codeBill = activeBillCode;
