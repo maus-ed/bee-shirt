@@ -1,6 +1,7 @@
 package com.example.bee_shirt.service;
 
 import com.example.bee_shirt.dto.request.BillDTO;
+import com.example.bee_shirt.dto.request.RevenueDTO;
 import com.example.bee_shirt.repository.BillRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class BillService {
 
     BillRepo billRepository;
 
+    // Method to fetch all Bill Summaries
     public List<BillDTO> getAllBillSummaries() {
         List<Object[]> results = billRepository.findBillSummaryNative();
 
@@ -29,6 +31,20 @@ public class BillService {
                 (String) result[3],                      // namePaymentMethod
                 (BigDecimal) result[4],                  // totalMoney
                 (Integer) result[5]                      // statusBill
+        )).collect(Collectors.toList());
+    }
+
+    // New method for Bill statistics
+
+    public List<RevenueDTO> getAllBillStatics() {
+        // Gọi Repository với các tham số
+        List<Object[]> results = billRepository.findBillStatisticsNative();
+
+        // Chuyển đổi kết quả query thành danh sách DTO
+        return results.stream().map(result -> new RevenueDTO(
+                ((Number) result[0]).intValue(),       // BillCount (số hóa đơn)
+                ((Number) result[1]).intValue(),       // TotalShirtQuantity (tổng số sản phẩm)
+                (BigDecimal) result[2]                  // TotalRevenue (doanh thu)
         )).collect(Collectors.toList());
     }
 }
