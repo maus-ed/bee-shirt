@@ -1,6 +1,7 @@
 package com.example.bee_shirt.controller;
 
 import com.example.bee_shirt.dto.request.AccountCreationRequest;
+
 import com.example.bee_shirt.dto.request.AccountUpdateRequest;
 import com.example.bee_shirt.dto.response.AccountResponse;
 import com.example.bee_shirt.dto.response.ApiResponse;
@@ -11,6 +12,7 @@ import com.example.bee_shirt.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +58,7 @@ public class AdminController {
                 .result(accountService.getAllStaff())
                 .build();
     }
+
 
     // phân trang staff
     @GetMapping("/staffs/{page}")
@@ -104,6 +107,7 @@ public class AdminController {
     }
 
 
+
     @GetMapping("/clients")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<List<AccountResponse>> getClients() {
@@ -117,7 +121,9 @@ public class AdminController {
     @PostMapping(value = "/create", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<AccountResponse> createUser(
+
             @Valid
+
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("phone") String phone,
@@ -173,6 +179,7 @@ public class AdminController {
                     );
         }
     }
+
 
     //thêm @Valid để update chạy validate
     @PutMapping(value = "/update/{code}", consumes = "multipart/form-data")
