@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Data
 public class BillDTO {
 
+
     private String codeBill;
     private String customerName;
     private LocalDate desiredDate;

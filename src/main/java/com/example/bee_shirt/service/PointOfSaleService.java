@@ -7,6 +7,7 @@ import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ import java.util.*;
 @Service
 public class PointOfSaleService {
 
-    Webcam webcam = Webcam.getDefault();
-    Boolean webcamStat = false;
+    private final Webcam webcam = Webcam.getDefault();
+    private Boolean webcamStat = false;
 
     @Autowired
     private ShirtDetailRepository shirtDetailRepository;
@@ -38,8 +39,8 @@ public class PointOfSaleService {
     @Autowired
     private BillDetailRepository billDetailRepository;
 
-    public List<ShirtDetail> searchShirtDetails(String query) {
-        return shirtDetailRepository.findListShirtDetailByCodeOrName("%" + query + "%", PageRequest.of(0, 5));
+    public List<ShirtDetail> searchShirtDetails(String query, int page, int size) {
+        return shirtDetailRepository.findListShirtDetailByCodeOrName("%" + query + "%", PageRequest.of(page, size)).getContent();
     }
 
     public List<Bill> getPendingBills() {
@@ -100,11 +101,10 @@ public class PointOfSaleService {
             billDetail.setQuantity(quantity);
             billDetail.setBill(bill);
             billDetail.setShirtDetail(shirtDetail);
-            billDetail.setPrice(BigDecimal.valueOf(shirtDetail.getPrice()));
+            billDetail.setPrice(shirtDetail.getPrice());
             billDetail.setStatusBillDetail(0);
             billDetail.setCodeBillDetail("CBD" + randomCode);
             billDetailRepository.save(billDetail);
-            System.out.println(bill);
         }
         return "Add to cart successfully";
     }
@@ -147,10 +147,11 @@ public class PointOfSaleService {
         bill.setCustomerName("1");
         bill.setPhoneNumber("1");
         bill.setAddressCustomer("1");
-        bill.setMoneyShip(BigDecimal.valueOf(0.0));
-        Double subtotalBeforeDiscount = 0.0, moneyReduce = 0.0;
+        bill.setMoneyShip(BigDecimal.ZERO);
+        double subtotalBeforeDiscount = 0.0;
+        double moneyReduce = 0.0;
         for (BillDetail bd : billDetailRepository.findBillDetailByBillCodeAndStatusBillDetail(codeBill, 0)) {
-            subtotalBeforeDiscount += bd.getQuantity() * bd.getShirtDetail().getPrice();
+            subtotalBeforeDiscount += bd.getQuantity() * bd.getShirtDetail().getPrice().doubleValue();
         }
         if (voucher!=null) {
             if(Objects.equals(voucher.getTypeVoucher(), "Amount")){
@@ -180,7 +181,9 @@ public class PointOfSaleService {
 
     public String closeWebcam() {
         webcamStat = false;
-        webcam.close();
+        if (webcam.isOpen()) {
+            webcam.close();
+        }
         return "Webcam closed";
     }
 

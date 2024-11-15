@@ -30,16 +30,20 @@ public class PointOfSaleController {
 
     @GetMapping("")
     public String pos(Model model) {
-        model.addAttribute("products", pointOfSaleService.searchShirtDetails(""));
+        model.addAttribute("products", pointOfSaleService.searchShirtDetails("", 0, 5)); // Thêm page = 0 và size = 5
         model.addAttribute("listhdc", pointOfSaleService.getPendingBills());
         return "haha";
     }
 
+
     @GetMapping("/search")
     @ResponseBody
-    public List<ShirtDetail> search(@RequestParam("query") String query) {
-        return pointOfSaleService.searchShirtDetails(query);
+    public List<ShirtDetail> search(@RequestParam("query") String query,
+                                    @RequestParam(value = "page", defaultValue = "0") int page,
+                                    @RequestParam(value = "size", defaultValue = "5") int size) {
+        return pointOfSaleService.searchShirtDetails(query, page, size);
     }
+
 
     @GetMapping("/get-pending-bill")
     @ResponseBody
