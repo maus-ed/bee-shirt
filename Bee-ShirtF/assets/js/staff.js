@@ -86,19 +86,6 @@ angular
 
       if (!checkPermission()) return;
 
-      $scope.isAdmin = function () {
-        const token = sessionStorage.getItem("jwtToken");
-        if (!token) return false;
-
-        try {
-          const payload = JSON.parse(atob(token.split(".")[1]));
-          return payload.scope && payload.scope.includes("ROLE_ADMIN");
-        } catch (error) {
-          console.error("Failed to parse token:", error);
-          return false;
-        }
-      };
-
       // Hàm xem profile
       $scope.viewProfile = function () {
         const token = sessionStorage.getItem("jwtToken");

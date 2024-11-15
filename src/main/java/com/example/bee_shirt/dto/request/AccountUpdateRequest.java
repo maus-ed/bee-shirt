@@ -53,6 +53,8 @@ public class AccountUpdateRequest {
     @Size(min = 5,message = "PASSWORD_INVALID")
     String pass;
 
+    String oldPassword;
+
     String createBy;
 
     List<String> role;
