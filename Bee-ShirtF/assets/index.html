@@ -1,13 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="css/login.css" />
-  </head>
-  <body>
-    <h1>Welcome to the Application</h1>
-    <a href="/assets/page/account/login.html">Login</a>
-  </body>
+<html lang="vi" ng-app="beeShirtApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shirt List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script>
+        var app = angular.module('beeShirtApp', ['ngRoute']);
+
+        // Service để lấy danh sách áo thun
+        app.service('shirtService', ['$q', function($q) {
+            const shirts = [
+                { id: 1, name: 'Áo thun trắng' },
+                { id: 2, name: 'Áo thun đen' }
+            ];
+
+            this.getShirts = function() {
+                return $q.resolve(shirts); // Trả về dữ liệu áo thun giả lập
+            };
+        }]);
+
+        // Controller cho danh sách áo thun
+        app.controller('ShirtListController', ['$scope', 'shirtService', function($scope, shirtService) {
+            $scope.shirts = []; // Danh sách áo thun
+
+            // Lấy danh sách áo thun
+            shirtService.getShirts().then(function(response) {
+                $scope.shirts = response;
+            });
+        }]);
+
+        // Routing cấu hình
+        app.config(['$routeProvider', function($routeProvider) {
+            $routeProvider
+                .when('/', {
+                    templateUrl: 'index.html',
+                    controller: 'ShirtListController'
+                })
+                .when('/shirtDetail/:codeShirt', {
+                    templateUrl: 'shirtDetail.html',
+                    controller: 'ShirtDetailController'
+                })
+                .otherwise({
+                    redirectTo: '/'
+                });
+        }]);
+
+    </script>
+</head>
+<body ng-controller="ShirtListController">
+    <h3>Danh sách áo thun</h3>
+    <ul>
+        <li ng-repeat="shirt in shirts">
+            <a href="#/shirtDetail/{{ shirt.id }}">{{ shirt.name }}</a>
+        </li>
+    </ul>
+</body>
 </html>

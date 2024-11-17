@@ -9,8 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+import java.util.Random;
+
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Cấu hình CORS cho endpoint này
+
 public class CategoryController {
 
     @Autowired
@@ -27,6 +32,12 @@ public class CategoryController {
     // Thêm Category
     @PostMapping("/add")
     public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+        String codeCategory = generateCategoryCode();
+
+        // Cập nhật mã codeCategory vào đối tượng Category
+        category.setCodeCategory(codeCategory);
+
+        // Lưu category vào cơ sở dữ liệu
         Category savedCategory = categoryRepository.save(category);
         return ResponseEntity.ok(savedCategory);
     }
@@ -66,5 +77,12 @@ public class CategoryController {
     public ResponseEntity<Category> getCategoryDetail(@PathVariable String codeCategory) {
         Category category = categoryRepository.findByCodeCategory(codeCategory);
         return ResponseEntity.ok(category);
+    }
+
+    // Hàm tạo mã category ngẫu nhiên
+    private String generateCategoryCode() {
+        Random random = new Random();
+        int randomCode = random.nextInt(100000);  // Sinh ra số ngẫu nhiên trong phạm vi 0 - 99999
+        return "C" + String.format("%05d", randomCode);  // Đảm bảo mã luôn có 5 chữ số
     }
 }

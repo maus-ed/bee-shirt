@@ -73,12 +73,22 @@ public class ShirtDetailController {
         Page<ShirtDetailDTO> results = shirtDetailService.getAllShirtDetails(pageable);
         return ResponseEntity.ok(results.getContent());
     }
+
+
+
     // Thêm chi tiết áo thun
     @PostMapping("/add")
-    public ResponseEntity<ShirtDetail> addShirtDetail(@RequestBody ShirtDetail shirtDetail) {
-        ShirtDetail createdShirtDetail = shirtDetailService.addShirtDetail(shirtDetail);
-        return ResponseEntity.ok(createdShirtDetail);
+    public ResponseEntity<List<ShirtDetail>> addShirtDetails(@RequestBody List<ShirtDetailDTO> shirtDetailDTOs) {
+        // In ra thông tin các ShirtDetailDTO nhận được
+        shirtDetailDTOs.forEach(dto -> System.out.println("Received ShirtDetailDTO: " + dto));
+
+        // Gọi service để chuyển đổi DTO thành entity và lưu vào database
+        List<ShirtDetail> createdShirtDetails = shirtDetailService.addShirtDetails(shirtDetailDTOs);
+
+        // Trả về danh sách các ShirtDetail đã được lưu
+        return ResponseEntity.ok(createdShirtDetails);
     }
+
     // Cập nhật chi tiết áo thun
     @PutMapping("/update/{codeShirtDetail}")
     public ResponseEntity<ShirtDetail> updateShirtDetail(@PathVariable String codeShirtDetail, @RequestBody ShirtDetail updatedShirtDetail) {
@@ -97,6 +107,11 @@ public class ShirtDetailController {
             // Trả về 404 nếu không tìm thấy
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+    @GetMapping("/byCode/{codeshirt}")
+    public ResponseEntity<List<ShirtDetailDTO>> getShirtDetailsByCodeShirt(@PathVariable String codeshirt) {
+        List<ShirtDetailDTO> shirtDetails = shirtDetailService.getShirtDetailsByCodeShirt(codeshirt);
+        return ResponseEntity.ok(shirtDetails);
     }
 
     // Xóa chi tiết áo thun
