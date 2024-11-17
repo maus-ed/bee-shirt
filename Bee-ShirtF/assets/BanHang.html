@@ -1083,6 +1083,11 @@
           productList.appendChild(listItem);
         });
 
+        if (activeBillCode == 'none') {
+          productList.innerHTML = '';
+          subtotal = 0;
+        }
+
         // Giả sử tỷ lệ thuế là 4%
         tax = subtotal * 0.04;
 
@@ -1130,6 +1135,11 @@
 
     // Thêm sự kiện vào các nút bill
     async function fetchBills() {
+      if (token==null) {
+        alert("Bạn chưa đăng nhập. Vui lòng đăng nhập lại.");
+        window.location.href = "http://127.0.0.1:5500/assets/account/login.html#!/login";
+        return;
+      }
       try {
         const response = await fetch(apiUrl, {
           method: 'GET',
@@ -1140,6 +1150,8 @@
         if (bills.length > 0) {
           activeBillCode = bills[0].codeBill;
           fetchBillDetails(activeBillCode);
+        } else {
+          activeBillCode = "none";
         }
 
         const billButtonsContainer = document.getElementById('bill-buttons');
@@ -1275,14 +1287,13 @@
             if (data.length > 0) {
               data.forEach(item => {
                 let suggestionItem = document.createElement("li");
-                suggestionItem.innerHTML = item.shirt.nameShirt;
+                suggestionItem.innerHTML = item.shirt.nameshirt;
                 suggestionItem.onclick = function () {
                   // Call the /add/ endpoint when a suggestion is clicked
                   document.getElementById("shirtCodeDetail").innerText = item.codeShirtDetail;
                   openModal(); // Gọi hàm mở modal
                   suggestionsList.innerHTML = ""; // Clear suggestions after the click
                   document.getElementById("searchInput").value = "";
-
                 };
                 suggestionsList.appendChild(suggestionItem);
               });
