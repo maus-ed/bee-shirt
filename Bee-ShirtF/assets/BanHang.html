@@ -652,8 +652,6 @@
             </div>
 
 
-
-
             <div class="col-md-4">
               <!-- Invoice Section -->
               <div class="col-lg-12">
@@ -700,6 +698,7 @@
           </div>
           <div class="row">
             <h3>Sản phẩm</h3>
+
             <!-- Sample Menu Item -->
             <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
               <div class="card">
@@ -808,6 +807,8 @@
             <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
             <button type="button" class="changeSideBarColor" data-color="dark2"></button>
           </div>
+          <!-- Repeat for other menu items -->
+
         </div>
       </div>
     </div>
@@ -932,6 +933,66 @@
     .button-container:hover .tooltip {
       opacity: 1;
       transform: translateY(0);
+    }
+  </style>
+
+  <style>
+    body {
+      background-color: #f8f8f8;
+    }
+
+    .navbar {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 8px;
+    }
+
+    .list-group-item {
+      font-size: 14px;
+    }
+
+    .card-body h5 {
+      font-weight: bold;
+    }
+
+
+    .suggestions-list {
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      /* Đảm bảo hiển thị trên các thành phần khác */
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 0 0 5px 5px;
+      margin-top: -1px;
+      /* Để tránh khoảng trống giữa input và ul */
+    }
+
+    .suggestions-list li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestions-list li:hover {
+      background-color: #f1f1f1;
+    }
+
+    button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    /* CSS cho lớp highlight */
+    .highlight {
+      background-color: #f0f8ff;
+      /* Màu nền khi highlight */
+      font-weight: bold;
+      /* Có thể thêm các hiệu ứng khác */
     }
   </style>
 
