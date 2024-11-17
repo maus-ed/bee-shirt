@@ -1,9 +1,6 @@
 package com.example.bee_shirt.controller;
 
-import com.example.bee_shirt.entity.Bill;
-import com.example.bee_shirt.entity.BillDetail;
-import com.example.bee_shirt.entity.ShirtDetail;
-import com.example.bee_shirt.entity.Voucher;
+import com.example.bee_shirt.entity.*;
 import com.example.bee_shirt.service.PointOfSaleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +64,13 @@ public class PointOfSaleController {
     @ResponseBody
     public Voucher getVoucher(@RequestParam("codeVoucher") String codeVoucher) {
         return pointOfSaleService.getVoucher(codeVoucher);
+    }
+
+    @GetMapping("/get-account")
+    @ResponseBody
+    public Account getAccount(@RequestParam("username") String username) {
+        System.out.println(username);
+        return pointOfSaleService.getAccount(username);
     }
 
     @GetMapping("create-blank-bill")
