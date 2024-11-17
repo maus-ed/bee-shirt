@@ -147,10 +147,9 @@ public class PointOfSaleService {
         Voucher voucher = voucherRepository.findVoucherByCode(codeVoucher).orElse(null);
         Account account = accountRepository.findByUsername(username).orElse(null);
         if (account != null) {
-            bill.setVoucher(voucher);
-        } else {
-            bill.setVoucher(null);
+            voucher=null;
         }
+        bill.setVoucher(voucher);
         bill.setCustomer(account);
         bill.setTypeBill("POS");
         bill.setCustomerName("1");
