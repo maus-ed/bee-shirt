@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/sizes")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Cấu hình CORS cho endpoint này
+
 public class SizeController {
 
     @Autowired
@@ -43,6 +45,7 @@ public class SizeController {
         size.setCodeSize(updatedDetails.getCodeSize());
         size.setNamesize(updatedDetails.getNamesize());
         size.setStatussize(updatedDetails.getStatussize());
+        size.setDeleted(updatedDetails.isDeleted());
         Size updatedSize = sizeRepository.save(size);
         return ResponseEntity.ok(updatedSize);
     }

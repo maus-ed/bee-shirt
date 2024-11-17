@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shirt List</title>
+</head>
+<body>
+<h1>Shirt List</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Category</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="shirt : ${shirts.content}">
+        <td th:text="${shirt.name}"></td>
+        <td th:text="${shirt.nameBrand}"></td>
+        <td th:text="${shirt.nameCategory}"></td>
+        <td th:text="${shirt.createAt}"></td>
+
+        <td>
+            <a th:href="@{/shirts/update/{codeshirt}(codeshirt=${shirt.codeshirt})}">Edit</a>
+            <a th:href="@{/shirts/delete/{codeshirt}(codeshirt=${shirt.codeshirt})}">Delete</a>
+            <a th:href="@{/shirts/detail/{codeshirt}(codeshirt=${shirt.codeshirt})}">Detail</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+        <span th:if="${shirts.hasPrevious()}">
+            <a th:href="@{/shirts/hienthi(page=${currentPage - 1})}">Previous</a>
+        </span>
+
+    <span th:if="${shirts.hasNext()}">
+            <a th:href="@{/shirts/hienthi(page=${currentPage + 1})}">Next</a>
+        </span>
+
+    <span>Page <span th:text="${currentPage + 1}"></span> of <span th:text="${shirts.totalPages}"></span></span>
+</div>
+
+<a href="/shirts/add">Add Shirt</a>
+</body>
+</html>
