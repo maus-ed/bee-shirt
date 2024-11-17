@@ -1,6 +1,6 @@
-var app = angular.module('beeShirtApp', []);
+var ShirtApp = angular.module('beeShirtApp', []);
 
-app.service('shirtService', ['$http', function($http) {
+ShirtApp.service('shirtService', ['$http', function($http) {
     const baseUrl = 'http://localhost:8080/shirts';
 
     this.getShirts = function() {
@@ -20,7 +20,7 @@ app.service('shirtService', ['$http', function($http) {
     };
 
     this.getShirtDetail = function(codeshirt) {
-        return $http.get(baseUrl + '/detail/' + codeshirt);
+        return $http.get(baseUrl + '/byCode/' + codeshirt);
     };
 
     this.getBrands = function() {
@@ -32,7 +32,7 @@ app.service('shirtService', ['$http', function($http) {
     };
 }]);
 
-app.controller('ShirtController', ['$scope', 'shirtService', function($scope, shirtService) {
+ShirtApp.controller('ShirtController', ['$scope', 'shirtService', function($scope, shirtService) {
     $scope.shirts = [];
     $scope.brands = [];
     $scope.categories = [];
@@ -47,7 +47,11 @@ app.controller('ShirtController', ['$scope', 'shirtService', function($scope, sh
     $scope.totalPages = function() {
         return Math.ceil($scope.shirts.length / $scope.itemsPerPage);
     };
-
+    $scope.viewDetails = function (codeshirt) {
+        // Chuyển hướng đến trang chi tiết sản phẩm với mã sản phẩm (codeShirt) như tham số query
+        window.location.href = `ProductDetail.html?codeShirt=${codeshirt}`;
+    };
+    
     $scope.getShirtsForCurrentPage = function() {
         const startIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
         const endIndex = startIndex + $scope.itemsPerPage;
@@ -74,6 +78,8 @@ app.controller('ShirtController', ['$scope', 'shirtService', function($scope, sh
     };
 
     $scope.addShirt = function() {
+        $scope.newShirt.statusshirt = 0;
+
         shirtService.addShirt($scope.newShirt).then(function() {
             $scope.getShirts();
             $scope.newShirt = {};
@@ -137,11 +143,9 @@ app.controller('ShirtController', ['$scope', 'shirtService', function($scope, sh
     };
     
 
-    // Xem chi tiết áo thun
-    $scope.viewShirtDetail = function(codeshirt) {
-        shirtService.getShirtDetail(codeshirt).then(function(response) {
-            $scope.selectedShirtDetail = response.data;
-        });
+    $scope.goToShirtDetail = function(codeshirt) {
+        // Điều hướng đến trang chi tiết với mã sản phẩm
+        $location.path('http://localhost:8080/shirt-details/byCode/' + codeshirt);
     };
 
     $scope.getShirts();

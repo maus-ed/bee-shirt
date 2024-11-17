@@ -9,8 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Random;
+
 @RestController
 @RequestMapping("/api/patterns")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Cấu hình CORS cho endpoint này
+
 public class PatternController {
 
     @Autowired
@@ -27,6 +31,11 @@ public class PatternController {
     // Thêm mẫu
     @PostMapping("/add")
     public ResponseEntity<Pattern> addPattern(@RequestBody Pattern pattern) {
+        String codeCategory = generatePatternCode();
+
+        // Cập nhật mã codeCategory vào đối tượng Category
+        pattern.setCodePattern(codeCategory);
+
         Pattern savedPattern = patternRepository.save(pattern);
         return ResponseEntity.ok(savedPattern);
     }
@@ -67,4 +76,11 @@ public class PatternController {
         Pattern pattern = patternRepository.findByCodePattern(codePattern);
         return ResponseEntity.ok(pattern);
     }
+    // Hàm tạo mã ngẫu nhiên cho Pattern
+    private String generatePatternCode() {
+        Random random = new Random();
+        int randomCode = random.nextInt(100000);  // Sinh số ngẫu nhiên trong phạm vi từ 0 - 99999
+        return "P" + String.format("%05d", randomCode);  // Đảm bảo mã luôn có 5 chữ số
+    }
+
 }

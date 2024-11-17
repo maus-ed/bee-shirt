@@ -9,8 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Random;
+
 @RestController
 @RequestMapping("/api/materials")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Cấu hình CORS cho endpoint này
+
 public class MaterialController {
 
     @Autowired
@@ -27,6 +31,11 @@ public class MaterialController {
     // Thêm vật liệu
     @PostMapping("/add")
     public ResponseEntity<Material> addMaterial(@RequestBody Material material) {
+        String codeCategory = generateMaterialCode();
+
+        // Cập nhật mã codeCategory vào đối tượng Category
+        material.setCodeMaterial(codeCategory);
+
         Material savedMaterial = materialRepository.save(material);
         return ResponseEntity.ok(savedMaterial);
     }
@@ -67,4 +76,11 @@ public class MaterialController {
         Material material = materialRepository.findByCodeMaterial(codeMaterial);
         return ResponseEntity.ok(material);
     }
+    // Hàm tạo mã ngẫu nhiên cho Material
+    private String generateMaterialCode() {
+        Random random = new Random();
+        int randomCode = random.nextInt(100000);  // Sinh số ngẫu nhiên trong phạm vi từ 0 - 99999
+        return "M" + String.format("%05d", randomCode);  // Đảm bảo mã luôn có 5 chữ số
+    }
+
 }
