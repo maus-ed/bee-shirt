@@ -21,4 +21,15 @@ public interface BillRepo extends JpaRepository<Bill, Integer> {
             "LEFT JOIN voucher v ON bl.voucher_id = v.id",
             nativeQuery = true)
     List<Object[]> findBillSummaryNative();
+
+
+
+    @Query(value = "SELECT "
+            + "COUNT(DISTINCT b.id) AS BillCount, "
+            + "SUM(bd.quantity) AS TotalShirtQuantity, "
+            + "SUM(DISTINCT b.total_money) AS TotalRevenue "
+            + "FROM bill b "
+            + "JOIN bill_detail bd ON bd.bill_id = b.id",
+            nativeQuery = true)
+    List<Object[]> findBillStatisticsNative();
 }
