@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,14 +17,15 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "voucher_id")
-    private Integer voucherId;
-
-    @Column(name = "account_id")
-    private Integer accountId;
-
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @ManyToOne
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Account customer;
 
     @Column(name = "code_bill", length = 50)
     private String codeBill;
@@ -65,7 +67,7 @@ public class Bill {
     private String createBy;
 
     @Column(name = "create_at")
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
     @Column(name = "update_by", length = 100)
     private String updateBy;
@@ -78,8 +80,4 @@ public class Bill {
 
     @Column(name = "deleted")
     private Boolean deleted;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bill_id")
-    private List<BillDetail> billDetails;
 }
