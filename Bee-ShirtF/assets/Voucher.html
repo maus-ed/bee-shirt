@@ -34,17 +34,9 @@
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="css/demo.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js"></script>
-  <script src="/assets/js/voucher.js"></script>
-
 </head>
 
-<body ng-app="voucherApp" ng-controller="voucherController">
-
+<body>
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="sidebar" data-background-color="dark">
@@ -71,7 +63,7 @@
       <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
-            <li class="nav-item active submenu">
+            <li class="nav-item ">
               <a href="BanHang.html" class="collapsed" aria-expanded="false">
                 <i class="fas fa-home"></i>
                 <p>Bán Hàng</p>
@@ -88,13 +80,13 @@
                 <p>Quản Lý</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="Voucher.html">
+            <li class="nav-item active submenu">
+              <a data-bs-toggle="collapse" href="#sidebarLayouts">
                 <i class="fas fa-ticket-alt"></i>
                 <p>Voucher</p>
-                <!-- <span class="caret"></span> -->
+                <span class="caret"></span>
               </a>
-              <!-- <div class="collapse" id="sidebarLayouts">
+              <div class="collapse" id="sidebarLayouts">
                 <ul class="nav nav-collapse">
                   <li>
                     <a href="sidebar-style-2.html">
@@ -107,10 +99,10 @@
                     </a>
                   </li>
                 </ul>
-              </div> -->
+              </div>
             </li>
             <li class="nav-item">
-              <a href="/Bill.html">
+              <a href="/assets/Bill.html">
                 <i class="fas fa-pen-square"></i>
                 <span class="sub-item">Hóa Đơn</span>
               </a>
@@ -158,10 +150,10 @@
               </div>
             </li>
             <li class="nav-item">
-              <a href="statistic.html">
+              <a  href="statistic.html">
                 <i class="far fa-chart-bar"></i>
                 <p>Thống Kê</p>
-
+             
               </a>
               <!-- <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
@@ -489,120 +481,18 @@
         </nav>
         <!-- End Navbar -->
       </div>
-      <!-- container -->
+<!-- container -->
       <div class="container">
-        <!-- Biểu mẫu tìm kiếm voucher -->
-        <h1 style="margin-left: 800px;">List Voucher</h1>
-
-
-        <form ng-submit="searchVouchers()">
-
-
-
-          <div class="row">
-            <div class="col">
-              <label class="form-label">Ngày bắt đầu:</label>
-              <input type="date" class="form-control" ng-model="search.batdau" ng-change="searchByDateRange()">
+        <div class="page-inner">
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+              <h3 class="fw-bold mb-3">Voucher ở đây nhé</h3>
             </div>
-            <div class="col">
-              <label class="form-label">Ngày kết thúc:</label>
-              <input type="date" class="form-control" ng-model="search.ketthuc" ng-change="searchByDateRange()">
-            </div>
+           
           </div>
-
-
-          <Br></Br>
-          <div class="row">
-            <div class="row">
-              <div class="col-md-6 offset-md-3">
-                <label class="form-label">Tìm Kiếm:</label>
-                <div class="input-group">
-
-                  <input type="text" class="form-control" placeholder="Tìm kiếm mọi trường (Mã, Tên, Giảm giá, ...)"
-                    ng-model="searchKeyword" ng-change="globalSearch()" />
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-          <br>
-          <a href="/assets/VoucherAdd.html" style="margin-left: 1400px;" class="btn btn-warning mt-4">Thêm voucher
-            mới</a>
-
-        </form>
-        <br><br>
-        <!-- <h2>Cập nhật trạng thái voucher hết hạn</h2>
-        <button ng-click="updateVoucherStatus()" class="btn btn-primary">Cập nhật trạng thái</button>
-         -->
-        <!-- Hiển thị thông báo sau khi thực hiện -->
-        <!-- <div ng-show="successMessage" style="color: green;">
-            <small>{{ successMessage }}</small>
-        </div>
-        <div ng-show="errorMessage" style="color: red;">
-            <small>{{ errorMessage }}</small>
-        </div> -->
-        <!-- Danh sách voucher -->
-        <h2>Danh sách voucher</h2>
-        <table id="basic-datatables" class="display table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>Code Voucher</th>
-
-              <!-- <th>Type Voucher</th> -->
-              <th>Name Voucher</th>
-              <th>Discount Value</th>
-              <th>Quantity</th>
-              <th>Min Bill Value</th>
-              <th>Maximum Discount</th>
-              <th>Startdate</th>
-              <th>Enddate</th>
-              <th>Status Voucher</th>
-              <!-- <th>Description Voucher</th> -->
-
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="(index, voucher) in voucherList">
-              <td>{{ index + 1 }}</td> <!-- STT tự động tăng -->
-              <td>{{ voucher.code_voucher }}</td>
-
-              <!-- <td>{{ voucher.type_voucher }}</td> -->
-              <td>{{ voucher.name_voucher }}</td>
-              <td>{{ voucher.discount_value }}</td>
-              <td>{{ voucher.quantity }}</td>
-              <td>{{ voucher.min_bill_value }}</td>
-              <td>{{ voucher.maximum_discount }}</td>
-              <td>{{ voucher.startdate }}</td>
-              <td>{{ voucher.enddate }}</td>
-              <td>{{ voucher.status_voucher === 1 ? 'Active' : 'Inactive' }}</td>
-              <div class="pagination">
-                <td>
-                  <div style="display: inline-flex; gap: 5px;">
-                    <button ng-click="getVoucherDetail(voucher.id)" class="btn btn-secondary btn-sm">Detail</button>
-                    <button ng-click="deleteVoucher(voucher.id)" class="btn btn-danger btn-sm">Remove</button>
-                  </div>
-                </td>
-              </div>
-
-            </tr>
-          </tbody>
-        </table>
-        <br>
-        <div class="pagination" style="margin-left: 750px;">
-          <button ng-disabled="currentPage === 0" class="btn btn-info" style="margin-right: 10px;"
-            ng-click="currentPage = currentPage - 1; getVouchers()">Previous</button>
-          <span>Page {{currentPage + 1}} of {{totalPages}}</span>
-          <button ng-disabled="currentPage === totalPages - 1" class="btn btn-info" style=" margin-left: 10px;"
-            ng-click="currentPage = currentPage + 1; getVouchers()">Next</button>
         </div>
       </div>
-      <br>
-
-      <!-- end container -->
+   <!-- end container -->
       <footer class="footer">
         <div class="container-fluid d-flex justify-content-between">
           <nav class="pull-left">
@@ -760,14 +650,7 @@
       lineColor: "#ffa534",
       fillColor: "rgba(255, 165, 52, .14)",
     });
-
-
-
-
-
   </script>
-
 </body>
-
 
 </html>
