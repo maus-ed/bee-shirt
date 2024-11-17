@@ -58,6 +58,10 @@ public class PointOfSaleService {
         return voucherRepository.findVoucherByCode(getVoucher).orElse(null);
     }
 
+    public Account getAccount(String username) {
+        return accountRepository.findByUsername(username).orElse(null);
+    }
+
     public static String generateRandomCode() {
         Random random = new Random();
         List<Character> characters = new ArrayList<>();
@@ -136,13 +140,18 @@ public class PointOfSaleService {
         return "Cancel successfully";
     }
 
+
+
     public String checkout(String codeBill, String codeVoucher, String username) {
         Bill bill = billRepository.findBillByCode(codeBill);
         Voucher voucher = voucherRepository.findVoucherByCode(codeVoucher).orElse(null);
-        bill.setVoucher(voucher);
-        bill.setCustomer(accountRepository.findByUsername(username).orElse(null));
-        System.out.println(username);
-        System.out.println(accountRepository.findByUsername(username).orElse(null));
+        Account account = accountRepository.findByUsername(username).orElse(null);
+        if (account != null) {
+            bill.setVoucher(voucher);
+        } else {
+            bill.setVoucher(null);
+        }
+        bill.setCustomer(account);
         bill.setTypeBill("POS");
         bill.setCustomerName("1");
         bill.setPhoneNumber("1");

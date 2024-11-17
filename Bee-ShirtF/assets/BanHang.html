@@ -622,7 +622,9 @@
                       </div>
                       <div class="mb-3">
                         <label for="codeCustomer" class="form-label">Khách hàng</label>
-                        <input type="text" id="codeCustomer" class="form-control" placeholder="Nhập tài khoản">
+                        <input type="text" id="codeCustomer" class="form-control" placeholder="Nhập mã khách hàng"
+                          oninput="applyAccountOnChange()">
+                        <div id="accountFeedback" class="feedback" style="display:none;"></div>
                       </div>
                       <div class="mb-3">
                         <label for="paymentInput" class="form-label">Tiền phải trả</label>
@@ -1357,7 +1359,97 @@
       confirmButton.disabled = paymentInput < totalMoney;
     }
 
+    async function applyAccountOnChange() {
+      const codeCustomer = document.getElementById("codeCustomer").value.trim();
+      const codeVoucherInput = document.getElementById("codeVoucher");
+      const feedback = document.getElementById("accountFeedback");
+      const totalMoneyInput = document.getElementById("totalMoney");
+      const voucherFeedback = document.getElementById("voucherFeedback");
+
+      // Ẩn thông báo cũ
+      feedback.style.display = "none";
+      voucherFeedback.style.display = "none";
+
+      try {
+        const billResponse = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
+          method: 'GET',
+          headers: headers
+        });
+
+        const billData = await billResponse.json();
+
+        // Tính tổng tiền
+        let totalMoney = 0;
+        billData.forEach(item => {
+          totalMoney += item.price * item.quantity;
+        });
+
+
+        // Gửi yêu cầu kiểm tra mã khách hàng
+        const response = await fetch(`http://localhost:8080/point-of-sale/get-account?username=${codeCustomer}`, {
+          method: "GET",
+          headers: headers,
+        });
+
+        // Kiểm tra phản hồi từ API
+        if (!response.ok) {
+          throw new Error("Mã khách hàng không hợp lệ hoặc không tồn tại!");
+        }
+
+        const responseClone = response.clone();
+
+        const data = await responseClone.text();
+        if (data == '') {
+          feedback.style.display = "block";
+          feedback.textContent = "";
+
+          totalMoneyInput.value = totalMoney.toFixed(2);
+          validatePayment()
+          return;
+        }
+
+        // Đọc dữ liệu từ API
+        const accountData = await response.json();
+
+        // Nếu không tìm thấy tài khoản
+        if (!accountData || Object.keys(accountData).length === 0) {
+          feedback.style.display = "block";
+          feedback.style.color = "red";
+          feedback.textContent = "Không tìm thấy tài khoản với mã khách hàng này!";
+          codeVoucherInput.disabled = true; // Vô hiệu hóa ô nhập mã voucher
+          codeVoucherInput.value = ""; // Xóa mã voucher
+          totalMoneyInput.value = ""; // Đặt lại tổng tiền
+          return;
+        }
+
+        // Nếu tìm thấy tài khoản, bật ô nhập voucher
+        feedback.style.display = "block";
+        feedback.style.color = "green";
+        feedback.textContent = `Tài khoản hợp lệ`;
+        codeVoucherInput.disabled = false; // Kích hoạt ô nhập mã voucher
+
+        // Gọi lại hàm áp dụng voucher
+        await applyVoucherOnChange();
+      } catch (error) {
+        // Hiển thị lỗi nếu xảy ra
+        feedback.style.display = "block";
+        feedback.style.color = "red";
+        feedback.textContent = error.message || "Đã xảy ra lỗi khi kiểm tra mã khách hàng!";
+        codeVoucherInput.disabled = true; // Vô hiệu hóa ô nhập mã voucher
+        codeVoucherInput.value = ""; // Xóa mã voucher
+
+        totalMoneyInput.value = totalMoney.toFixed(2);
+        validatePayment()
+        return;
+
+      }
+    }
+
+
+
+
     async function applyVoucherOnChange() {
+      const codeCustomer = document.getElementById("codeCustomer").value.trim();
       const codeVoucher = document.getElementById("codeVoucher").value.trim();
       const totalMoneyInput = document.getElementById("totalMoney");
       const feedback = document.getElementById("voucherFeedback");
@@ -1366,6 +1458,22 @@
       feedback.style.display = "none";
 
       try {
+        // Gửi yêu cầu kiểm tra mã khách hàng
+        const customerResponse = await fetch(`http://localhost:8080/point-of-sale/get-account?username=${codeCustomer}`, {
+          method: "GET",
+          headers: headers,
+        });
+
+        // Kiểm tra phản hồi từ API
+        if (!customerResponse.ok) {
+          throw new Error("Mã khách hàng không hợp lệ hoặc không tồn tại!");
+        }
+
+        const customerData = await customerResponse.text();
+        if (customerData == '') {
+          return;
+        }
+
         const response = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
           method: 'GET',
           headers: headers
@@ -1399,7 +1507,7 @@
         const voucherResponseClone = voucherResponse.clone();
 
         const voucherData = await voucherResponse.text();
-        if (voucherData=='') {
+        if (voucherData == '') {
           feedback.style.display = "block";
           feedback.textContent = "";
           totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
