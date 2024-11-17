@@ -131,13 +131,6 @@
           <span id="role">{{getRoles(user.role)}}</span>
         </div>
 
-        <div ng-if="errorMessage" class="alert alert-danger mt-3">
-          {{ errorMessage }}
-        </div>
-        <div ng-if="successMessage" class="alert alert-success mt-3">
-          {{ successMessage }}
-        </div>
-
         <!-- Buttons -->
         <div class="buttons">
           <button type="button" ng-click="updateAccount()">Update</button>
@@ -145,6 +138,13 @@
             Change Password
           </button>
           <button type="button" ng-click="goBack()">Close</button>
+        </div>
+
+        <div ng-if="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+        <div ng-if="successMessage" class="alert alert-success mt-3">
+          {{ successMessage }}
         </div>
       </form>
 
@@ -157,7 +157,7 @@
             <input
               type="password"
               id="oldPassword"
-              ng-model="passwordData.oldPassword"
+              ng-model="user.oldPassword"
               required
             />
           </div>
@@ -167,7 +167,7 @@
             <input
               type="password"
               id="newPassword"
-              ng-model="passwordData.pass"
+              ng-model="user.newPassword"
               required
             />
           </div>
@@ -177,9 +177,9 @@
             <input
               type="password"
               id="confirmPassword"
-              ng-model="passwordData.confirmPassword"
+              ng-model="user.confirmPassword"
               required
-              ng-pattern="passwordData.newPassword"
+              ng-pattern="user.newPassword"
             />
           </div>
 

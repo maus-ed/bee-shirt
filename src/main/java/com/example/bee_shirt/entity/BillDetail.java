@@ -35,4 +35,8 @@ public class BillDetail {
     @ManyToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;
+
+    @ManyToOne
+    @JoinColumn(name = "bill_id", insertable = false, updatable = false)
+    private BillPayment billpayment;
 }

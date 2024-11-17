@@ -42,27 +42,11 @@ angular
         avatarFile: null, // File ảnh đại diện từ input
         role: [],
       };
-      $scope.hasPermission = true;
       $scope.currentPage = 1;
       $scope.totalPages = 0;
       $scope.pageSize = 5; // Số lượng nhân viên trên mỗi trang
 
       $scope.availableRoles = ["ADMIN", "STAFF", "USER"]; // Danh sách role có sẵn
-
-      //set role
-      function getHighestRole(scopes) {
-        const roles = scopes ? scopes.split(" ") : [];
-        const rolePriority = {
-          ROLE_ADMIN: 1,
-          ROLE_STAFF: 2,
-          ROLE_USER: 3,
-        };
-
-        const validRoles = roles.filter((role) => rolePriority[role]);
-        validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
-
-        return validRoles[0] || null;
-      }
 
       // Hàm kiểm tra quyền
       function checkPermission() {
@@ -78,13 +62,28 @@ angular
 
         if (highestRole !== "ROLE_ADMIN") {
           alert("Bạn không có quyền truy cập vào trang này!");
-          $window.history.back();
+          window.location.href = "/assets/BanHang.html";
           return false;
         }
+
         return true;
       }
 
       if (!checkPermission()) return;
+
+      function getHighestRole(scopes) {
+        const roles = scopes ? scopes.split(" ") : [];
+        const rolePriority = {
+          ROLE_ADMIN: 1,
+          ROLE_STAFF: 2,
+          ROLE_USER: 3,
+        };
+
+        const validRoles = roles.filter((role) => rolePriority[role]);
+        validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
+
+        return validRoles[0] || null;
+      }
 
       // Hàm xem profile
       $scope.viewProfile = function () {

@@ -1,6 +1,5 @@
 package com.example.bee_shirt.repository;
 
-
 import com.example.bee_shirt.dto.request.BillDetailDTO;
 import com.example.bee_shirt.entity.BillDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
