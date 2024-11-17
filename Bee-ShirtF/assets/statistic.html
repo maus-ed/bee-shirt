@@ -6,6 +6,7 @@
   <title>Bee-Shirt Admin Dashboard</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
   <link rel="icon" href="img/kaiadmin/favicon.ico" type="image/x-icon" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
   <!-- Fonts and icons -->
   <script src="js/plugin/webfont/webfont.min.js"></script>
@@ -26,8 +27,29 @@
       },
     });
   </script>
-  <script src="path/to/jquery.sparkline.min.js"></script>
+  <style>
+ 
+#statistics-table_wrapper .dataTables_filter {
+  float: left; /* Đưa thanh tìm kiếm sang trái */
+  /* Tạo khoảng cách bên phải của thanh tìm kiếm */
+}
 
+#statistics-table_wrapper .dataTables_filter label {
+  font-weight: normal;
+  white-space: nowrap;
+  text-align: left; /* Đảm bảo nhãn căn trái */
+}
+
+#statistics-table_wrapper .dataTables_filter input {
+  margin-left: 0.5em;
+  display: inline-block;
+  width: 100px; /* Chiều rộng của input tự động điều chỉnh */
+}
+  </style>
+  <script src="path/to/jquery.sparkline.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  
   <!-- CSS Files -->
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/plugins.min.css" />
@@ -47,7 +69,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
           <a href="BanHang.html" class="logo">
-            <img src="img/kaiadmin/logo_light.sv" alt="navbar brand" class="navbar-brand" height="20" />
+            <img src="img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
           </a>
           <div class="nav-toggle">
             <button class="btn btn-toggle toggle-sidebar">
@@ -494,105 +516,107 @@
 
           </div>
           <div class="row">
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div class="icon-big text-center icon-primary bubble-shadow-small">
-                        <i class="fas fa-box"></i>
-                      </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Sản Phẩm</p>
+                                    <h4 class="card-title">{{ totalProducts }}</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Sản Phẩm</p>
-                        <h4 class="card-title">10</h4>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
-            <div class="col-sm-6 col-md-3">
+        
+            <div class="col-sm-6 col-md-4">
               <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div class="icon-big text-center icon-info bubble-shadow-small">
-                        <i class="fas fa-user-check"></i>
+                  <div class="card-body">
+                      <div class="row align-items-center">
+                          <div class="col-icon">
+                              <div class="icon-big text-center icon-success bubble-shadow-small">
+                                  <i class="fas fa-luggage-cart"></i>
+                              </div>
+                          </div>
+                          <div class="col col-stats ms-3 ms-sm-0">
+                              <div class="numbers">
+                                  <p class="card-category">Doanh Thu</p>
+                                  <h4 class="card-title">{{ formatCurrency(totalRevenue) }}</h4>
+                              </div>
+                          </div>
                       </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Khách Hàng Mới</p>
-                        <h4 class="card-title">3</h4>
-                      </div>
-                    </div>
                   </div>
-                </div>
               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div class="icon-big text-center icon-success bubble-shadow-small">
-                        <i class="fas fa-luggage-cart"></i>
-                      </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Doanh Thu</p>
-                        <h4 class="card-title">$ 420</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div class="icon-big text-center icon-secondary bubble-shadow-small">
-                        <i class="far fa-check-circle"></i>
-                      </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Đơn Hàng</p>
-                        <h4 class="card-title">5</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
+          
+        
+            <div class="col-sm-6 col-md-4">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                    <i class="far fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Đơn Hàng</p>
+                                    <h4 class="card-title">{{ totalOrders }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
           <div class="row">
             <div class="col-md-8">
               <div class="card card-round">
                 <div class="card-header">
                   <div class="card-head-row">
                     <div class="card-title">Thống kê</div>
-                    <div class="card-tools">
+                    <div class="card-tools d-flex justify-content-between">
+                      <!-- Export Button -->
                       <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
                         <span class="btn-label">
                           <i class="fa fa-pencil"></i>
                         </span>
                         Export
                       </a>
-                      <a href="#" class="btn btn-label-info btn-round btn-sm">
-                        <span class="btn-label">
-                          <i class="fa fa-print"></i>
-                        </span>
-                        Print
-                      </a>
+                
+                      <!-- Filter Dropdown -->
+                      <div class="dropdown">
+                        <button class="btn btn-label-info btn-round btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="btn-label">
+                            <i class="fa fa-filter"></i>
+                          </span>
+                          Lọc
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <select id="filterOptions" class="form-select">
+                            <option value="all">Tất cả</option>
+                            <option value="today">Hôm nay</option>
+                            <option value="this-week">Tuần này</option>
+                            <option value="this-month">Tháng này</option>
+                            <option value="last-month">Tháng trước</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                
                 <div class="card-body">
                   <div class="chart-container" style="min-height: 375px">
                     <canvas id="statisticsChart"></canvas>
@@ -652,153 +676,103 @@
           <div class="row">
             <div class="col-md-4">
               <div class="card card-round">
-                <div class="card-body">
+                <div class="card-header">
                   <div class="card-head-row card-tools-still-right">
-                    <div class="card-title">Khách hàng mới</div>
+                    <div class="card-title">Sản Phẩm Bán Chạy</div>
                     <div class="card-tools">
                       <div class="dropdown">
-                        <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-h"></i>
+                        <label>Lọc</label>
+                        <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                          </svg>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
+                          <!-- Combobox cho Brand -->
+                          <label for="brandSelect" style="margin-left: 10px; margin-right: 5px;">Chọn Thương Hiệu</label>
+                          <select class="dropdown-item" id="brandSelect" ng-model="selectedBrand" ng-change="applyFilter()" style="width: 150px; padding: 2px 5px;">
+                            <option value="">Tất Cả</option>
+                            <option value="Brand A">Brand A</option>
+                            <option value="Brand B">Brand B</option>
+                            <option value="Brand C">Brand C</option>
+                          </select>
+              
+                          <!-- Combobox cho Shirt Name
+                          <label for="shirtNameSelect" style="margin-left: 10px; margin-right: 5px;">Chọn Sản Phẩm</label>
+                          <select class="dropdown-item" id="shirtNameSelect" ng-model="selectedShirtName" ng-change="applyFilter()" style="width: 150px; padding: 2px 5px;">
+                            <option value="">Tất Cả</option>
+                            <option value="Shirt A">Shirt A</option>
+                            <option value="Shirt B">Shirt B</option>
+                          </select>
+               -->
+                          <!-- Combobox cho Size -->
+                          <label for="sizeSelect" style="margin-left: 10px; margin-right: 5px;">Chọn Size</label>
+                          <select class="dropdown-item" id="sizeSelect" ng-model="selectedSize" ng-change="applyFilter()" style="width: 150px; padding: 2px 5px;">
+                            <option value="">Tất Cả</option>
+                            <option value="S">Size S</option>
+                            <option value="M">Size M</option>
+                            <option value="L">Size L</option>
+                          </select>
+              
+                          <!-- Lọc theo Thời gian
+                          <label for="startDateInput" style="margin-left: 10px; margin-right: 5px;">Thời gian</label>
+                          <input type="date" id="startDateInput" ng-model="startDate" class="dropdown-item" style="width: 150px; padding: 2px 5px;" />
+              
+                          Lọc theo Ngày Kết Thúc -->
+                          <!-- <label for="endDateInput" style="margin-left: 10px; margin-right: 5px;">Đến Ngày</label>
+                          <input type="date" id="endDateInput" ng-model="endDate" class="dropdown-item" style="width: 150px; padding: 2px 5px;" />
+               -->
+                          <!-- Nút áp dụng lọc -->
+                          <!-- <button class="dropdown-item" id="applyFilterButton" ng-click="applyFilter()">Áp dụng lọc</button> -->
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="card-list py-4">
-                    <div class="item-list">
-                      <div class="avatar">
-                        <img src="img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle" />
-                      </div>
-                      <div class="info-user ms-3">
-                        <div class="username">Jimmy Denis</div>
-                        <div class="status">Graphic Designer</div>
-                      </div>
-                      <button class="btn btn-icon btn-link op-8 me-1">
-                        <i class="far fa-envelope"></i>
-                      </button>
-                      <button class="btn btn-icon btn-link btn-danger op-8">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                    </div>
-                    <div class="item-list">
-                      <div class="avatar">
-                        <span class="avatar-title rounded-circle border border-white">CF</span>
-                      </div>
-                      <div class="info-user ms-3">
-                        <div class="username">Chandra Felix</div>
-                        <div class="status">Sales Promotion</div>
-                      </div>
-                      <button class="btn btn-icon btn-link op-8 me-1">
-                        <i class="far fa-envelope"></i>
-                      </button>
-                      <button class="btn btn-icon btn-link btn-danger op-8">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                    </div>
-                    <div class="item-list">
-                      <div class="avatar">
-                        <img src="img/talha.jpg" alt="..." class="avatar-img rounded-circle" />
-                      </div>
-                      <div class="info-user ms-3">
-                        <div class="username">Talha</div>
-                        <div class="status">Front End Designer</div>
-                      </div>
-                      <button class="btn btn-icon btn-link op-8 me-1">
-                        <i class="far fa-envelope"></i>
-                      </button>
-                      <button class="btn btn-icon btn-link btn-danger op-8">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                    </div>
-                    <div class="item-list">
-                      <div class="avatar">
-                        <img src="img/chadengle.jpg" alt="..." class="avatar-img rounded-circle" />
-                      </div>
-                      <div class="info-user ms-3">
-                        <div class="username">Chad</div>
-                        <div class="status">CEO Zeleaf</div>
-                      </div>
-                      <button class="btn btn-icon btn-link op-8 me-1">
-                        <i class="far fa-envelope"></i>
-                      </button>
-                      <button class="btn btn-icon btn-link btn-danger op-8">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                    </div>
-                    <div class="item-list">
-                      <div class="avatar">
-                        <span class="avatar-title rounded-circle border border-white bg-primary">H</span>
-                      </div>
-                      <div class="info-user ms-3">
-                        <div class="username">Hizrian</div>
-                        <div class="status">Web Designer</div>
-                      </div>
-                      <button class="btn btn-icon btn-link op-8 me-1">
-                        <i class="far fa-envelope"></i>
-                      </button>
-                      <button class="btn btn-icon btn-link btn-danger op-8">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                    </div>
-                    <div class="item-list">
-                      <div class="avatar">
-                        <span class="avatar-title rounded-circle border border-white bg-secondary">F</span>
-                      </div>
-                      <div class="info-user ms-3">
-                        <div class="username">Farrah</div>
-                        <div class="status">Marketing</div>
-                      </div>
-                      <button class="btn btn-icon btn-link op-8 me-1">
-                        <i class="far fa-envelope"></i>
-                      </button>
-                      <button class="btn btn-icon btn-link btn-danger op-8">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                    </div>
-                  </div>
+                </div>
+              
+                <div class="card-body">
+                  <table class="table align-items-center mb-0" id="statistics-table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Số Lượng</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Do not use ng-repeat for DataTable, it's handled by DataTable -->
+                    </tbody>
+                  </table>
+                  
+                  
                 </div>
               </div>
+              
+
+
             </div>
             <div class="col-md-8">
               <div class="card card-round">
                 <div class="card-header">
                   <div class="card-head-row card-tools-still-right">
                     <div class="card-title">Lịch Sử Mua Hàng</div>
-                    <div class="card-tools">
-                      <div class="dropdown">
-                        <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                    <!-- Projects table -->
-                    <!-- HTML Table Structure -->
                     <div style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
                       <label for="startDate" style="margin-right: 5px;">Từ ngày:</label>
-                      <input type="date" id="startDate" ng-model="startDate" class="form-control" style="width: 150px; padding: 2px 5px;" />
+                      <input type="date" id="startDate" ng-model="startDate" class="form-control"
+                        style="width: 150px; padding: 2px 5px;" />
                     
                       <label for="endDate" style="margin-left: 10px; margin-right: 5px;">Đến ngày:</label>
-                      <input type="date" id="endDate" ng-model="endDate" class="form-control" style="width: 150px; padding: 2px 5px;" />
+                      <input type="date" id="endDate" ng-model="endDate" class="form-control"
+                        style="width: 150px; padding: 2px 5px;" />
                     
-                      <button ng-click="applyDateFilter()" class="btn btn-primary" style="padding: 3px 10px; font-size: 0.9em;">Lọc</button>
+                      <button ng-click="applyDateFilter()" class="btn btn-primary"
+                        style="padding: 3px 10px; font-size: 0.9em;">Lọc</button>
                     </div>
-                    
-                    
                     <table class="table align-items-center mb-0" id="order-table">
                       <thead class="thead-light">
                         <tr>
@@ -810,9 +784,19 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- Data will be dynamically added by JavaScript -->
+                        <tr ng-repeat="order in filteredOrders || orders">
+                          <td>{{order.stt}}</td>
+                          <td>{{order.codeBill}}</td>
+                          <td class="text-end">{{order.desiredDate}}</td>
+                          <td class="text-end">{{order.totalMoney}}</td>
+                          <td class="text-end">{{order.statusBill}}</td>
+                        </tr>
                       </tbody>
                     </table>
+                    
+                    
+                    
+                    
 
                     <!-- Hiển thị thông báo lỗi hoặc thành công
                     <div ng-if="errorMessage" class="alert alert-danger">
@@ -993,124 +977,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <!-- <script>
-      $(document).ready(function () {
-        $('#dateRangePicker').daterangepicker({
-          startDate: moment().subtract(7, 'days'),
-          endDate: moment(),
-          locale: {
-            format: 'DD/MM/YYYY', // Định dạng ngày
-            applyLabel: "Chọn",
-            cancelLabel: "Hủy",
-            fromLabel: "Từ",
-            toLabel: "Đến",
-            customRangeLabel: "Chọn khoảng",
-            daysOfWeek: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-            monthNames: [
-              "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-              "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
-            ],
-            firstDay: 1 // Bắt đầu từ thứ Hai
-          }
-        }, function (start, end) {
-          $('#dateRangePicker').val(start.format('DD/MM') + ' - ' + end.format('DD/MM'));
-        });
-      });
 
 
-    </script> -->
+    <script>
 
-
-    <!-- <script>
-      $(document).ready(function () {
-        $("#basic-datatables").DataTable({});
-
-        $("#multi-filter-select").DataTable({
-          pageLength: 5,
-          initComplete: function () {
-            this.api()
-              .columns()
-              .every(function () {
-                var column = this;
-                var select = $(
-                  '<select class="form-select"><option value=""></option></select>'
-                )
-                  .appendTo($(column.footer()).empty())
-                  .on("change", function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                    column
-                      .search(val ? "^" + val + "$" : "", true, false)
-                      .draw();
-                  });
-
-                column
-                  .data()
-                  .unique()
-                  .sort()
-                  .each(function (d, j) {
-                    select.append(
-                      '<option value="' + d + '">' + d + "</option>"
-                    );
-                  });
-              });
-          },
-        });
-
-        // Add Row
-        $("#add-row").DataTable({
-          pageLength: 5,
-        });
-
-        var action =
-          '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-        $("#addRowButton").click(function () {
-          $("#add-row")
-            .dataTable()
-            .fnAddData([
-              $("#addName").val(),
-              $("#addPosition").val(),
-              $("#addOffice").val(),
-              action,
-            ]);
-          $("#addRowModal").modal("hide");
-        });
-      });
-    </script> -->
-    <!-- <script>
-      // Hàm này để hiển thị form hóa đơn chi tiết
-      $(document).ready(function () {
-        // Hủy DataTable nếu đã tồn tại
-        if ($.fn.DataTable.isDataTable('#basic-datatables')) {
-          $('#basic-datatables').DataTable().destroy();
-        }
-
-        // Khởi tạo lại DataTable
-        var table = $('#basic-datatables').DataTable({
-          columns: [
-            { title: "STT" },
-            { title: "Mã Hóa Đơn" },
-            { title: "Ngày Thanh Toán" },
-            { title: "Hình Thức Thanh Toán" },
-            { title: "Tổng Tiền" },
-            { title: "Trạng Thái" }
-          ]
-        });
-
-
-
-
-      });
-
-      // Hàm để định dạng ngày
-      function formatDate(dateString) {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const date = new Date(dateString);
-        return date.toLocaleDateString('vi-VN', options);
-      }
-
-    </script> -->
+    </script>
 </body>
 
 </html>
