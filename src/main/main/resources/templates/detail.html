@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shirt Shop - Shirt Detail</title>
+</head>
+<body>
+<h1>Shirt Detail</h1>
+<p>Code: <span th:text="${shirtDetail.codeshirt}"></span></p>
+<p>Name: <span th:text="${shirtDetail.name}"></span></p>
+<p>Brand: <span th:text="${shirtDetail.nameBrand}"></span></p>
+<p>Category: <span th:text="${shirtDetail.nameCategory}"></span></p>
+<a href="/shirts/index">Back to List</a>
+</body>
+</html>

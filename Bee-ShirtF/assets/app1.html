@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App1 - Danh sách sản phẩm</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="App1Controller">
+    <h1>Danh sách sản phẩm</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Mã sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Thương hiệu</th>
+                <th>Danh mục</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="shirt in shirts" ng-click="viewDetails(shirt.code)">
+                <td>{{shirt.code}}</td>
+                <td>{{shirt.name}}</td>
+                <td>{{shirt.brand}}</td>
+                <td>{{shirt.category}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const app = angular.module('app1', []);
+        app.controller('App1Controller', function ($scope) {
+            // Dữ liệu ảo với 12 áo thun
+            $scope.shirts = Array.from({ length: 12 }, (_, i) => ({
+                code: 'S' + (i + 1),
+                name: 'Áo Thun ' + (i + 1),
+                brand: 'Thương hiệu ' + ((i % 4) + 1),
+                category: 'Danh mục ' + ((i % 3) + 1),
+            }));
+
+            // Chuyển hướng sang App2.html với mã sản phẩm
+            $scope.viewDetails = function (code) {
+                window.location.href = `App2.html?codeShirt=${code}`;
+            };
+        });
+    </script>
+</body>
+</html>

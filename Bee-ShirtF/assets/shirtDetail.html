@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi" ng-app="beeShirtApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shirt Detail</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script>
+        var app = angular.module('beeShirtApp', ['ngRoute']);
+
+        // Service để lấy chi tiết áo thun
+        app.service('shirtDetailService', ['$q', function($q) {
+            const shirtDetails = [
+                { codeShirtDetail: 1, shirtId: 1, size: 'M', color: 'Trắng', price: 100000 },
+                { codeShirtDetail: 2, shirtId: 1, size: 'L', color: 'Trắng', price: 120000 },
+                { codeShirtDetail: 3, shirtId: 2, size: 'M', color: 'Đen', price: 110000 },
+                { codeShirtDetail: 4, shirtId: 2, size: 'L', color: 'Đen', price: 130000 }
+            ];
+
+            // Lấy chi tiết áo thun theo codeShirt
+            this.getShirtDetailByCode = function(codeShirt) {
+                const details = shirtDetails.filter(detail => detail.shirtId === codeShirt);
+                return $q.resolve(details); // Trả về chi tiết áo thun giả lập
+            };
+        }]);
+
+        // Controller cho chi tiết áo thun
+        app.controller('ShirtDetailController', ['$scope', 'shirtDetailService', '$routeParams', function($scope, shirtDetailService, $routeParams) {
+            $scope.shirtDetails = []; // Danh sách chi tiết áo thun
+
+            // Lấy codeShirt từ URL
+            const codeShirt = $routeParams.codeShirt;
+
+            // Lấy chi tiết áo thun từ service
+            shirtDetailService.getShirtDetailByCode(codeShirt).then(function(response) {
+                $scope.shirtDetails = response;
+            });
+        }]);
+
+        // Routing cấu hình
+        app.config(['$routeProvider', function($routeProvider) {
+            $routeProvider
+                .when('/shirtDetail/:codeShirt', {
+                    templateUrl: 'shirtDetail.html',
+                    controller: 'ShirtDetailController'
+                })
+                .otherwise({
+                    redirectTo: '/'
+                });
+        }]);
+
+    </script>
+</head>
+<body ng-controller="ShirtDetailController">
+    <h3>Chi tiết áo thun</h3>
+    <div ng-repeat="shirtDetail in shirtDetails">
+        <div>Mã chi tiết: {{ shirtDetail.codeShirtDetail }}</div>
+        <div>Kích thước: {{ shirtDetail.size }}</div>
+        <div>Màu sắc: {{ shirtDetail.color }}</div>
+        <div>Giá: {{ shirtDetail.price }}</div>
+    </div>
+</body>
+</html>

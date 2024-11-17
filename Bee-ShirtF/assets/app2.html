@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app2">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App2 - Chi tiết hoặc danh sách sản phẩm</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="App2Controller">
+    <h1>Danh sách hoặc chi tiết sản phẩm</h1>
+
+    <table border="1" ng-if="shirtDetails.length > 0">
+        <thead>
+            <tr>
+                <th>Mã chi tiết</th>
+                <th>Tên chi tiết</th>
+                <th>Kích cỡ</th>
+                <th>Màu sắc</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="detail in shirtDetails">
+                <td>{{detail.detailCode}}</td>
+                <td>{{detail.detailName}}</td>
+                <td>{{detail.size}}</td>
+                <td>{{detail.color}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="App1.html">Quay lại danh sách</a>
+
+    <script>
+        const app = angular.module('app2', []);
+        app.controller('App2Controller', function ($scope) {
+            // Dữ liệu chi tiết áo thun ảo
+            const allDetails = [];
+            for (let i = 1; i <= 12; i++) {
+                allDetails.push(
+                    { detailCode: `S${i}-D1`, detailName: `Chi tiết 1 của S${i}`, size: 'M', color: 'Đỏ' },
+                    { detailCode: `S${i}-D2`, detailName: `Chi tiết 2 của S${i}`, size: 'L', color: 'Xanh' },
+                    { detailCode: `S${i}-D3`, detailName: `Chi tiết 3 của S${i}`, size: 'XL', color: 'Đen' }
+                );
+            }
+
+            // Lấy mã sản phẩm từ URL
+            const params = new URLSearchParams(window.location.search);
+            const codeShirt = params.get('codeShirt');
+
+            // Lọc dữ liệu chi tiết áo thun dựa trên mã sản phẩm
+            $scope.shirtDetails = codeShirt
+                ? allDetails.filter((detail) => detail.detailCode.startsWith(codeShirt))
+                : allDetails;
+        });
+    </script>
+</body>
+</html>

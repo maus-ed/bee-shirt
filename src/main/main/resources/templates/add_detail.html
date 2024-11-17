@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Shirt Detail</title>
+</head>
+<body>
+<h1>Add Shirt Detail</h1>
+<form action="#" th:action="@{/shirt-details/add}" th:object="${shirtDetail}" method="post">
+    <label for="codeShirtDetail">Code Shirt Detail:</label>
+    <input type="text" id="codeShirtDetail" th:field="*{codeShirtDetail}" required/>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" th:field="*{price}" required/>
+
+    <label for="quantity">Quantity:</label>
+    <input type="text" id="quantity" th:field="*{quantity}" required/>
+
+    <label for="patternId">Pattern:</label>
+    <select id="patternId" th:field="*{pattern.id}" required>
+        <option th:each="pattern : ${patterns}" th:value="${pattern.id}" th:text="${pattern.namePattern}"></option>
+    </select>
+
+    <label for="genderId">Gender:</label>
+    <select id="genderId" th:field="*{gender.id}" required>
+        <option th:each="gender : ${genders}" th:value="${gender.id}" th:text="${gender.nameGender}"></option>
+    </select>
+
+    <label for="originId">Origin:</label>
+    <select id="originId" th:field="*{origin.id}" required>
+        <option th:each="origin : ${origins}" th:value="${origin.id}" th:text="${origin.nameOrigin}"></option>
+    </select>
+
+    <label for="seasonId">Season:</label>
+    <select id="seasonId" th:field="*{season.id}" required>
+        <option th:each="season : ${seasons}" th:value="${season.id}" th:text="${season.nameSeason}"></option>
+    </select>
+
+    <label for="sizeId">Size:</label>
+    <select id="sizeId" th:field="*{size.id}" required>
+        <option th:each="size : ${sizes}" th:value="${size.id}" th:text="${size.namesize}"></option>
+    </select>
+
+    <label for="materialId">Material:</label>
+    <select id="materialId" th:field="*{material.id}" required>
+        <option th:each="material : ${materials}" th:value="${material.id}" th:text="${material.nameMaterial}"></option>
+    </select>
+
+    <label for="colorId">Color:</label>
+    <select id="colorId" th:field="*{color.id}" required>
+        <option th:each="color : ${colors}" th:value="${color.id}" th:text="${color.nameColor}"></option>
+    </select>
+
+    <button type="submit">Add Shirt Detail</button>
+</form>
+<a href="/shirt-details/hien-thi">Back to List</a>
+</body>
+</html>

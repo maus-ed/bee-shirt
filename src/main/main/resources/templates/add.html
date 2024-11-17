@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Shirt</title>
+</head>
+<body>
+<h1>Add Shirt</h1>
+<form action="#" th:action="@{/shirts/add}" th:object="${shirt}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required/>
+
+    <label for="brandId">Brand:</label>
+    <select id="brandId" th:field="*{brand.id}" required>
+        <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.nameBrand}"></option>
+    </select>
+
+    <label for="categoryId">Category:</label>
+    <select id="categoryId" th:field="*{category.id}" required>
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.nameCategory}"></option>
+    </select>
+
+    <button type="submit">Add Shirt</button>
+</form>
+<a href="/shirts/hienthi">Back to List</a>
+</body>
+</html>
