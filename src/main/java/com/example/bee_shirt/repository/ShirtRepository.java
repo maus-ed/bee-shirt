@@ -1,5 +1,6 @@
 package com.example.bee_shirt.repository;
 
+import com.example.bee_shirt.dto.ShirtDetailDTO;
 import com.example.bee_shirt.dto.ShirtResponseDTO;
 import com.example.bee_shirt.entity.Shirt;
 import org.springframework.data.domain.Page;
