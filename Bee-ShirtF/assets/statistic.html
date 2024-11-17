@@ -585,22 +585,38 @@
                 <div class="card-header">
                   <div class="card-head-row">
                     <div class="card-title">Thống kê</div>
-                    <div class="card-tools">
+                    <div class="card-tools d-flex justify-content-between">
+                      <!-- Export Button -->
                       <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
                         <span class="btn-label">
                           <i class="fa fa-pencil"></i>
                         </span>
                         Export
                       </a>
-                      <a href="#" class="btn btn-label-info btn-round btn-sm">
-                        <span class="btn-label">
-                          <i class="fa fa-print"></i>
-                        </span>
-                        Print
-                      </a>
+                
+                      <!-- Filter Dropdown -->
+                      <div class="dropdown">
+                        <button class="btn btn-label-info btn-round btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="btn-label">
+                            <i class="fa fa-filter"></i>
+                          </span>
+                          Lọc
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <select id="filterOptions" class="form-select">
+                            <option value="all">Tất cả</option>
+                            <option value="today">Hôm nay</option>
+                            <option value="this-week">Tuần này</option>
+                            <option value="this-month">Tháng này</option>
+                            <option value="last-month">Tháng trước</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                
                 <div class="card-body">
                   <div class="chart-container" style="min-height: 375px">
                     <canvas id="statisticsChart"></canvas>
