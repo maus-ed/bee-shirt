@@ -46,5 +46,8 @@ public class AccountResponse {
 
     String email;
 
+
+    String deleted;
+
     Set<RoleResponse> role;
 }
