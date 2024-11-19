@@ -53,7 +53,6 @@ public class AuthenticationService {
         return IntrospectResponse.builder()
                 .valid(isvalid)
                 .build();
-
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
