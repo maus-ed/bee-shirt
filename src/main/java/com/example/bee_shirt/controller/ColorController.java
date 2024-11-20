@@ -9,8 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Random;
+
 @RestController
 @RequestMapping("/api/colors")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Cấu hình CORS cho endpoint này
+
+
 public class ColorController {
 
     @Autowired
@@ -27,6 +32,12 @@ public class ColorController {
     // Thêm Color
     @PostMapping("/add")
     public ResponseEntity<Color> addColor(@RequestBody Color color) {
+        String codeCategory = generateCategoryCode();
+
+        // Cập nhật mã codeCategory vào đối tượng Category
+         color.setCodeColor(codeCategory);
+
+        // Lưu category vào cơ sở dữ liệu
         Color savedColor = colorRepository.save(color);
         return ResponseEntity.ok(savedColor);
     }
@@ -66,5 +77,11 @@ public class ColorController {
     public ResponseEntity<Color> getColorDetail(@PathVariable String codeColor) {
         Color color = colorRepository.findByCodeColor(codeColor);
         return ResponseEntity.ok(color);
+    }
+    // Hàm tạo mã category ngẫu nhiên
+    private String generateCategoryCode() {
+        Random random = new Random();
+        int randomCode = random.nextInt(10000);  // Sinh ra số ngẫu nhiên trong phạm vi 0 - 99999
+        return "CO" + String.format("%04d", randomCode);  // Đảm bảo mã luôn có 4 chữ số
     }
 }

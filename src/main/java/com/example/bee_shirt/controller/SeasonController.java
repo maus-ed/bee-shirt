@@ -9,8 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Random;
+
 @RestController
 @RequestMapping("/api/seasons")
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Cấu hình CORS cho endpoint này
+
 public class SeasonController {
 
     @Autowired
@@ -27,6 +31,11 @@ public class SeasonController {
     // Thêm mùa
     @PostMapping("/add")
     public ResponseEntity<Season> addSeason(@RequestBody Season season) {
+        String codeCategory = generateSizeCode();
+
+        // Cập nhật mã codeCategory vào đối tượng Category
+        season.setCodeSeason(codeCategory);
+
         Season savedSeason = seasonRepository.save(season);
         return ResponseEntity.ok(savedSeason);
     }
@@ -67,4 +76,11 @@ public class SeasonController {
         Season season = seasonRepository.findByCodeSeason(codeSeason);
         return ResponseEntity.ok(season);
     }
+    // Hàm tạo mã ngẫu nhiên cho Size
+    private String generateSizeCode() {
+        Random random = new Random();
+        int randomCode = random.nextInt(10000);  // Sinh số ngẫu nhiên trong phạm vi từ 0 - 99999
+        return "SE" + String.format("%04d", randomCode);  // Đảm bảo mã luôn có 5 chữ số
+    }
+
 }

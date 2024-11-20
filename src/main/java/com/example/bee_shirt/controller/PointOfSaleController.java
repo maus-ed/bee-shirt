@@ -1,8 +1,6 @@
 package com.example.bee_shirt.controller;
 
-import com.example.bee_shirt.entity.Bill;
-import com.example.bee_shirt.entity.BillDetail;
-import com.example.bee_shirt.entity.ShirtDetail;
+import com.example.bee_shirt.entity.*;
 import com.example.bee_shirt.service.PointOfSaleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +60,19 @@ public class PointOfSaleController {
         return pointOfSaleService.getShirtDetail(codeShirtDetail);
     }
 
+    @GetMapping("/get-voucher")
+    @ResponseBody
+    public Voucher getVoucher(@RequestParam("codeVoucher") String codeVoucher) {
+        return pointOfSaleService.getVoucher(codeVoucher);
+    }
+
+    @GetMapping("/get-account")
+    @ResponseBody
+    public Account getAccount(@RequestParam("username") String username) {
+        System.out.println(username);
+        return pointOfSaleService.getAccount(username);
+    }
+
     @GetMapping("create-blank-bill")
     @ResponseBody
     public ResponseEntity<String> createNewBill() {
@@ -92,8 +103,8 @@ public class PointOfSaleController {
     }
 
     @PostMapping("checkout")
-    public ResponseEntity<String> checkOut(@RequestParam String codeBill, @RequestParam(required = false) String codeVoucher) {
-        return ResponseEntity.ok(pointOfSaleService.checkout(codeBill, codeVoucher));
+    public ResponseEntity<String> checkout(@RequestParam String codeBill, @RequestParam(required = false) String codeVoucher, @RequestParam(required = false) String username) {
+        return ResponseEntity.ok(pointOfSaleService.checkout(codeBill, codeVoucher, username));
     }
 
     @GetMapping("/close")

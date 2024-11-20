@@ -7,10 +7,6 @@
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
   <link rel="icon" href="img/kaiadmin/favicon.ico" type="image/x-icon" />
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
   <!-- Fonts and icons -->
   <script src="js/plugin/webfont/webfont.min.js"></script>
   <script>
@@ -48,7 +44,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
           <a href="BanHang.html" class="logo">
-            <img src="img/kaiadmin/logo_light.sv" alt="navbar brand" class="navbar-brand" height="20" />
+            <img src="img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
           </a>
           <div class="nav-toggle">
             <button class="btn btn-toggle toggle-sidebar">
@@ -114,14 +110,19 @@
             <li class="nav-item">
               <a data-bs-toggle="collapse" href="#tables">
                 <i class="fas fa-table"></i>
-                <p>Sản Phẩm</p>
+                <p>Quản lý sản phẩm</p>
                 <span class="caret"></span>
               </a>
               <div class="collapse" id="tables">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="pro">
-                      <span class="sub-item">Basic Table</span>
+                    <a href="Products.html">
+                      <span class="sub-item">Sản phẩm</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="Products.html">
+                      <span class="sub-item">Sản phẩm chi tiết</span>
                     </a>
                   </li>
                   <li>
@@ -141,7 +142,7 @@
               <div class="collapse" id="account">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="/assets/staff/Staff.html">
+                    <a href="Staff.html">
                       <span class="sub-item">Nhân Viên</span>
                     </a>
                   </li>
@@ -154,10 +155,10 @@
               </div>
             </li>
             <li class="nav-item">
-              <a href="statistic.html">
+              <a  href="statistic.html">
                 <i class="far fa-chart-bar"></i>
                 <p>Thống Kê</p>
-
+             
               </a>
               <!-- <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
@@ -485,284 +486,109 @@
         </nav>
         <!-- End Navbar -->
       </div>
-      <!-- container -->
+<!-- container -->
       <div class="container">
         <div class="page-inner">
-          <div class="page-header">
-            <h3 class="fw-bold mb-3">Bán Hàng</h3>
-            <ul class="breadcrumbs mb-3">
-              <li class="nav-home">
-                <a href="/statistic.html">
-                  <i class="fas fa-layer-group"></i>
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+              <h3 class="fw-bold mb-3">Bán Hàng ở đây nhé</h3>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+   <!-- end container -->
+      <footer class="footer">
+        <div class="container-fluid d-flex justify-content-between">
+          <nav class="pull-left">
+            <ul class="nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  Home
                 </a>
               </li>
-              <li class="separator">
-                <i class="icon-arrow-right"></i>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Help </a>
               </li>
               <li class="nav-item">
-                <a href="/assets/Bill.html">Bán Hàng</a>
-              </li>
-              <li class="separator">
-                <i class="icon-arrow-right"></i>
-              </li>
-              <li class="nav-item">
-                <a href="/assets/BillDetail.html">Tạo Hóa Đơn</a>
+                <a class="nav-link" href="#"> Licenses </a>
               </li>
             </ul>
-            <div class="ms-md-auto py-2 py-md-0">
-              <!-- <a href="#" class="btn btn-label-info btn-round me-2">Quản Lý</a> -->
-              <a href="BanHang.html" class="btn btn-primary btn-round" onclick="creatBill()">Thêm Hóa Đơn</a>
-            </div>
+          </nav>
+          <div class="copyright">
+            2024, made with <i class="fa fa-heart heart text-danger"></i> by
+            <a href="#">5 Anh Em Siêu Nhân</a>
           </div>
-          <!-- endheader bán hàng -->
-
-
-          <div class="row">
-            <nav class="navbar navbar-light bg-light p-3">
-              <div class="container-fluid">
-                <form id="searchForm">
-                  <div class="input-group">
-                    <div class="position-relative">
-                      <input type="text" class="form-control" id="searchInput" placeholder="Search..."
-                        onkeyup="performSearch()" autocomplete="off">
-                      <ul id="suggestions" class="suggestions-list list-group position-absolute w-100"></ul>
-                    </div>
-                    <button class="btn btn-outline-secondary" type="button" onclick="scanBarcode()">
-                      <i class="bi bi-upc-scan"></i>
-                    </button>
-
-                  </div>
-                </form>
-                <div class="d-flex align-items-center">
-                  <span class="me-3">muốn thêm nút gì thì thêm</span>
-                  <span> cho đỡ trống </span>
-                </div>
-              </div>
-            </nav>
-            <div class="col-md-8">
-              <!-- Bill -->
-              <div class="container mt-3">
-                  <div class="row justify-content-center">
-                      <div class="col text-center" id="bill-buttons">
-                          <!-- Nơi chứa các nút sau khi lấy dữ liệu từ API -->
-                          <!-- Đây sẽ là phần có thanh cuộn khi nội dung vượt quá chiều cao -->
-                      </div>
-                  </div>
-              </div>
-              <div class="modal" id="myModal">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <!-- Modal Header -->
-                          <div class="modal-header">
-                              <h4 class="modal-title">Thêm sản phẩm</h4>
-                              <button type="button" class="btn-close" id="closeModal" data-bs-dismiss="modal"></button>
-                          </div>
-                          <!-- Modal body -->
-                          <div class="modal-body">
-                              <p id="shirtCodeDetail">Modal body..</p>
-                              <div class="mb-3">
-                                  <label for="quantityInput" class="form-label">Số lượng</label>
-                                  <input type="number" id="quantityInput" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
-                              </div>
-                          </div>
-                          <!-- Modal footer -->
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary" onclick="addItemToCart()">Thêm vào giỏ</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          
-              <!-- Modal 2 -->
-              <div class="modal" id="myModal2">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <!-- Modal Header -->
-                          <div class="modal-header">
-                              <h4 class="modal-title">Thêm sản phẩm</h4>
-                              <button type="button" class="btn-close" id="closeModal2" data-bs-dismiss="modal"></button>
-                          </div>
-                          <!-- Modal body -->
-                          <div class="modal-body">
-                              <p id="shirtCodeDetail2">Modal body..</p>
-                              <div class="mb-3">
-                                  <label for="quantityInput" class="form-label">Số lượng</label>
-                                  <input type="number" id="quantityInput2" class="form-control" placeholder="Nhập số lượng" min="1" value="1">
-                              </div>
-                          </div>
-                          <!-- Modal footer -->
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary" onclick="changQuantity()">Xác nhận</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+          <div>
+            Distributed by
+            <a target="_blank" href="https://themewagon.com/">Bee-Shirt</a>.
           </div>
-          
-            <div class="col-md-4">
-              <!-- Invoice Section -->
-              <div class="col-lg-12">
-                <h3>Hóa Đơn</h3>
-                <button type="button" class="btn btn-danger btn-sm" onclick="cancel()">
-                  <i class="fas fa-times"></i>
-                  Hủy đơn
-                </button>
-                <!-- Nút "Sửa" -->
-                <button type="button" class="btn btn-primary btn-sm" onclick="openModal2()">
-                  <i class="fas fa-pen"></i>
-                  Sửa
-                </button>
-                <!-- Nút "Xóa" -->
-                <button type="button" class="btn btn-danger btn-sm" onclick="remove()">
-                  <i class="fas fa-trash"></i>
-                  Xóa
-                </button>
-
-                <ul class="list-group mb-3" id="product-list">
-                  <!-- Sản phẩm sẽ được thêm vào đây -->
-                </ul>
-
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Payment Summary</h5>
-                    <div class="d-flex justify-content-between">
-                      <span>Sub Total</span>
-                      <span id="subtotal">$131.2</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                      <span>Tax</span>
-                      <span id="tax">$5.2</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3">
-                      <span><strong>Total Payment</strong></span>
-                      <span><strong id="totalPayment">$136.4</strong></span>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="checkout()">Place An Order</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-          <h3>Sản phẩm</h3>
-            <!-- Sample Menu Item -->
-            <div th:each="product:${products}" class="col-lg-4 col-md-6 mb-4">
-              <div class="card">
-                <img src="abc.jpg" class="card-img-top" alt="Image">
-                <div class="card-body">
-                  <h5
-                    th:text="${product.shirt.nameShirt + product.color.nameColor + product.size.nameSize + product.brand.nameBrand+product.material.nameMaterial}"
-                    class="card-title">Tự thiết kế nhé. Đây sẽ là giao diện ảnh của các SP trong hóa đơn</h5>
-                  <p th:text="${product.price}" class="card-text">Giá:$50.5</p>
-                  <div class="d-flex align-items-center">
-                    Số Lượng:
-                    <button class="btn btn-sm btn-outline-secondary">-</button>
-                    <input type="number" class="form-control w-25 mx-2 text-center" value="1">
-                    <button class="btn btn-sm btn-outline-secondary">+</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Repeat for other menu items -->
-
         </div>
-      </div>
+      </footer>
     </div>
-    <!-- end container -->
-    <footer class="footer">
-      <div class="container-fluid d-flex justify-content-between">
-        <nav class="pull-left">
-          <ul class="nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Home
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"> Help </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"> Licenses </a>
-            </li>
-          </ul>
-        </nav>
-        <div class="copyright">
-          2024, made with <i class="fa fa-heart heart text-danger"></i> by
-          <a href="#">5 Anh Em Siêu Nhân</a>
-        </div>
-        <div>
-          Distributed by
-          <a target="_blank" href="https://themewagon.com/">Bee-Shirt</a>.
-        </div>
-      </div>
-    </footer>
-  </div>
 
-  <!-- Custom template | don't include it in your project! -->
-  <div class="custom-template">
-    <div class="title">Settings</div>
-    <div class="custom-content">
-      <div class="switcher">
-        <div class="switch-block">
-          <h4>Logo Header</h4>
-          <div class="btnSwitch">
-            <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
-            <br />
-            <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
-            <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+    <!-- Custom template | don't include it in your project! -->
+    <div class="custom-template">
+      <div class="title">Settings</div>
+      <div class="custom-content">
+        <div class="switcher">
+          <div class="switch-block">
+            <h4>Logo Header</h4>
+            <div class="btnSwitch">
+              <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
+              <br />
+              <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+            </div>
           </div>
-        </div>
-        <div class="switch-block">
-          <h4>Navbar Header</h4>
-          <div class="btnSwitch">
-            <button type="button" class="changeTopBarColor" data-color="dark"></button>
-            <button type="button" class="changeTopBarColor" data-color="blue"></button>
-            <button type="button" class="changeTopBarColor" data-color="purple"></button>
-            <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
-            <button type="button" class="changeTopBarColor" data-color="green"></button>
-            <button type="button" class="changeTopBarColor" data-color="orange"></button>
-            <button type="button" class="changeTopBarColor" data-color="red"></button>
-            <button type="button" class="selected changeTopBarColor" data-color="white"></button>
-            <br />
-            <button type="button" class="changeTopBarColor" data-color="dark2"></button>
-            <button type="button" class="changeTopBarColor" data-color="blue2"></button>
-            <button type="button" class="changeTopBarColor" data-color="purple2"></button>
-            <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
-            <button type="button" class="changeTopBarColor" data-color="green2"></button>
-            <button type="button" class="changeTopBarColor" data-color="orange2"></button>
-            <button type="button" class="changeTopBarColor" data-color="red2"></button>
+          <div class="switch-block">
+            <h4>Navbar Header</h4>
+            <div class="btnSwitch">
+              <button type="button" class="changeTopBarColor" data-color="dark"></button>
+              <button type="button" class="changeTopBarColor" data-color="blue"></button>
+              <button type="button" class="changeTopBarColor" data-color="purple"></button>
+              <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
+              <button type="button" class="changeTopBarColor" data-color="green"></button>
+              <button type="button" class="changeTopBarColor" data-color="orange"></button>
+              <button type="button" class="changeTopBarColor" data-color="red"></button>
+              <button type="button" class="selected changeTopBarColor" data-color="white"></button>
+              <br />
+              <button type="button" class="changeTopBarColor" data-color="dark2"></button>
+              <button type="button" class="changeTopBarColor" data-color="blue2"></button>
+              <button type="button" class="changeTopBarColor" data-color="purple2"></button>
+              <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
+              <button type="button" class="changeTopBarColor" data-color="green2"></button>
+              <button type="button" class="changeTopBarColor" data-color="orange2"></button>
+              <button type="button" class="changeTopBarColor" data-color="red2"></button>
+            </div>
           </div>
-        </div>
-        <div class="switch-block">
-          <h4>Sidebar</h4>
-          <div class="btnSwitch">
-            <button type="button" class="changeSideBarColor" data-color="white"></button>
-            <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
-            <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+          <div class="switch-block">
+            <h4>Sidebar</h4>
+            <div class="btnSwitch">
+              <button type="button" class="changeSideBarColor" data-color="white"></button>
+              <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
+              <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+            </div>
           </div>
         </div>
       </div>
+      <div class="custom-toggle">
+        <i class="icon-settings"></i>
+      </div>
     </div>
-    <div class="custom-toggle">
-      <i class="icon-settings"></i>
-    </div>
-  </div>
-  <!-- End Custom template -->
+    <!-- End Custom template -->
   </div>
   <!--   Core JS Files   -->
   <script src="js/core/jquery-3.7.1.min.js"></script>
@@ -801,6 +627,86 @@
   <script src="js/setting-demo.js"></script>
   <script src="js/demo.js"></script>
   <script src="js/oders.js"></script>
+
+  <style>
+    body {
+      background-color: #f8f8f8;
+    }
+
+    .navbar {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 8px;
+    }
+
+    .list-group-item {
+      font-size: 14px;
+    }
+
+    .card-body h5 {
+      font-weight: bold;
+    }
+
+
+    .suggestions-list {
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      /* Đảm bảo hiển thị trên các thành phần khác */
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 0 0 5px 5px;
+      margin-top: -1px;
+      /* Để tránh khoảng trống giữa input và ul */
+    }
+
+    .suggestions-list li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestions-list li:hover {
+      background-color: #f1f1f1;
+    }
+
+    button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    /* CSS cho lớp highlight */
+    .highlight {
+      background-color: #f0f8ff;
+      /* Màu nền khi highlight */
+      font-weight: bold;
+      /* Có thể thêm các hiệu ứng khác */
+    }
+
+    /* Tooltip CSS */
+    .tooltip {
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+
+    .button-container:hover .tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 
   <style>
     body {
@@ -949,6 +855,11 @@
           productList.appendChild(listItem);
         });
 
+        if (activeBillCode == 'none') {
+          productList.innerHTML = '';
+          subtotal = 0;
+        }
+
         // Giả sử tỷ lệ thuế là 4%
         tax = subtotal * 0.04;
 
@@ -973,46 +884,87 @@
     }
 
 
-    // Gọi API để lấy dữ liệu hóa đơn
+    // Hiển thị tooltip khi hover vào nút bill
+    function showTooltip(button, codeBillDetail, createAt) {
+      let tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+
+      // Kiểm tra dữ liệu và hiển thị tooltip
+      tooltip.innerText = codeBillDetail && codeBillDetail.length > 0
+        ? `Chi tiết: ${codeBillDetail}\nNgày tạo: ${createAt}`
+        : "Không có dữ liệu";
+
+      button.appendChild(tooltip);
+    }
+
+    // Ẩn tooltip khi rời chuột khỏi nút bill
+    function hideTooltip(button) {
+      let tooltip = button.querySelector(".tooltip");
+      if (tooltip) {
+        tooltip.remove();
+      }
+    }
+
+    // Thêm sự kiện vào các nút bill
     async function fetchBills() {
+      if (token==null) {
+        alert("Bạn chưa đăng nhập. Vui lòng đăng nhập lại.");
+        window.location.href = "http://127.0.0.1:5500/assets/account/login.html#!/login";
+        return;
+      }
       try {
         const response = await fetch(apiUrl, {
           method: 'GET',
-          headers: headers // Thêm headers vào yêu cầu
+          headers: headers
         });
-        const bills = await response.json(); // Chuyển đổi response thành JSON
+        const bills = await response.json();
 
         if (bills.length > 0) {
           activeBillCode = bills[0].codeBill;
-          fetchBillDetails(activeBillCode); // Gọi hàm để hiển thị thông tin hóa đơn đầu tiên
+          fetchBillDetails(activeBillCode);
+        } else {
+          activeBillCode = "none";
         }
 
-        // Hiển thị các nút hóa đơn dựa trên dữ liệu từ API
         const billButtonsContainer = document.getElementById('bill-buttons');
-        billButtonsContainer.innerHTML = ''; // Xóa nội dung cũ (nếu có)
+        billButtonsContainer.innerHTML = '';
 
         bills.forEach(bill => {
           const button = document.createElement('button');
-          button.className = 'btn btn-outline-primary m-1';
-          button.textContent = bill.codeBill;  // Hiển thị mã hóa đơn
-          button.value = bill.codeBill;  // Gán giá trị mã hóa đơn
+          button.className = 'btn btn-outline-primary m-1 button-container';
+          button.textContent = bill.codeBill;
+          button.value = bill.codeBill;
 
           if (bill.codeBill === activeBillCode) {
             button.classList.add('active');
           }
 
-          // Thêm sự kiện khi người dùng click vào nút
           button.addEventListener('click', () => {
             fetchBillDetails(bill.codeBill);
           });
 
-          // Thêm nút vào container
+          // Gọi API để lấy chi tiết bill
+          button.addEventListener('mouseenter', async () => {
+            const detailsResponse = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${bill.codeBill}`, {
+              method: 'GET',
+              headers: headers
+            });
+            const details = await detailsResponse.json();
+            const codeBillDetail = details.map(detail => detail.codeBillDetail).join(", ");
+            showTooltip(button, codeBillDetail, bill.createAt);
+          });
+
+          button.addEventListener('mouseleave', () => {
+            hideTooltip(button);
+          });
+
           billButtonsContainer.appendChild(button);
         });
       } catch (error) {
         console.error('Lỗi khi gọi API:', error);
       }
     }
+
 
     // Gọi hàm fetchBills khi trang load
     window.onload = fetchBills;
@@ -1032,13 +984,17 @@
     }
 
     function checkout() {
-      fetch(`http://localhost:8080/point-of-sale/checkout?codeBill=${activeBillCode}&codeVoucher=`, {
+      const codeVoucherCheckout = document.getElementById("codeVoucher").value;
+      const username = document.getElementById("codeCustomer").value;
+
+      fetch(`http://localhost:8080/point-of-sale/checkout?codeBill=${activeBillCode}&codeVoucher=${codeVoucherCheckout}&username=${username}`, {
         method: 'POST',
         headers: headers
       }).then(data => {
         console.log("Check out successfully", data);
         currentCodeShirtDetail = 'cocainit';
         fetchBills()
+        document.getElementById('closeModal3').click()
       }
       ).catch(error => console.error("Error with checkout", error));
     }
@@ -1103,14 +1059,13 @@
             if (data.length > 0) {
               data.forEach(item => {
                 let suggestionItem = document.createElement("li");
-                suggestionItem.innerHTML = item.shirt.nameShirt;
+                suggestionItem.innerHTML = item.shirt.nameshirt;
                 suggestionItem.onclick = function () {
                   // Call the /add/ endpoint when a suggestion is clicked
                   document.getElementById("shirtCodeDetail").innerText = item.codeShirtDetail;
                   openModal(); // Gọi hàm mở modal
                   suggestionsList.innerHTML = ""; // Clear suggestions after the click
                   document.getElementById("searchInput").value = "";
-
                 };
                 suggestionsList.appendChild(suggestionItem);
               });
@@ -1188,6 +1143,269 @@
         .catch(error => console.error("Error adding item to cart:", error));
       document.getElementById('closeModal2').click()
     }
+
+    async function openModal3() {
+      try {
+        // Lấy thông tin chi tiết hóa đơn từ API
+        const response = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
+          method: 'GET',
+          headers: headers
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching bill details');
+        }
+
+        const data = await response.json();
+
+        // Tính tổng tiền
+        let subtotal = 0;
+        data.forEach(item => {
+          subtotal += item.price * item.quantity;
+        });
+
+        // Hiển thị tổng tiền vào ô input
+        document.getElementById('totalMoney').value = subtotal.toFixed(2);
+
+        // Reset các ô nhập liệu
+        document.getElementById('codeVoucher').value = ''; // Xóa mã voucher
+        document.getElementById('voucherFeedback').style.display = 'none'; // Ẩn thông báo
+        document.getElementById('paymentInput').value = ''; // Tiền khách đưa
+        document.getElementById('changeMoney').value = ''; // Tiền thừa
+        document.getElementById('confirmButton').disabled = true; // Tắt nút Xác nhận
+
+        // Thêm sưj kiện validate
+        document.getElementById('paymentInput').oninput = validatePayment;
+
+        // Mở modal
+        const myModal = new bootstrap.Modal(document.getElementById('myModal3'), {
+          keyboard: false // Thay đổi nếu bạn muốn tắt tính năng đóng bằng phím ESC
+        });
+        myModal.show();
+      } catch (error) {
+        console.error('Error in openModal3:', error);
+      }
+    }
+
+    function validatePayment() {
+      const totalMoney = parseFloat(document.getElementById('totalMoney').value) || 0;
+      const paymentInput = parseFloat(document.getElementById('paymentInput').value) || 0;
+
+      // Tính tiền thừa
+      const changeMoney = paymentInput - totalMoney;
+
+      // Hiển thị tiền thừa
+      const changeMoneyInput = document.getElementById('changeMoney');
+      changeMoneyInput.value = changeMoney > 0 ? changeMoney.toFixed(2) : 0;
+
+      // Bật/tắt nút Xác nhận
+      const confirmButton = document.getElementById('confirmButton');
+      confirmButton.disabled = paymentInput < totalMoney;
+    }
+
+    async function applyAccountOnChange() {
+      const codeCustomer = document.getElementById("codeCustomer").value.trim();
+      const codeVoucherInput = document.getElementById("codeVoucher");
+      const feedback = document.getElementById("accountFeedback");
+      const totalMoneyInput = document.getElementById("totalMoney");
+      const voucherFeedback = document.getElementById("voucherFeedback");
+
+      // Ẩn thông báo cũ
+      feedback.style.display = "none";
+      voucherFeedback.style.display = "none";
+
+      try {
+        const billResponse = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
+          method: 'GET',
+          headers: headers
+        });
+
+        const billData = await billResponse.json();
+
+        // Tính tổng tiền
+        let totalMoney = 0;
+        billData.forEach(item => {
+          totalMoney += item.price * item.quantity;
+        });
+
+
+        // Gửi yêu cầu kiểm tra mã khách hàng
+        const response = await fetch(`http://localhost:8080/point-of-sale/get-account?username=${codeCustomer}`, {
+          method: "GET",
+          headers: headers,
+        });
+
+        // Kiểm tra phản hồi từ API
+        if (!response.ok) {
+          throw new Error("Mã khách hàng không hợp lệ hoặc không tồn tại!");
+        }
+
+        const responseClone = response.clone();
+
+        const data = await responseClone.text();
+        if (data == '') {
+          feedback.style.display = "block";
+          feedback.textContent = "";
+
+          totalMoneyInput.value = totalMoney.toFixed(2);
+          validatePayment()
+          return;
+        }
+
+        // Đọc dữ liệu từ API
+        const accountData = await response.json();
+
+        // Nếu không tìm thấy tài khoản
+        if (!accountData || Object.keys(accountData).length === 0) {
+          feedback.style.display = "block";
+          feedback.style.color = "red";
+          feedback.textContent = "Không tìm thấy tài khoản với mã khách hàng này!";
+          codeVoucherInput.disabled = true; // Vô hiệu hóa ô nhập mã voucher
+          codeVoucherInput.value = ""; // Xóa mã voucher
+          totalMoneyInput.value = ""; // Đặt lại tổng tiền
+          return;
+        }
+
+        // Nếu tìm thấy tài khoản, bật ô nhập voucher
+        feedback.style.display = "block";
+        feedback.style.color = "green";
+        feedback.textContent = `Tài khoản hợp lệ`;
+        codeVoucherInput.disabled = false; // Kích hoạt ô nhập mã voucher
+
+        // Gọi lại hàm áp dụng voucher
+        await applyVoucherOnChange();
+      } catch (error) {
+        // Hiển thị lỗi nếu xảy ra
+        feedback.style.display = "block";
+        feedback.style.color = "red";
+        feedback.textContent = error.message || "Đã xảy ra lỗi khi kiểm tra mã khách hàng!";
+        codeVoucherInput.disabled = true; // Vô hiệu hóa ô nhập mã voucher
+        codeVoucherInput.value = ""; // Xóa mã voucher
+
+        totalMoneyInput.value = totalMoney.toFixed(2);
+        validatePayment()
+        return;
+
+      }
+    }
+
+
+
+
+    async function applyVoucherOnChange() {
+      const codeCustomer = document.getElementById("codeCustomer").value.trim();
+      const codeVoucher = document.getElementById("codeVoucher").value.trim();
+      const totalMoneyInput = document.getElementById("totalMoney");
+      const feedback = document.getElementById("voucherFeedback");
+
+      // Ẩn thông báo
+      feedback.style.display = "none";
+
+      try {
+        // Gửi yêu cầu kiểm tra mã khách hàng
+        const customerResponse = await fetch(`http://localhost:8080/point-of-sale/get-account?username=${codeCustomer}`, {
+          method: "GET",
+          headers: headers,
+        });
+
+        // Kiểm tra phản hồi từ API
+        if (!customerResponse.ok) {
+          throw new Error("Mã khách hàng không hợp lệ hoặc không tồn tại!");
+        }
+
+        const customerData = await customerResponse.text();
+        if (customerData == '') {
+          return;
+        }
+
+        const response = await fetch(`http://localhost:8080/point-of-sale/get-bill-detail?codeBill=${activeBillCode}`, {
+          method: 'GET',
+          headers: headers
+        });
+
+        const data = await response.json();
+
+        // Tính tổng tiền
+        let totalMoney = 0;
+        data.forEach(item => {
+          totalMoney += item.price * item.quantity;
+        });
+
+        // Nếu không có mã voucher, giữ nguyên tổng tiền
+        if (!codeVoucher) {
+          totalMoneyInput.value = totalMoney.toFixed(2);
+          validatePayment()
+          return;
+        }
+
+        // Gửi yêu cầu lấy voucher
+        const voucherResponse = await fetch(`http://localhost:8080/point-of-sale/get-voucher?codeVoucher=${codeVoucher}`, {
+          method: "GET",
+          headers: headers
+        });
+
+        if (!voucherResponse.ok) {
+          throw new Error("Mã voucher không hợp lệ hoặc không tồn tại!");
+        }
+
+        const voucherResponseClone = voucherResponse.clone();
+
+        const voucherData = await voucherResponse.text();
+        if (voucherData == '') {
+          feedback.style.display = "block";
+          feedback.textContent = "";
+          totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
+          validatePayment()
+          return;
+        }
+
+        const voucher = await voucherResponseClone.json();
+
+        // Kiểm tra nếu voucher không hợp lệ
+        if (!voucher) {
+          feedback.style.display = "block";
+          feedback.textContent = "Mã voucher không hợp lệ hoặc đã hết hạn!";
+          totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
+          validatePayment()
+          return;
+        }
+
+        // Kiểm tra điều kiện áp dụng voucher
+        if (voucher.minBillValue > totalMoney) {
+          feedback.style.display = "block";
+          feedback.style.color = "red";
+          feedback.textContent = `Hóa đơn phải từ ${voucher.minBillValue.toFixed(2)} mới áp dụng được voucher này.`;
+          totalMoneyInput.value = totalMoney.toFixed(2); // Giữ nguyên tổng tiền
+          validatePayment()
+          return;
+        }
+
+        // Tính toán giảm giá
+        let discount = 0;
+        if (voucher.typeVoucher === "Percent") {
+          discount = Math.min(totalMoney * (voucher.discountValue / 100), voucher.maximumDiscount);
+        } else if (voucher.typeVoucher === "Amount") {
+          discount = Math.min(voucher.discountValue, voucher.maximumDiscount);
+        }
+
+        // Cập nhật tổng tiền
+        const newTotal = totalMoney - discount;
+        totalMoneyInput.value = newTotal.toFixed(2);
+        validatePayment()
+
+        // Hiển thị thông báo thành công
+        feedback.style.display = "block";
+        feedback.style.color = "green";
+        feedback.textContent = `Áp dụng voucher thành công! Giảm giá: ${discount.toFixed(2)}`;
+      } catch (error) {
+        // Hiển thị lỗi nếu có
+        feedback.style.display = "block";
+        feedback.style.color = "red";
+        feedback.textContent = error.message || "Đã xảy ra lỗi trong quá trình áp dụng voucher!";
+      }
+    }
+
+
 
     function remove() {
       const codeBill = activeBillCode;

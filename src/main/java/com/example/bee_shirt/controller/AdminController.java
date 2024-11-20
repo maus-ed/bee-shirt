@@ -192,6 +192,7 @@ public class AdminController {
             @RequestParam(value = "phone", required = false) String phone,
             @RequestParam(value = "email", required = false) String email,
             @RequestParam(value = "pass", required = false) String pass,
+            @RequestParam(value = "oldPassword", required = false) String oldPassword,
             @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile,
             @RequestParam(value = "status", required = false) Integer status,
@@ -203,6 +204,7 @@ public class AdminController {
         request.setLastName(lastName);
         request.setPhone(phone);
         request.setEmail(email);
+        request.setOldPassword(oldPassword);
         request.setPass(pass);
         request.setAddress(address);
         request.setAvatarFile(avatarFile);

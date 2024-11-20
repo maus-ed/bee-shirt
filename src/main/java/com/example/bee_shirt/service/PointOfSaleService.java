@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -33,6 +34,9 @@ public class PointOfSaleService {
     private VoucherRepository voucherRepository;
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private BillDetailRepository billDetailRepository;
 
     public List<ShirtDetail> searchShirtDetails(String query, int page, int size) {
@@ -49,6 +53,14 @@ public class PointOfSaleService {
 
     public ShirtDetail getShirtDetail(String codeShirtDetail) {
         return shirtDetailRepository.findShirtDetailByCode(codeShirtDetail);
+    }
+
+    public Voucher getVoucher(String getVoucher) {
+        return voucherRepository.findVoucherByCode(getVoucher).orElse(null);
+    }
+
+    public Account getAccount(String username) {
+        return accountRepository.findByUsername(username).orElse(null);
     }
 
     public static String generateRandomCode() {
@@ -72,8 +84,9 @@ public class PointOfSaleService {
         String randomCode = generateRandomCode();
         Bill bill = new Bill();
         bill.setCodeBill("CB" + randomCode);
-        bill.setCreateAt(LocalDate.now());
+        bill.setCreateAt(LocalDateTime.now());
         bill.setStatusBill(0);
+        bill.setDeleted(false);
         billRepository.save(bill);
         return "Create blank bill successfully";
     }
@@ -127,9 +140,17 @@ public class PointOfSaleService {
         return "Cancel successfully";
     }
 
-    public String checkout(String codeBill, String codeVoucher) {
+
+
+    public String checkout(String codeBill, String codeVoucher, String username) {
         Bill bill = billRepository.findBillByCode(codeBill);
-        bill.setVoucher(voucherRepository.findVoucherByCode(codeVoucher));
+        Voucher voucher = voucherRepository.findVoucherByCode(codeVoucher).orElse(null);
+        Account account = accountRepository.findByUsername(username).orElse(null);
+        if (account != null) {
+            voucher=null;
+        }
+        bill.setVoucher(voucher);
+        bill.setCustomer(account);
         bill.setTypeBill("POS");
         bill.setCustomerName("1");
         bill.setPhoneNumber("1");
@@ -139,6 +160,20 @@ public class PointOfSaleService {
         double moneyReduce = 0.0;
         for (BillDetail bd : billDetailRepository.findBillDetailByBillCodeAndStatusBillDetail(codeBill, 0)) {
             subtotalBeforeDiscount += bd.getQuantity() * bd.getShirtDetail().getPrice().doubleValue();
+        }
+        if (voucher!=null) {
+            if(Objects.equals(voucher.getTypeVoucher(), "Amount")){
+                if (!(voucher.getMinBillValue() >subtotalBeforeDiscount)) {
+                    moneyReduce=voucher.getDiscountValue();
+                }
+            } else {
+                if (!(voucher.getMinBillValue() >subtotalBeforeDiscount)) {
+                    moneyReduce=voucher.getDiscountValue()*subtotalBeforeDiscount/100;
+                    if (moneyReduce>voucher.getMaximumDiscount()){
+                        moneyReduce=voucher.getMaximumDiscount();
+                    }
+                }
+            }
         }
         bill.setSubtotalBeforeDiscount(BigDecimal.valueOf(subtotalBeforeDiscount));
         bill.setMoneyReduce(BigDecimal.valueOf(moneyReduce));

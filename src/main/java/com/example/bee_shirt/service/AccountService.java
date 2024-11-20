@@ -147,7 +147,7 @@ public class AccountService {
         Account account = accountRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        // giữ nguyên giá trị cũ nếu là null
+        // Giữ nguyên giá trị cũ nếu là null
         if (request.getFirstName() != null) {
             account.setFirstName(request.getFirstName());
         }
@@ -159,9 +159,6 @@ public class AccountService {
         }
         if (request.getEmail() != null) {
             account.setEmail(request.getEmail());
-        }
-        if (request.getPass() != null) {
-            account.setPass(encodePassword(request.getPass()));
         }
         if (request.getAddress() != null) {
             account.setAddress(request.getAddress());
@@ -176,7 +173,16 @@ public class AccountService {
             account.setAvatar(uploadAvatar(request.getAvatarFile()));
         }
 
-        // Set metadata fields
+        // Xử lý logic đổi mật khẩu (nếu có yêu cầu)
+        if (request.getOldPassword() != null && request.getOldPassword().isEmpty() && request.getPass() != null && request.getPass().isEmpty()) {
+            // Kiểm tra mật khẩu cũ
+            if (!passwordEncoder.matches(request.getOldPassword(), account.getPass())) {
+                throw new AppException(ErrorCode.INVALID_OLD_PASSWORD);
+            }
+            // Cập nhật mật khẩu mới
+            account.setPass(encodePassword(request.getPass()));
+        }
+
         account.setUpdateBy(this.getMyInfo().getCode());
         account.setUpdateAt(LocalDate.now());
 
