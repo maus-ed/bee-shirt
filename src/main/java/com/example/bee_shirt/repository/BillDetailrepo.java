@@ -27,7 +27,7 @@ public interface BillDetailrepo extends JpaRepository<BillDetail, Integer> {
             "JOIN bill bl ON bd.bill_id = bl.id " +
             "JOIN shirt_detail sd ON bd.shirt_detail_id = sd.id " +
             "JOIN shirt s ON sd.shirt_id = s.id " +
-            "JOIN brand b ON sd.brand_id = b.id " +
+            "JOIN brand b ON s.brand_id = b.id " +
             "JOIN size sz ON sd.size_id = sz.id " +
             "LEFT JOIN voucher v ON bl.voucher_id = v.id " +
             "LEFT JOIN image_shirt_detail img ON sd.id = img.shirt_detail_id AND img.main_image = 1 " +
