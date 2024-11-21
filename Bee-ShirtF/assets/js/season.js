@@ -1,23 +1,85 @@
 var app = angular.module('SeasonApp', []);
 app.service('seasonService', ['$http', function($http) {
+    function checkPermission() {
+        const token = sessionStorage.getItem("jwtToken");
+        if (!token) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = "/assets/account/login.html"; // Chuyển hướng đến trang đăng nhập
+            return false; // Dừng lại nếu không có token
+        }
+    
+        // Giải mã token và lấy payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
+    
+        const roles = payload.scope ? payload.scope.split(" ") : [];
+    
+        if (!roles.includes("ROLE_STAFF") && !roles.includes("ROLE_ADMIN")) {
+          alert("Bạn không có quyền truy cập vào trang này!");
+          window.history.back();
+          return false;
+        }
+    
+        return true; // Cho phép tiếp tục nếu có quyền
+    }
+    
+    if (!checkPermission()) return; // Kiểm tra quyền trước khi thực hiện bất kỳ hành động nào
+    // Lấy token từ sessionStorage sau khi đã kiểm tra quyền
+const token = sessionStorage.getItem("jwtToken");
+
+function getHighestRole(scopes) {
+    const roles = scopes ? scopes.split(" ") : [];
+    const rolePriority = {
+        ROLE_ADMIN: 1,
+        ROLE_STAFF: 2,
+        ROLE_USER: 3,
+    };
+
+    // Lọc các vai trò hợp lệ và sắp xếp theo độ ưu tiên
+    const validRoles = roles.filter(role => rolePriority[role]);
+    validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
+
+    // Trả về vai trò có độ ưu tiên cao nhất
+    return validRoles[0] || null;
+}
+
     this.getSeasons = function(page) {
-        return $http.get(`http://localhost:8080/api/seasons/list?page=${page}`);
+        return $http.get(`http://localhost:8080/api/seasons/list?page=${page}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getSeasonDetail = function(codeSeason) {
-        return $http.get(`http://localhost:8080/api/seasons/detail/${codeSeason}`);
+        return $http.get(`http://localhost:8080/api/seasons/detail/${codeSeason}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.addSeason = function(season) {
-        return $http.post('http://localhost:8080/api/seasons/add', season);
+        return $http.post('http://localhost:8080/api/seasons/add', season, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.updateSeason = function(codeSeason, season) {
-        return $http.put(`http://localhost:8080/api/seasons/update/${codeSeason}`, season);
+        return $http.put(`http://localhost:8080/api/seasons/update/${codeSeason}`, season, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.deleteSeason = function(codeSeason) {
-        return $http.put(`http://localhost:8080/api/seasons/delete/${codeSeason}`);
+        return $http.put(`http://localhost:8080/api/seasons/delete/${codeSeason}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 }]);
 app.controller('seasonController', ['$scope', 'seasonService', function($scope, seasonService) {

@@ -1,23 +1,85 @@
 var app = angular.module('OriginApp', []);
 app.service('originService', ['$http', function($http) {
+    function checkPermission() {
+        const token = sessionStorage.getItem("jwtToken");
+        if (!token) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = "/assets/account/login.html"; // Chuyển hướng đến trang đăng nhập
+            return false; // Dừng lại nếu không có token
+        }
+    
+        // Giải mã token và lấy payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
+    
+        const roles = payload.scope ? payload.scope.split(" ") : [];
+    
+        if (!roles.includes("ROLE_STAFF") && !roles.includes("ROLE_ADMIN")) {
+          alert("Bạn không có quyền truy cập vào trang này!");
+          window.history.back();
+          return false;
+        }
+    
+        return true; // Cho phép tiếp tục nếu có quyền
+    }
+    
+    if (!checkPermission()) return; // Kiểm tra quyền trước khi thực hiện bất kỳ hành động nào
+    // Lấy token từ sessionStorage sau khi đã kiểm tra quyền
+const token = sessionStorage.getItem("jwtToken");
+
+function getHighestRole(scopes) {
+    const roles = scopes ? scopes.split(" ") : [];
+    const rolePriority = {
+        ROLE_ADMIN: 1,
+        ROLE_STAFF: 2,
+        ROLE_USER: 3,
+    };
+
+    // Lọc các vai trò hợp lệ và sắp xếp theo độ ưu tiên
+    const validRoles = roles.filter(role => rolePriority[role]);
+    validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
+
+    // Trả về vai trò có độ ưu tiên cao nhất
+    return validRoles[0] || null;
+}
+
     this.getOrigins = function(page) {
-        return $http.get(`http://localhost:8080/api/origins/list?page=${page}`);
+        return $http.get(`http://localhost:8080/api/origins/list?page=${page}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getOriginDetail = function(codeOrigin) {
-        return $http.get(`http://localhost:8080/api/origins/detail/${codeOrigin}`);
+        return $http.get(`http://localhost:8080/api/origins/detail/${codeOrigin}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.addOrigin = function(origin) {
-        return $http.post('http://localhost:8080/api/origins/add', origin);
+        return $http.post('http://localhost:8080/api/origins/add', origin, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.updateOrigin = function(codeOrigin, origin) {
-        return $http.put(`http://localhost:8080/api/origins/update/${codeOrigin}`, origin);
+        return $http.put(`http://localhost:8080/api/origins/update/${codeOrigin}`, origin, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.deleteOrigin = function(codeOrigin) {
-        return $http.put(`http://localhost:8080/api/origins/delete/${codeOrigin}`);
+        return $http.put(`http://localhost:8080/api/origins/delete/${codeOrigin}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 }]);
 
