@@ -2,33 +2,103 @@ var ShirtApp = angular.module('beeShirtApp', []);
 
 ShirtApp.service('shirtService', ['$http', function($http) {
     const baseUrl = 'http://localhost:8080/shirts';
+ 
+    function checkPermission() {
+        const token = sessionStorage.getItem("jwtToken");
+        if (!token) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = "/assets/account/login.html"; // Chuyển hướng đến trang đăng nhập
+            return false; // Dừng lại nếu không có token
+        }
+    
+        // Giải mã token và lấy payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
+    
+        const roles = payload.scope ? payload.scope.split(" ") : [];
+    
+        if (!roles.includes("ROLE_STAFF") && !roles.includes("ROLE_ADMIN")) {
+          alert("Bạn không có quyền truy cập vào trang này!");
+          window.history.back();
+          return false;
+        }
+    
+        return true; // Cho phép tiếp tục nếu có quyền
+    }
+    
+    if (!checkPermission()) return; // Kiểm tra quyền trước khi thực hiện bất kỳ hành động nào
+    // Lấy token từ sessionStorage sau khi đã kiểm tra quyền
+const token = sessionStorage.getItem("jwtToken");
+
+function getHighestRole(scopes) {
+    const roles = scopes ? scopes.split(" ") : [];
+    const rolePriority = {
+        ROLE_ADMIN: 1,
+        ROLE_STAFF: 2,
+        ROLE_USER: 3,
+    };
+
+    // Lọc các vai trò hợp lệ và sắp xếp theo độ ưu tiên
+    const validRoles = roles.filter(role => rolePriority[role]);
+    validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
+
+    // Trả về vai trò có độ ưu tiên cao nhất
+    return validRoles[0] || null;
+}
 
     this.getShirts = function() {
-        return $http.get(baseUrl + '/api/hienthi');
+        return $http.get(baseUrl + '/api/hienthi', {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.addShirt = function(shirt) {
-        return $http.post(baseUrl + '/add', shirt);
+        return $http.post(baseUrl + '/add', shirt, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.updateShirt = function(codeshirt, shirt) {
-        return $http.put(baseUrl + '/update/' + codeshirt, shirt);
+        return $http.put(baseUrl + '/update/' + codeshirt, shirt, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.deleteShirt = function(codeshirt) {
-        return $http.delete(baseUrl + '/delete/' + codeshirt);
+        return $http.delete(baseUrl + '/delete/' + codeshirt, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getShirtDetail = function(codeshirt) {
-        return $http.get(baseUrl + '/byCode/' + codeshirt);
+        return $http.get(baseUrl + '/byCode/' + codeshirt, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getBrands = function() {
-        return $http.get(baseUrl + '/api/brands');
+        return $http.get(baseUrl + '/api/brands', {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getCategories = function() {
-        return $http.get(baseUrl + '/api/categories');
+        return $http.get(baseUrl + '/api/categories', {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 }]);
 

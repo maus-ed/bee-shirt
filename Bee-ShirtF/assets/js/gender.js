@@ -1,23 +1,85 @@
 var app = angular.module('GenderApp', []);
 app.service('genderService', ['$http', function($http) {
+    function checkPermission() {
+        const token = sessionStorage.getItem("jwtToken");
+        if (!token) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = "/assets/account/login.html"; // Chuyển hướng đến trang đăng nhập
+            return false; // Dừng lại nếu không có token
+        }
+    
+        // Giải mã token và lấy payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
+    
+        const roles = payload.scope ? payload.scope.split(" ") : [];
+    
+        if (!roles.includes("ROLE_STAFF") && !roles.includes("ROLE_ADMIN")) {
+          alert("Bạn không có quyền truy cập vào trang này!");
+          window.history.back();
+          return false;
+        }
+    
+        return true; // Cho phép tiếp tục nếu có quyền
+    }
+    
+    if (!checkPermission()) return; // Kiểm tra quyền trước khi thực hiện bất kỳ hành động nào
+    // Lấy token từ sessionStorage sau khi đã kiểm tra quyền
+const token = sessionStorage.getItem("jwtToken");
+
+function getHighestRole(scopes) {
+    const roles = scopes ? scopes.split(" ") : [];
+    const rolePriority = {
+        ROLE_ADMIN: 1,
+        ROLE_STAFF: 2,
+        ROLE_USER: 3,
+    };
+
+    // Lọc các vai trò hợp lệ và sắp xếp theo độ ưu tiên
+    const validRoles = roles.filter(role => rolePriority[role]);
+    validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
+
+    // Trả về vai trò có độ ưu tiên cao nhất
+    return validRoles[0] || null;
+}
+
     this.getGenders = function(page) {
-        return $http.get(`http://localhost:8080/api/genders/list?page=${page}`);
+        return $http.get(`http://localhost:8080/api/genders/list?page=${page}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getGenderDetail = function(codeGender) {
-        return $http.get(`http://localhost:8080/api/genders/detail/${codeGender}`);
+        return $http.get(`http://localhost:8080/api/genders/detail/${codeGender}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.addGender = function(gender) {
-        return $http.post('http://localhost:8080/api/genders/add', gender);
+        return $http.post('http://localhost:8080/api/genders/add', gender, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.updateGender = function(codeGender, gender) {
-        return $http.put(`http://localhost:8080/api/genders/update/${codeGender}`, gender);
+        return $http.put(`http://localhost:8080/api/genders/update/${codeGender}`, gender, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.deleteGender = function(codeGender) {
-        return $http.put(`http://localhost:8080/api/genders/delete/${codeGender}`);
+        return $http.put(`http://localhost:8080/api/genders/delete/${codeGender}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 }]);
 

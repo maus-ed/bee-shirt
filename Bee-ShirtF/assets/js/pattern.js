@@ -1,23 +1,86 @@
 var app = angular.module('PatternApp', []);
 app.service('patternService', ['$http', function($http) {
+
+    function checkPermission() {
+        const token = sessionStorage.getItem("jwtToken");
+        if (!token) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = "/assets/account/login.html"; // Chuyển hướng đến trang đăng nhập
+            return false; // Dừng lại nếu không có token
+        }
+    
+        // Giải mã token và lấy payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
+    
+        const roles = payload.scope ? payload.scope.split(" ") : [];
+    
+        if (!roles.includes("ROLE_STAFF") && !roles.includes("ROLE_ADMIN")) {
+          alert("Bạn không có quyền truy cập vào trang này!");
+          window.history.back();
+          return false;
+        }
+    
+        return true; // Cho phép tiếp tục nếu có quyền
+    }
+    
+    if (!checkPermission()) return; // Kiểm tra quyền trước khi thực hiện bất kỳ hành động nào
+    // Lấy token từ sessionStorage sau khi đã kiểm tra quyền
+const token = sessionStorage.getItem("jwtToken");
+
+function getHighestRole(scopes) {
+    const roles = scopes ? scopes.split(" ") : [];
+    const rolePriority = {
+        ROLE_ADMIN: 1,
+        ROLE_STAFF: 2,
+        ROLE_USER: 3,
+    };
+
+    // Lọc các vai trò hợp lệ và sắp xếp theo độ ưu tiên
+    const validRoles = roles.filter(role => rolePriority[role]);
+    validRoles.sort((a, b) => rolePriority[a] - rolePriority[b]);
+
+    // Trả về vai trò có độ ưu tiên cao nhất
+    return validRoles[0] || null;
+}
+
     this.getPatterns = function(page) {
-        return $http.get(`http://localhost:8080/api/patterns/list?page=${page}`);
+        return $http.get(`http://localhost:8080/api/patterns/list?page=${page}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.getPatternDetail = function(codePattern) {
-        return $http.get(`http://localhost:8080/api/patterns/detail/${codePattern}`);
+        return $http.get(`http://localhost:8080/api/patterns/detail/${codePattern}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.addPattern = function(pattern) {
-        return $http.post('http://localhost:8080/api/patterns/add', pattern);
+        return $http.post('http://localhost:8080/api/patterns/add', pattern, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.updatePattern = function(codePattern, pattern) {
-        return $http.put(`http://localhost:8080/api/patterns/update/${codePattern}`, pattern);
+        return $http.put(`http://localhost:8080/api/patterns/update/${codePattern}`, pattern, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 
     this.deletePattern = function(codePattern) {
-        return $http.put(`http://localhost:8080/api/patterns/delete/${codePattern}`);
+        return $http.put(`http://localhost:8080/api/patterns/delete/${codePattern}`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        });
     };
 }]);
 
